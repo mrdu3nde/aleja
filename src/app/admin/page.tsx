@@ -55,7 +55,7 @@ function StatCard({
 }: {
   label: string;
   value: number | string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: React.ComponentType<Record<string, unknown>>;
   color: string;
   loading?: boolean;
 }) {
@@ -115,7 +115,7 @@ function StatCard({
             flexShrink: 0,
           }}
         >
-          <Icon size={22} className="" style={{ color }} />
+          <span style={{ color }}><Icon size={22} /></span>
         </div>
       </div>
     </div>
