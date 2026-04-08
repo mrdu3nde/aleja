@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(schedule)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(cp -r /c/nextiastudio/aleja-temp/* /c/nextiastudio/aleja-temp/.* /c/nextiastudio/aleja/)",
+      "Bash(rm -rf /c/nextiastudio/aleja-temp)",
+      "Bash(cp -r /c/nextiastudio/aleja-temp/src /c/nextiastudio/aleja-temp/public /c/nextiastudio/aleja-temp/package.json /c/nextiastudio/aleja-temp/package-lock.json /c/nextiastudio/aleja-temp/tsconfig.json /c/nextiastudio/aleja-temp/postcss.config.mjs /c/nextiastudio/aleja-temp/.git /c/nextiastudio/aleja-temp/.gitignore /c/nextiastudio/aleja/)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(gh auth:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

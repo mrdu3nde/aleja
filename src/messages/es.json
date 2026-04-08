@@ -1,0 +1,414 @@
+{
+  "meta": {
+    "title": "Aluh — Servicios de Belleza Personalizados",
+    "description": "Servicios de belleza personalizados diseñados para que te sientas cuidada, segura y radiante. Cabello, uñas, cejas, pestañas y más."
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre Nosotros",
+    "services": "Servicios",
+    "gallery": "Galería",
+    "book": "Reservar",
+    "contact": "Contacto",
+    "faq": "Preguntas",
+    "policies": "Políticas"
+  },
+  "hero": {
+    "headline": "Revela Tu Mejor Versión con Confianza",
+    "subheadline": "Servicios de belleza personalizados diseñados para que te sientas cuidada, segura y radiante.",
+    "cta_primary": "Reserva Tu Cita",
+    "cta_secondary": "Explorar Servicios"
+  },
+  "trust": {
+    "title": "¿Por Qué Elegir Aluh?",
+    "personalized": "Atención Personalizada",
+    "personalized_desc": "Cada servicio está adaptado a tu estilo y necesidades únicas.",
+    "quality": "Servicio de Calidad",
+    "quality_desc": "Productos y técnicas premium para resultados hermosos y duraderos.",
+    "results": "Resultados Hermosos",
+    "results_desc": "Atención al detalle que asegura que te vayas sintiéndote increíble.",
+    "experience": "Experiencia Cómoda",
+    "experience_desc": "Un espacio cálido y acogedor donde puedes relajarte y disfrutar."
+  },
+  "services_section": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Cada servicio está cuidadosamente diseñado para resaltar tu belleza natural.",
+    "view_all": "Ver Todos los Servicios",
+    "book_now": "Reservar",
+    "starting_at": "Desde",
+    "hair": {
+      "title": "Cabello",
+      "description": "Color, cortes, peinados y tratamientos para transformar y mantener tu cabello."
+    },
+    "nails": {
+      "title": "Uñas",
+      "description": "Manicura, pedicura, gel, acrílico y nail art para cada ocasión."
+    },
+    "brows": {
+      "title": "Cejas",
+      "description": "Diseño, tinte, laminado y microblading para cejas perfectamente definidas."
+    },
+    "lashes": {
+      "title": "Pestañas",
+      "description": "Extensiones, lifting y tinte para pestañas deslumbrantes sin esfuerzo."
+    },
+    "facial": {
+      "title": "Tratamientos Faciales",
+      "description": "Limpieza, hidratación y rejuvenecimiento para una piel sana y luminosa."
+    },
+    "special": {
+      "title": "Servicios Especiales",
+      "description": "Paquetes nupciales, preparación para eventos y experiencias de belleza exclusivas."
+    }
+  },
+  "about_preview": {
+    "title": "Conoce a Aluh",
+    "text": "Con pasión por la belleza y un compromiso con el cuidado personalizado, Aluh crea una experiencia donde cada clienta se siente vista, valorada y hermosa. Su atención al detalle y trato cálido son la base de resultados duraderos y conexiones genuinas.",
+    "cta": "Más Sobre Nosotros"
+  },
+  "gallery_preview": {
+    "title": "Nuestro Trabajo",
+    "subtitle": "Resultados reales de clientas reales.",
+    "cta": "Ver Galería Completa"
+  },
+  "testimonials": {
+    "title": "Lo Que Dicen Nuestras Clientas",
+    "items": [
+      {
+        "name": "María L.",
+        "service": "Color de Cabello",
+        "text": "Aluh entendió exactamente lo que quería. Mi cabello nunca se había visto tan bien. ¡Me siento como nueva!"
+      },
+      {
+        "name": "Sofía R.",
+        "service": "Nail Art",
+        "text": "La atención al detalle es increíble. Cada visita se siente como un regalo, y siempre me voy con uñas que me encanta mostrar."
+      },
+      {
+        "name": "Ana P.",
+        "service": "Laminado de Cejas",
+        "text": "Por fin encontré a alguien que hace mis cejas perfectas. Los resultados son naturales, limpios y exactamente lo que buscaba."
+      }
+    ]
+  },
+  "booking_cta": {
+    "title": "¿Lista para Tu Próxima Cita de Belleza?",
+    "subtitle": "Creemos algo hermoso juntas. Reserva tu sesión hoy.",
+    "cta": "Reserva Tu Cita"
+  },
+  "footer": {
+    "brand_description": "Servicios de belleza personalizados diseñados para que te sientas segura y radiante.",
+    "quick_links": "Enlaces Rápidos",
+    "hours_title": "Horario",
+    "hours": {
+      "mon_fri": "Lun – Vie: 9:00 AM – 7:00 PM",
+      "saturday": "Sábado: 9:00 AM – 5:00 PM",
+      "sunday": "Domingo: Cerrado"
+    },
+    "contact_title": "Contacto",
+    "rights": "Todos los derechos reservados."
+  },
+  "about_page": {
+    "title": "Sobre Aluh",
+    "intro": "Más que un servicio de belleza — una experiencia personalizada construida sobre confianza, cuidado y atención al detalle.",
+    "story_title": "Mi Historia",
+    "story": "La belleza siempre ha sido mi pasión. Desde joven, me atrajo el arte de realzar los rasgos naturales y ayudar a las personas a sentirse seguras en su propia piel. Lo que comenzó como una pasión personal se convirtió en Aluh — un espacio donde cada clienta es tratada como individuo, no como un número.",
+    "philosophy_title": "Mi Filosofía",
+    "philosophy": "Creo que la belleza debe sentirse natural, personal y empoderadora. Cada servicio que ofrezco está guiado por este principio: entender qué hace única a cada clienta y realzarlo con cuidado, habilidad y los mejores productos disponibles.",
+    "difference_title": "Lo Que Nos Diferencia",
+    "difference_items": [
+      "Atención genuina uno a uno en cada cita",
+      "Productos y herramientas premium cuidadosamente seleccionados",
+      "Un ambiente limpio, cómodo y acogedor",
+      "Formación continua para ofrecerte las últimas técnicas",
+      "Un enfoque orientado a resultados adaptado a tus rasgos"
+    ],
+    "commitment_title": "Mi Compromiso",
+    "commitment": "Tu confianza lo es todo. Me comprometo a ofrecer una experiencia que no solo cumpla tus expectativas sino que las supere. Desde el momento en que reservas hasta que te vas, cada detalle importa."
+  },
+  "services_page": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Cada servicio está cuidadosamente diseñado para resaltar tu belleza natural y hacerte sentir increíble.",
+    "consult_title": "¿No Estás Segura de Qué Servicio Elegir?",
+    "consult_text": "Contáctanos antes de reservar — estaremos encantadas de ayudarte a elegir el servicio perfecto.",
+    "consult_cta": "Contáctanos",
+    "categories": {
+      "hair": {
+        "title": "Servicios de Cabello",
+        "items": [
+          {
+            "name": "Renovación de Color",
+            "description": "Revive el brillo, tono y dimensión con un servicio de color completo o parcial.",
+            "ideal_for": "Clientas que buscan un look fresco y vibrante",
+            "duration": "2–3 horas",
+            "price": "$85"
+          },
+          {
+            "name": "Corte y Peinado",
+            "description": "Un corte de precisión adaptado a tu forma de rostro y estilo de vida.",
+            "ideal_for": "Cualquiera que quiera un look limpio y actualizado",
+            "duration": "1–1.5 horas",
+            "price": "$45"
+          },
+          {
+            "name": "Tratamiento de Hidratación Profunda",
+            "description": "Restaura la humedad, fuerza y suavidad del cabello seco o dañado.",
+            "ideal_for": "Cabello dañado o deshidratado",
+            "duration": "45 min",
+            "price": "$35"
+          }
+        ]
+      },
+      "nails": {
+        "title": "Servicios de Uñas",
+        "items": [
+          {
+            "name": "Manicura en Gel",
+            "description": "Esmalte en gel de larga duración con un acabado impecable.",
+            "ideal_for": "Clientas que quieren uñas sin descascarillado por 2+ semanas",
+            "duration": "1 hora",
+            "price": "$40"
+          },
+          {
+            "name": "Set Completo de Acrílico",
+            "description": "Extensiones de acrílico esculpidas con la forma y acabado de tu elección.",
+            "ideal_for": "Clientas que buscan longitud y durabilidad",
+            "duration": "1.5 horas",
+            "price": "$55"
+          },
+          {
+            "name": "Nail Art",
+            "description": "Diseños personalizados desde minimal hasta detallado — expresa tu estilo.",
+            "ideal_for": "Cualquiera que busque un toque único y creativo",
+            "duration": "Variable",
+            "price": "$10+"
+          }
+        ]
+      },
+      "brows": {
+        "title": "Servicios de Cejas",
+        "items": [
+          {
+            "name": "Diseño de Cejas",
+            "description": "Cejas limpias y definidas adaptadas a tu arco natural y estructura facial.",
+            "ideal_for": "Mantenimiento regular o un nuevo diseño",
+            "duration": "30 min",
+            "price": "$20"
+          },
+          {
+            "name": "Laminado de Cejas",
+            "description": "Cejas alisadas y levantadas para un look lleno y esponjoso que dura semanas.",
+            "ideal_for": "Clientas que buscan volumen y definición",
+            "duration": "45 min",
+            "price": "$50"
+          },
+          {
+            "name": "Tinte de Cejas",
+            "description": "Color semipermanente para añadir profundidad y definición sin maquillaje diario.",
+            "ideal_for": "Cejas claras o escasas",
+            "duration": "20 min",
+            "price": "$25"
+          }
+        ]
+      },
+      "lashes": {
+        "title": "Servicios de Pestañas",
+        "items": [
+          {
+            "name": "Extensiones Clásicas",
+            "description": "Extensiones de aspecto natural aplicadas una a una para un realce sutil.",
+            "ideal_for": "Un look natural y cotidiano",
+            "duration": "1.5–2 horas",
+            "price": "$120"
+          },
+          {
+            "name": "Extensiones de Volumen",
+            "description": "Abanicos de pestañas más llenos y dramáticos para un look más audaz.",
+            "ideal_for": "Clientas que buscan más densidad y drama",
+            "duration": "2–2.5 horas",
+            "price": "$160"
+          },
+          {
+            "name": "Lifting y Tinte de Pestañas",
+            "description": "Riza y colorea tus pestañas naturales para un look de bajo mantenimiento.",
+            "ideal_for": "Cualquiera que quiera pestañas levantadas sin extensiones",
+            "duration": "1 hora",
+            "price": "$65"
+          }
+        ]
+      },
+      "facial": {
+        "title": "Tratamientos Faciales",
+        "items": [
+          {
+            "name": "Facial Signature",
+            "description": "Un facial personalizado que incluye limpieza, exfoliación, mascarilla e hidratación.",
+            "ideal_for": "Todo tipo de piel que busca renovarse",
+            "duration": "1 hora",
+            "price": "$70"
+          },
+          {
+            "name": "Tratamiento Glow Hidratante",
+            "description": "Hidratación intensiva para piel seca o apagada.",
+            "ideal_for": "Piel deshidratada o con aspecto cansado",
+            "duration": "45 min",
+            "price": "$55"
+          }
+        ]
+      },
+      "special": {
+        "title": "Servicios Especiales",
+        "items": [
+          {
+            "name": "Paquete de Belleza Nupcial",
+            "description": "Preparación de belleza completa para tu día especial — cabello, uñas, pestañas y maquillaje.",
+            "ideal_for": "Novias y cortejo nupcial",
+            "duration": "Personalizado",
+            "price": "Desde $250"
+          },
+          {
+            "name": "Sesión Glam para Eventos",
+            "description": "Estilismo completo para fiestas, sesiones de fotos u ocasiones especiales.",
+            "ideal_for": "Cualquiera que se prepare para un evento",
+            "duration": "2–3 horas",
+            "price": "Desde $120"
+          }
+        ]
+      }
+    }
+  },
+  "gallery_page": {
+    "title": "Galería",
+    "subtitle": "Explora nuestro trabajo y comprueba los resultados por ti misma.",
+    "filter_all": "Todo",
+    "filter_hair": "Cabello",
+    "filter_nails": "Uñas",
+    "filter_brows": "Cejas",
+    "filter_lashes": "Pestañas"
+  },
+  "book_page": {
+    "title": "Reserva Tu Cita",
+    "subtitle": "Completa el formulario y te contactaremos para confirmar tu cita.",
+    "form": {
+      "name": "Nombre Completo",
+      "name_placeholder": "Tu nombre completo",
+      "email": "Correo Electrónico",
+      "email_placeholder": "tu@email.com",
+      "phone": "Teléfono",
+      "phone_placeholder": "+1 (555) 000-0000",
+      "service": "Servicio de Interés",
+      "service_placeholder": "Selecciona un servicio",
+      "service_options": {
+        "hair": "Servicios de Cabello",
+        "nails": "Servicios de Uñas",
+        "brows": "Servicios de Cejas",
+        "lashes": "Servicios de Pestañas",
+        "facial": "Tratamientos Faciales",
+        "special": "Servicios Especiales",
+        "not_sure": "No estoy segura"
+      },
+      "date": "Fecha Preferida",
+      "message": "Mensaje Adicional",
+      "message_placeholder": "Cualquier detalle o preferencia que quieras compartir...",
+      "contact_preference": "Método de Contacto Preferido",
+      "contact_options": {
+        "email": "Correo",
+        "phone": "Teléfono",
+        "whatsapp": "WhatsApp"
+      },
+      "submit": "Solicitar Cita",
+      "submitting": "Enviando...",
+      "success_title": "¡Gracias!",
+      "success_message": "Tu solicitud de cita ha sido recibida. Te contactaremos pronto para confirmar.",
+      "error_message": "Algo salió mal. Inténtalo de nuevo o contáctanos directamente."
+    }
+  },
+  "contact_page": {
+    "title": "Contáctanos",
+    "subtitle": "¿Tienes una pregunta o quieres saber más? Nos encantaría saber de ti.",
+    "form": {
+      "name": "Nombre Completo",
+      "name_placeholder": "Tu nombre completo",
+      "email": "Correo Electrónico",
+      "email_placeholder": "tu@email.com",
+      "phone": "Teléfono (opcional)",
+      "phone_placeholder": "+1 (555) 000-0000",
+      "message": "Tu Mensaje",
+      "message_placeholder": "¿En qué podemos ayudarte?",
+      "submit": "Enviar Mensaje",
+      "submitting": "Enviando...",
+      "success_title": "¡Mensaje Enviado!",
+      "success_message": "Gracias por escribirnos. Te responderemos pronto.",
+      "error_message": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "info_title": "Ponte en Contacto",
+    "email_label": "Correo",
+    "phone_label": "Teléfono",
+    "hours_label": "Horario",
+    "social_label": "Síguenos"
+  },
+  "faq_page": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a las preguntas más comunes sobre nuestros servicios.",
+    "items": [
+      {
+        "question": "¿Cómo reservo una cita?",
+        "answer": "Puedes reservar a través de nuestra web visitando la página de Reservas y completando el formulario. Confirmaremos tu cita en un plazo de 24 horas."
+      },
+      {
+        "question": "¿Aceptan citas el mismo día?",
+        "answer": "Las citas del mismo día están sujetas a disponibilidad. Recomendamos reservar con al menos 48 horas de antelación para la mejor selección de horarios."
+      },
+      {
+        "question": "¿Qué pasa si necesito reprogramar?",
+        "answer": "Entendemos que los planes cambian. Por favor contáctanos con al menos 24 horas de antelación para reprogramar sin cargo."
+      },
+      {
+        "question": "¿Requieren un depósito?",
+        "answer": "Se puede requerir un depósito para ciertos servicios como extensiones de pestañas, paquetes nupciales y reservas para eventos. Los detalles se proporcionan al momento de la reserva."
+      },
+      {
+        "question": "¿Qué servicio debería elegir si no estoy segura?",
+        "answer": "¡No te preocupes! Contáctanos a través del formulario de reserva o envíanos un mensaje, y te ayudaremos a encontrar el servicio perfecto para ti."
+      },
+      {
+        "question": "¿Cómo debo prepararme antes de mi cita?",
+        "answer": "La preparación depende del servicio. En general, llega con piel/cabello limpio y evita la cafeína antes de tratamientos faciales. Se compartirán instrucciones específicas cuando se confirme tu cita."
+      },
+      {
+        "question": "¿Qué formas de pago aceptan?",
+        "answer": "Aceptamos efectivo, tarjetas de crédito/débito y métodos de pago digital populares. Los detalles de pago se confirman al reservar."
+      }
+    ]
+  },
+  "policies_page": {
+    "title": "Nuestras Políticas",
+    "subtitle": "Por favor revisa nuestras políticas para asegurar una experiencia fluida y agradable.",
+    "sections": [
+      {
+        "title": "Cancelaciones",
+        "content": "Te pedimos amablemente que avises con al menos 24 horas de antelación si necesitas cancelar tu cita. Las cancelaciones tardías pueden estar sujetas a un cargo."
+      },
+      {
+        "title": "Depósitos",
+        "content": "Ciertos servicios requieren un depósito no reembolsable al momento de la reserva. Este depósito se aplica al costo total del servicio. Los requisitos de depósito se comunicarán claramente antes de la confirmación."
+      },
+      {
+        "title": "Llegadas Tardías",
+        "content": "Valoramos tu tiempo y el nuestro. Si llegas más de 15 minutos tarde, es posible que necesitemos acortar tu servicio o reprogramar para no afectar a otras clientas."
+      },
+      {
+        "title": "Inasistencias",
+        "content": "Las citas perdidas sin aviso previo pueden resultar en un cargo por inasistencia y pueden afectar futuras reservas."
+      },
+      {
+        "title": "Política de Retoques",
+        "content": "Si no estás completamente satisfecha con tus resultados, contáctanos dentro de los 7 días posteriores a tu cita para discutir un retoque gratuito. Los retoques están disponibles a nuestra discreción y sujetos a disponibilidad."
+      },
+      {
+        "title": "Requisitos de Consulta",
+        "content": "Algunos servicios, incluyendo correcciones de color, paquetes nupciales y ciertos tratamientos de piel, pueden requerir una consulta previa. Esto nos ayuda a entender tus necesidades y ofrecer los mejores resultados."
+      }
+    ]
+  }
+}

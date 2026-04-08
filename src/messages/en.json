@@ -1,0 +1,414 @@
+{
+  "meta": {
+    "title": "Aluh — Personalized Beauty Services",
+    "description": "Personalized beauty services designed to make you feel cared for, confident, and radiant. Hair, nails, brows, lashes and more."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "gallery": "Gallery",
+    "book": "Book",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "policies": "Policies"
+  },
+  "hero": {
+    "headline": "Reveal Your Best Look with Confidence",
+    "subheadline": "Personalized beauty services designed to make you feel cared for, confident, and radiant.",
+    "cta_primary": "Book Your Appointment",
+    "cta_secondary": "Explore Services"
+  },
+  "trust": {
+    "title": "Why Choose Aluh",
+    "personalized": "Personalized Attention",
+    "personalized_desc": "Every service is tailored to your unique style and needs.",
+    "quality": "Quality Service",
+    "quality_desc": "Premium products and techniques for beautiful, lasting results.",
+    "results": "Beautiful Results",
+    "results_desc": "Attention to detail that ensures you leave feeling your best.",
+    "experience": "Comfortable Experience",
+    "experience_desc": "A warm, welcoming space where you can relax and enjoy."
+  },
+  "services_section": {
+    "title": "Our Services",
+    "subtitle": "Each service is thoughtfully designed to highlight your natural beauty.",
+    "view_all": "View All Services",
+    "book_now": "Book Now",
+    "starting_at": "Starting at",
+    "hair": {
+      "title": "Hair",
+      "description": "Color, cuts, styling, and treatments to transform and maintain your hair."
+    },
+    "nails": {
+      "title": "Nails",
+      "description": "Manicures, pedicures, gel, acrylic, and nail art for every occasion."
+    },
+    "brows": {
+      "title": "Brows",
+      "description": "Shaping, tinting, lamination, and microblading for perfectly defined brows."
+    },
+    "lashes": {
+      "title": "Lashes",
+      "description": "Extensions, lifts, and tinting for effortlessly stunning lashes."
+    },
+    "facial": {
+      "title": "Facial Treatments",
+      "description": "Cleansing, hydration, and rejuvenation for healthy, glowing skin."
+    },
+    "special": {
+      "title": "Special Services",
+      "description": "Bridal packages, event prep, and signature beauty experiences."
+    }
+  },
+  "about_preview": {
+    "title": "Meet Aluh",
+    "text": "With a passion for beauty and a commitment to personalized care, Aluh creates an experience where every client feels seen, valued, and beautiful. Her attention to detail and warm approach set the foundation for lasting results and genuine connections.",
+    "cta": "Learn More About Us"
+  },
+  "gallery_preview": {
+    "title": "Our Work",
+    "subtitle": "Real results from real clients.",
+    "cta": "View Full Gallery"
+  },
+  "testimonials": {
+    "title": "What Our Clients Say",
+    "items": [
+      {
+        "name": "Maria L.",
+        "service": "Hair Color",
+        "text": "Aluh understood exactly what I wanted. My hair has never looked this good. I feel like a new person!"
+      },
+      {
+        "name": "Sofia R.",
+        "service": "Nail Art",
+        "text": "The attention to detail is incredible. Every visit feels like a treat, and I always leave with nails I love showing off."
+      },
+      {
+        "name": "Ana P.",
+        "service": "Brow Lamination",
+        "text": "Finally found someone who gets my brows right. The results are natural, clean, and exactly what I wanted."
+      }
+    ]
+  },
+  "booking_cta": {
+    "title": "Ready to Book Your Next Beauty Appointment?",
+    "subtitle": "Let's create something beautiful together. Book your session today.",
+    "cta": "Book Your Appointment"
+  },
+  "footer": {
+    "brand_description": "Personalized beauty services designed to make you feel confident and radiant.",
+    "quick_links": "Quick Links",
+    "hours_title": "Hours",
+    "hours": {
+      "mon_fri": "Mon – Fri: 9:00 AM – 7:00 PM",
+      "saturday": "Saturday: 9:00 AM – 5:00 PM",
+      "sunday": "Sunday: Closed"
+    },
+    "contact_title": "Contact",
+    "rights": "All rights reserved."
+  },
+  "about_page": {
+    "title": "About Aluh",
+    "intro": "More than a beauty service — a personalized experience built on trust, care, and attention to detail.",
+    "story_title": "My Story",
+    "story": "Beauty has always been my passion. From a young age, I was drawn to the art of enhancing natural features and helping people feel confident in their own skin. What started as a personal passion grew into Aluh — a space where every client is treated as an individual, not a number.",
+    "philosophy_title": "My Philosophy",
+    "philosophy": "I believe beauty should feel effortless, personal, and empowering. Every service I offer is guided by this principle: understand what makes each client unique, and enhance it with care, skill, and the best products available.",
+    "difference_title": "What Sets Us Apart",
+    "difference_items": [
+      "Genuine one-on-one attention for every appointment",
+      "Carefully selected premium products and tools",
+      "A clean, comfortable, and welcoming environment",
+      "Ongoing education to bring you the latest techniques",
+      "A results-driven approach tailored to your features"
+    ],
+    "commitment_title": "My Commitment",
+    "commitment": "Your trust means everything. I am committed to providing an experience that not only meets your expectations but exceeds them. From the moment you book to the moment you leave, every detail matters."
+  },
+  "services_page": {
+    "title": "Our Services",
+    "subtitle": "Every service is thoughtfully designed to highlight your natural beauty and leave you feeling your absolute best.",
+    "consult_title": "Not Sure Which Service Is Right for You?",
+    "consult_text": "Contact us before booking — we're happy to help you choose the perfect service.",
+    "consult_cta": "Contact Us",
+    "categories": {
+      "hair": {
+        "title": "Hair Services",
+        "items": [
+          {
+            "name": "Hair Color Refresh",
+            "description": "Revive shine, tone, and dimension with a full or partial color service.",
+            "ideal_for": "Clients looking for a fresh, vibrant look",
+            "duration": "2–3 hours",
+            "price": "$85"
+          },
+          {
+            "name": "Haircut & Style",
+            "description": "A precision cut tailored to your face shape and lifestyle.",
+            "ideal_for": "Anyone wanting a clean, updated look",
+            "duration": "1–1.5 hours",
+            "price": "$45"
+          },
+          {
+            "name": "Deep Conditioning Treatment",
+            "description": "Restore moisture, strength, and softness to dry or damaged hair.",
+            "ideal_for": "Damaged or dehydrated hair",
+            "duration": "45 min",
+            "price": "$35"
+          }
+        ]
+      },
+      "nails": {
+        "title": "Nail Services",
+        "items": [
+          {
+            "name": "Gel Manicure",
+            "description": "Long-lasting gel polish with a flawless finish.",
+            "ideal_for": "Clients who want chip-free nails for 2+ weeks",
+            "duration": "1 hour",
+            "price": "$40"
+          },
+          {
+            "name": "Acrylic Full Set",
+            "description": "Sculpted acrylic extensions with your choice of shape and finish.",
+            "ideal_for": "Clients wanting length and durability",
+            "duration": "1.5 hours",
+            "price": "$55"
+          },
+          {
+            "name": "Nail Art",
+            "description": "Custom designs from minimal to detailed — express your style.",
+            "ideal_for": "Anyone looking for a unique, creative touch",
+            "duration": "Varies",
+            "price": "$10+"
+          }
+        ]
+      },
+      "brows": {
+        "title": "Brow Services",
+        "items": [
+          {
+            "name": "Brow Shaping",
+            "description": "Clean, defined brows tailored to your natural arch and face structure.",
+            "ideal_for": "Regular maintenance or a fresh shape",
+            "duration": "30 min",
+            "price": "$20"
+          },
+          {
+            "name": "Brow Lamination",
+            "description": "Smoothed, lifted brows for a full, fluffy look that lasts weeks.",
+            "ideal_for": "Clients wanting volume and definition",
+            "duration": "45 min",
+            "price": "$50"
+          },
+          {
+            "name": "Brow Tinting",
+            "description": "Semi-permanent color to add depth and definition without daily makeup.",
+            "ideal_for": "Light or sparse brows",
+            "duration": "20 min",
+            "price": "$25"
+          }
+        ]
+      },
+      "lashes": {
+        "title": "Lash Services",
+        "items": [
+          {
+            "name": "Classic Lash Extensions",
+            "description": "Natural-looking extensions applied one-by-one for subtle enhancement.",
+            "ideal_for": "A natural, everyday look",
+            "duration": "1.5–2 hours",
+            "price": "$120"
+          },
+          {
+            "name": "Volume Lash Extensions",
+            "description": "Fuller, more dramatic lash fans for a bolder look.",
+            "ideal_for": "Clients wanting more density and drama",
+            "duration": "2–2.5 hours",
+            "price": "$160"
+          },
+          {
+            "name": "Lash Lift & Tint",
+            "description": "Curl and color your natural lashes for a low-maintenance look.",
+            "ideal_for": "Anyone wanting lifted lashes without extensions",
+            "duration": "1 hour",
+            "price": "$65"
+          }
+        ]
+      },
+      "facial": {
+        "title": "Facial Treatments",
+        "items": [
+          {
+            "name": "Signature Facial",
+            "description": "A customized facial including cleansing, exfoliation, mask, and hydration.",
+            "ideal_for": "All skin types seeking a refresh",
+            "duration": "1 hour",
+            "price": "$70"
+          },
+          {
+            "name": "Hydrating Glow Treatment",
+            "description": "Intensive moisture boost for dry or dull skin.",
+            "ideal_for": "Dehydrated or tired-looking skin",
+            "duration": "45 min",
+            "price": "$55"
+          }
+        ]
+      },
+      "special": {
+        "title": "Special Services",
+        "items": [
+          {
+            "name": "Bridal Beauty Package",
+            "description": "Complete beauty prep for your special day — hair, nails, lashes, and makeup.",
+            "ideal_for": "Brides and bridal parties",
+            "duration": "Custom",
+            "price": "From $250"
+          },
+          {
+            "name": "Event Glam Session",
+            "description": "Full glam styling for parties, photoshoots, or special occasions.",
+            "ideal_for": "Anyone preparing for an event",
+            "duration": "2–3 hours",
+            "price": "From $120"
+          }
+        ]
+      }
+    }
+  },
+  "gallery_page": {
+    "title": "Gallery",
+    "subtitle": "Browse our work and see the results for yourself.",
+    "filter_all": "All",
+    "filter_hair": "Hair",
+    "filter_nails": "Nails",
+    "filter_brows": "Brows",
+    "filter_lashes": "Lashes"
+  },
+  "book_page": {
+    "title": "Book Your Appointment",
+    "subtitle": "Fill out the form below and we'll get back to you to confirm your appointment.",
+    "form": {
+      "name": "Full Name",
+      "name_placeholder": "Your full name",
+      "email": "Email",
+      "email_placeholder": "your@email.com",
+      "phone": "Phone",
+      "phone_placeholder": "+1 (555) 000-0000",
+      "service": "Service of Interest",
+      "service_placeholder": "Select a service",
+      "service_options": {
+        "hair": "Hair Services",
+        "nails": "Nail Services",
+        "brows": "Brow Services",
+        "lashes": "Lash Services",
+        "facial": "Facial Treatments",
+        "special": "Special Services",
+        "not_sure": "Not sure yet"
+      },
+      "date": "Preferred Date",
+      "message": "Additional Message",
+      "message_placeholder": "Any details or preferences you'd like to share...",
+      "contact_preference": "Preferred Contact Method",
+      "contact_options": {
+        "email": "Email",
+        "phone": "Phone",
+        "whatsapp": "WhatsApp"
+      },
+      "submit": "Request Appointment",
+      "submitting": "Sending...",
+      "success_title": "Thank you!",
+      "success_message": "Your appointment request has been received. We'll be in touch shortly to confirm.",
+      "error_message": "Something went wrong. Please try again or contact us directly."
+    }
+  },
+  "contact_page": {
+    "title": "Contact Us",
+    "subtitle": "Have a question or want to learn more? We'd love to hear from you.",
+    "form": {
+      "name": "Full Name",
+      "name_placeholder": "Your full name",
+      "email": "Email",
+      "email_placeholder": "your@email.com",
+      "phone": "Phone (optional)",
+      "phone_placeholder": "+1 (555) 000-0000",
+      "message": "Your Message",
+      "message_placeholder": "How can we help you?",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success_title": "Message Sent!",
+      "success_message": "Thank you for reaching out. We'll get back to you soon.",
+      "error_message": "Something went wrong. Please try again."
+    },
+    "info_title": "Get in Touch",
+    "email_label": "Email",
+    "phone_label": "Phone",
+    "hours_label": "Hours",
+    "social_label": "Follow Us"
+  },
+  "faq_page": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about our services.",
+    "items": [
+      {
+        "question": "How do I book an appointment?",
+        "answer": "You can book through our website by visiting the Book page and filling out the request form. We'll confirm your appointment within 24 hours."
+      },
+      {
+        "question": "Do you accept same-day appointments?",
+        "answer": "Same-day appointments are subject to availability. We recommend booking at least 48 hours in advance for the best selection of times."
+      },
+      {
+        "question": "What if I need to reschedule?",
+        "answer": "We understand plans change. Please contact us at least 24 hours before your appointment to reschedule without a fee."
+      },
+      {
+        "question": "Do you require a deposit?",
+        "answer": "A deposit may be required for certain services such as lash extensions, bridal packages, and event bookings. Details are provided at the time of booking."
+      },
+      {
+        "question": "Which service should I choose if I'm not sure?",
+        "answer": "No worries! Contact us through the booking form or send us a message, and we'll help you find the perfect service for your needs."
+      },
+      {
+        "question": "How should I prepare before my appointment?",
+        "answer": "Preparation depends on the service. Generally, arrive with clean skin/hair and avoid caffeine before facial treatments. Specific instructions will be shared when your appointment is confirmed."
+      },
+      {
+        "question": "What forms of payment do you accept?",
+        "answer": "We accept cash, credit/debit cards, and popular digital payment methods. Payment details are confirmed at booking."
+      }
+    ]
+  },
+  "policies_page": {
+    "title": "Our Policies",
+    "subtitle": "Please review our policies to ensure a smooth and enjoyable experience.",
+    "sections": [
+      {
+        "title": "Cancellations",
+        "content": "We kindly ask that you provide at least 24 hours notice if you need to cancel your appointment. Late cancellations may be subject to a cancellation fee."
+      },
+      {
+        "title": "Deposits",
+        "content": "Certain services require a non-refundable deposit at the time of booking. This deposit is applied toward the total cost of your service. Deposit requirements will be communicated clearly before confirmation."
+      },
+      {
+        "title": "Late Arrivals",
+        "content": "We value your time and ours. If you arrive more than 15 minutes late, we may need to shorten your service or reschedule to avoid impacting other clients."
+      },
+      {
+        "title": "No-Shows",
+        "content": "Missed appointments without prior notice may result in a no-show fee and may affect future booking privileges."
+      },
+      {
+        "title": "Touch-Up Policy",
+        "content": "If you're not fully satisfied with your results, please contact us within 7 days of your appointment to discuss a complimentary touch-up. Touch-ups are available at our discretion and subject to scheduling."
+      },
+      {
+        "title": "Consultation Requirements",
+        "content": "Some services, including color corrections, bridal packages, and certain skin treatments, may require a consultation before booking. This helps us understand your needs and deliver the best results."
+      }
+    ]
+  }
+}

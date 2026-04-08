@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-champagne: #F5E6D3;
+  --color-champagne-light: #FAF3EB;
+  --color-cafe: #6B4E3D;
+  --color-cafe-dark: #553D2F;
+  --color-cafe-light: #8A6B58;
+  --color-mushroom: #C4B5A6;
+  --color-mushroom-light: #D9CFC4;
+  --color-mushroom-dark: #A99A8B;
+  --color-warm-white: #FEFCFA;
+  --color-text-dark: #3A2E26;
+  --color-text-light: #8A7B6E;
+  --color-text-muted: #B0A396;
+
+  /* Typography */
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-warm-white);
+  color: var(--color-text-dark);
+  font-family: var(--font-body);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-champagne);
+  color: var(--color-cafe-dark);
+}
+
+/* Admin theme variables */
+@layer base {
+  [data-admin-theme="dark"] {
+    --admin-bg: #1a1a1a;
+    --admin-card: #242424;
+    --admin-border: #333;
+    --admin-hover: #2a2a2a;
+    --admin-input: #2a2a2a;
+    --admin-input-border: #444;
+    --admin-text: #e0d6cc;
+    --admin-muted: #8a7b6e;
+    --admin-placeholder: #666;
+    --admin-filter-bg: #333;
+    --admin-filter-hover: #444;
+  }
+
+  [data-admin-theme="light"] {
+    --admin-bg: #FEFCFA;
+    --admin-card: #ffffff;
+    --admin-border: #e5ddd4;
+    --admin-hover: #FAF3EB;
+    --admin-input: #ffffff;
+    --admin-input-border: #C4B5A6;
+    --admin-text: #3A2E26;
+    --admin-muted: #8A7B6E;
+    --admin-placeholder: #B0A396;
+    --admin-filter-bg: #D9CFC4;
+    --admin-filter-hover: #C4B5A6;
+  }
 }
