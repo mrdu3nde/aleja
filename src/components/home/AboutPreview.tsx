@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function AboutPreview({ content }: { content: Record<string, string> }) {
   const t = useTranslations("about_preview");
@@ -17,9 +18,14 @@ export function AboutPreview({ content }: { content: Record<string, string> }) {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-champagne to-mushroom-light flex items-center justify-center"
+          className="aspect-[4/5] rounded-2xl overflow-hidden relative"
         >
-          <span className="text-cafe/40 text-sm font-medium">Photo</span>
+          <Image
+            src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
+            alt="Beauty professional"
+            fill
+            className="object-cover"
+          />
         </motion.div>
 
         <motion.div

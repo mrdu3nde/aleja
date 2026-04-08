@@ -4,6 +4,26 @@ import { useTranslations, useLocale } from "next-intl";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+const previewImages = [
+  {
+    src: "https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80",
+    alt: "Hair styling",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80",
+    alt: "Nail art",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80",
+    alt: "Beauty treatment",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80",
+    alt: "Facial care",
+  },
+];
 
 export function GalleryPreview() {
   const t = useTranslations("gallery_preview");
@@ -19,16 +39,22 @@ export function GalleryPreview() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map((i) => (
+        {previewImages.map((img, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.08 }}
-            className="aspect-square rounded-xl bg-gradient-to-br from-mushroom-light to-champagne flex items-center justify-center"
+            className="aspect-square rounded-xl overflow-hidden relative group"
           >
-            <span className="text-cafe/30 text-sm">Photo {i}</span>
+            <Image
+              src={img.src}
+              alt={img.alt}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-cafe/0 group-hover:bg-cafe/20 transition-colors duration-300" />
           </motion.div>
         ))}
       </div>

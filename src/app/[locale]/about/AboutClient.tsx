@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function AboutClient({ content }: { content: Record<string, string> }) {
   const t = useTranslations("about_page");
@@ -40,8 +41,13 @@ export function AboutClient({ content }: { content: Record<string, string> }) {
 
       <Section bg="white">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-champagne to-mushroom-light flex items-center justify-center">
-            <span className="text-cafe/40 text-sm">Photo</span>
+          <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
+            <Image
+              src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
+              alt="About Aluh"
+              fill
+              className="object-cover"
+            />
           </div>
           <div>
             <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-cafe mb-4">

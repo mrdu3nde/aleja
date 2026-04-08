@@ -1,34 +1,45 @@
 import { NextResponse } from "next/server";
 import { bookingSchema } from "@/lib/validators";
-import { sendToN8N } from "@/lib/n8n";
 import { prisma } from "@/lib/prisma";
+import { sendBookingConfirmation, sendBookingAdminNotification } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const data = bookingSchema.parse(body);
 
-    await Promise.allSettled([
-      sendToN8N(process.env.N8N_BOOKING_WEBHOOK_URL ?? "", {
-        ...data,
-        timestamp: new Date().toISOString(),
-        type: "booking_request",
-      }),
-      prisma.appointment.create({
-        data: {
-          clientName: data.name,
-          clientEmail: data.email,
-          clientPhone: data.phone,
-          service: data.service,
-          preferredDate: data.preferredDate || null,
-          message: data.message || null,
-          source: "website",
-          status: "pending",
-        },
-      }),
-    ]);
+    const appointment = await prisma.appointment.create({
+      data: {
+        clientName: data.name,
+        clientEmail: data.email,
+        clientPhone: data.phone,
+        service: data.service,
+        preferredDate: data.preferredDate || null,
+        message: data.message || null,
+        source: "website",
+        status: "pending",
+      },
+    });
 
-    return NextResponse.json({ success: true });
+    // Send emails in background — don't block the response
+    Promise.allSettled([
+      sendBookingConfirmation({
+        clientName: data.name,
+        clientEmail: data.email,
+        service: data.service,
+        preferredDate: data.preferredDate,
+      }),
+      sendBookingAdminNotification({
+        clientName: data.name,
+        clientEmail: data.email,
+        clientPhone: data.phone,
+        service: data.service,
+        preferredDate: data.preferredDate,
+        message: data.message,
+      }),
+    ]).catch(console.error);
+
+    return NextResponse.json({ success: true, id: appointment.id });
   } catch (error) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(

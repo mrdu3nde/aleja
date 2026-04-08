@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendClientWelcome } from "@/lib/email";
 
 export async function POST(
   _request: Request,
@@ -36,6 +37,9 @@ export async function POST(
       where: { clientEmail: lead.email, clientId: null },
       data: { clientId: client.id },
     });
+
+    // Send welcome email
+    sendClientWelcome({ name: client.name, email: client.email }).catch(console.error);
 
     return NextResponse.json({ success: true, clientId: client.id });
   } catch (error) {
