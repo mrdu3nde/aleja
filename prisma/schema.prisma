@@ -21,19 +21,23 @@ model Client {
 }
 
 model Appointment {
-  id            String   @id @default(uuid())
-  clientId      String?
-  client        Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  clientName    String
-  clientEmail   String
-  clientPhone   String?
-  service       String
-  preferredDate String?
-  status        String   @default("pending")
-  message       String?
-  source        String   @default("website")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String    @id @default(uuid())
+  clientId          String?
+  client            Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientName        String
+  clientEmail       String
+  clientPhone       String?
+  service           String
+  preferredDate     String?
+  status            String    @default("pending")
+  message           String?
+  source            String    @default("website")
+  depositRequired   Boolean   @default(true)
+  depositAmount     Decimal?  @default(20.00) @db.Decimal(10, 2)
+  depositStatus     String    @default("pending")
+  depositReceivedAt DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model Content {

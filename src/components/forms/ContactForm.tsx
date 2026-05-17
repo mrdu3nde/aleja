@@ -6,12 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
 import { leadSchema, type LeadData } from "@/lib/validators";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import { CheckCircle, AlertCircle, Loader2, Mail } from "lucide-react";
+
+type ErrorKind = "network" | "validation" | "server" | "generic";
 
 export function ContactForm() {
   const t = useTranslations("contact_page.form");
   const locale = useLocale();
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorKind, setErrorKind] = useState<ErrorKind>("generic");
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const {
     register,
@@ -29,24 +33,47 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, locale }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        if (res.status === 400 || res.status === 422) setErrorKind("validation");
+        else if (res.status >= 500) setErrorKind("server");
+        else setErrorKind("generic");
+        setStatus("error");
+        return;
+      }
+      setSubmittedEmail(data.email);
       setStatus("success");
     } catch {
+      setErrorKind("network");
       setStatus("error");
     }
   };
 
   if (status === "success") {
     return (
-      <div className="text-center py-12">
-        <CheckCircle className="h-16 w-16 text-cafe mx-auto mb-4" />
-        <h3 className="text-2xl font-semibold text-cafe mb-2">
+      <div className="py-10 px-6 sm:px-10 text-center max-w-xl mx-auto">
+        <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-champagne-light mb-5">
+          <CheckCircle className="h-12 w-12 text-cafe" />
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-semibold text-cafe mb-3 font-[family-name:var(--font-heading)]">
           {t("success_title")}
         </h3>
-        <p className="text-text-light">{t("success_message")}</p>
+        <p className="text-text-light mb-6">{t("success_message")}</p>
+
+        {submittedEmail && (
+          <div className="flex items-start gap-3 text-left text-sm text-text-light bg-white border border-mushroom/30 rounded-xl p-4">
+            <Mail className="h-4 w-4 text-cafe shrink-0 mt-0.5" />
+            <span>
+              {t("success_check_email")}
+              <br />
+              <span className="text-cafe font-medium">{submittedEmail}</span>
+            </span>
+          </div>
+        )}
       </div>
     );
   }
+
+  const errorMessage = t(`error_${errorKind}`);
 
   const inputClass =
     "w-full rounded-xl border border-mushroom/40 bg-white px-4 py-3 text-text-dark placeholder:text-text-muted focus:border-cafe focus:ring-1 focus:ring-cafe outline-none transition-colors";
@@ -54,9 +81,9 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {status === "error" && (
-        <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm">
-          <AlertCircle className="h-4 w-4 shrink-0" />
-          {t("error_message")}
+        <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm">
+          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+          <span>{errorMessage}</span>
         </div>
       )}
 
@@ -117,7 +144,14 @@ export function ContactForm() {
       </div>
 
       <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? t("submitting") : t("submit")}
+        {isSubmitting ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {t("submitting")}
+          </span>
+        ) : (
+          t("submit")
+        )}
       </Button>
     </form>
   );

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, Users, Search } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
 import { SearchInput } from "@/components/admin/SearchInput";
 import { Pagination } from "@/components/admin/Pagination";
@@ -67,7 +67,23 @@ export default function ClientsPage() {
         ]}
         data={clients}
         onRowClick={(row) => router.push(`/admin/clients/${row.id}`)}
-        emptyMessage="No clients found"
+        emptyIcon={search ? Search : Users}
+        emptyTitle={
+          search ? "No clients match your search" : "No clients yet"
+        }
+        emptyDescription={
+          search
+            ? `We couldn't find any clients matching "${search}". Try a different name or email.`
+            : "Add your first client to start tracking their info, history, and bookings."
+        }
+        emptyAction={
+          search
+            ? undefined
+            : {
+                label: "+ Add Client",
+                onClick: () => router.push("/admin/clients/new"),
+              }
+        }
       />
 
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />

@@ -71,6 +71,10 @@ export async function sendBookingConfirmation(data: {
   clientEmail: string;
   service: string;
   preferredDate?: string | null;
+  referenceCode: string;
+  depositAmount: number;
+  zelleName: string;
+  zellePhone: string;
 }) {
   const date = data.preferredDate
     ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
@@ -79,14 +83,50 @@ export async function sendBookingConfirmation(data: {
   await resend.emails.send({
     from: FROM,
     to: data.clientEmail,
-    subject: "Booking Received — Aluh Studio",
-    html: layout("We received your booking!", `
-      <p style="color:${brand.muted};line-height:1.6;">Hi <strong>${data.clientName}</strong>, thank you for choosing Aluh! We've received your booking request and will confirm it shortly.</p>
+    subject: "Booking Received — Pending Deposit · Aluh Studio",
+    html: layout("We received your booking — deposit pending", `
+      <p style="color:${brand.muted};line-height:1.6;">Hi <strong>${data.clientName}</strong>, thank you for choosing Aluh! Your booking is reserved. To <strong>confirm</strong> your appointment, please send a <strong>$${data.depositAmount} USD deposit via Zelle</strong>.</p>
+
+      <div style="margin:24px 0;padding:20px;background:${brand.champagne};border-radius:12px;">
+        <h3 style="margin:0 0 12px;font-size:16px;color:${brand.cafe};">Deposit details</h3>
+        ${dataTable(
+          row("Amount", `<strong>$${data.depositAmount}.00 USD</strong>`) +
+          row("Zelle to", `${data.zelleName}<br/><strong>${data.zellePhone}</strong>`) +
+          row("Reference", `<strong style="font-family:monospace;background:#fff;padding:4px 8px;border-radius:4px;">${data.referenceCode}</strong>`) +
+          row("Service", data.service) +
+          row("Date", date)
+        )}
+        <p style="margin:12px 0 0;font-size:13px;color:${brand.cafe};"><strong>⚠️ Include the reference code in the Zelle memo/concept.</strong></p>
+      </div>
+
+      <p style="color:${brand.muted};font-size:13px;line-height:1.6;">Once we receive your deposit we'll send a confirmation email and your appointment will be locked in. If you have any questions, just reply to this email.</p>
+    `),
+  });
+}
+
+export async function sendDepositConfirmation(data: {
+  clientName: string;
+  clientEmail: string;
+  service: string;
+  preferredDate?: string | null;
+  depositAmount: number;
+}) {
+  const date = data.preferredDate
+    ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    : "To be confirmed";
+
+  await resend.emails.send({
+    from: FROM,
+    to: data.clientEmail,
+    subject: "Deposit received — Appointment confirmed · Aluh Studio",
+    html: layout("Your appointment is confirmed!", `
+      <p style="color:${brand.muted};line-height:1.6;">Hi <strong>${data.clientName}</strong>, we received your <strong>$${data.depositAmount} USD</strong> deposit. Your appointment is now <strong style="color:${brand.cafe};">confirmed</strong>. We can't wait to see you!</p>
       ${dataTable(
         row("Service", data.service) +
-        row("Preferred Date", date)
+        row("Date", date) +
+        row("Status", `<strong style="color:${brand.cafe};">Confirmed ✓</strong>`)
       )}
-      <p style="color:${brand.muted};font-size:13px;line-height:1.6;">We'll reach out to confirm your appointment. If you have any questions, feel free to reply to this email.</p>
+      <p style="color:${brand.muted};font-size:13px;line-height:1.6;">If you need to reschedule, please let us know at least 24 hours in advance.</p>
     `),
   });
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, CalendarDays, DollarSign } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Pagination } from "@/components/admin/Pagination";
@@ -87,11 +87,49 @@ export default function AppointmentsPage() {
             label: "Status",
             render: (row) => <StatusBadge status={row.status as string} />,
           },
+          {
+            key: "depositStatus",
+            label: "Deposit",
+            render: (row) => {
+              if (row.depositRequired === false) return <span className="text-xs" style={{ color: "var(--admin-muted)" }}>—</span>;
+              const received = row.depositStatus === "received";
+              return (
+                <span
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                  style={{
+                    backgroundColor: received ? "#dcfce7" : "#fef3c7",
+                    color: received ? "#166534" : "#92400e",
+                  }}
+                >
+                  <DollarSign className="h-3 w-3" />
+                  {received ? "Received" : "Pending"}
+                </span>
+              );
+            },
+          },
           { key: "source", label: "Source" },
         ]}
         data={appointments}
         onRowClick={(row) => router.push(`/admin/appointments/${row.id}`)}
-        emptyMessage="No appointments found"
+        emptyIcon={CalendarDays}
+        emptyTitle={
+          status === "all"
+            ? "No appointments yet"
+            : `No ${status} appointments`
+        }
+        emptyDescription={
+          status === "all"
+            ? "Bookings from your website will show up here. You can also create appointments manually."
+            : `You don't have any appointments with status "${status}" right now.`
+        }
+        emptyAction={
+          status === "all"
+            ? {
+                label: "+ New Appointment",
+                onClick: () => router.push("/admin/appointments/new"),
+              }
+            : undefined
+        }
       />
 
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />

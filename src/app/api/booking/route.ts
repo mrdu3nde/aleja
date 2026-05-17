@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { bookingSchema } from "@/lib/validators";
 import { prisma } from "@/lib/prisma";
 import { sendBookingConfirmation, sendBookingAdminNotification } from "@/lib/email";
+import { depositConfig, buildReferenceCode } from "@/lib/deposit";
 
 export async function POST(request: Request) {
   try {
@@ -18,8 +19,13 @@ export async function POST(request: Request) {
         message: data.message || null,
         source: "website",
         status: "pending",
+        depositRequired: true,
+        depositAmount: depositConfig.amount,
+        depositStatus: "pending",
       },
     });
+
+    const referenceCode = buildReferenceCode(appointment.id);
 
     // Send emails in background — don't block the response
     Promise.allSettled([
@@ -28,6 +34,10 @@ export async function POST(request: Request) {
         clientEmail: data.email,
         service: data.service,
         preferredDate: data.preferredDate,
+        referenceCode,
+        depositAmount: depositConfig.amount,
+        zelleName: depositConfig.zelleName,
+        zellePhone: depositConfig.zellePhone,
       }),
       sendBookingAdminNotification({
         clientName: data.name,
@@ -39,7 +49,16 @@ export async function POST(request: Request) {
       }),
     ]).catch(console.error);
 
-    return NextResponse.json({ success: true, id: appointment.id });
+    return NextResponse.json({
+      success: true,
+      id: appointment.id,
+      referenceCode,
+      deposit: {
+        amount: depositConfig.amount,
+        zelleName: depositConfig.zelleName,
+        zellePhone: depositConfig.zellePhone,
+      },
+    });
   } catch (error) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(

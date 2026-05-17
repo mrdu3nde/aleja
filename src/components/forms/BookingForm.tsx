@@ -6,7 +6,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
 import { bookingSchema, type BookingData } from "@/lib/validators";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import {
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  Mail,
+  DollarSign,
+  Smartphone,
+  Hash,
+  Copy,
+  Check,
+  Info,
+} from "lucide-react";
+import { depositConfig } from "@/lib/deposit";
+
+type ErrorKind = "network" | "validation" | "server" | "generic";
+
+type DepositInfo = {
+  amount: number;
+  zelleName: string;
+  zellePhone: string;
+};
 
 const serviceKeys = [
   "hair",
@@ -24,6 +44,15 @@ export function BookingForm() {
   const t = useTranslations("book_page.form");
   const locale = useLocale();
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorKind, setErrorKind] = useState<ErrorKind>("generic");
+  const [submittedEmail, setSubmittedEmail] = useState("");
+  const [referenceCode, setReferenceCode] = useState("");
+  const [deposit, setDeposit] = useState<DepositInfo>({
+    amount: depositConfig.amount,
+    zelleName: depositConfig.zelleName,
+    zellePhone: depositConfig.zellePhone,
+  });
+  const [copied, setCopied] = useState(false);
 
   const {
     register,
@@ -41,24 +70,147 @@ export function BookingForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, locale }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        if (res.status === 400 || res.status === 422) setErrorKind("validation");
+        else if (res.status >= 500) setErrorKind("server");
+        else setErrorKind("generic");
+        setStatus("error");
+        return;
+      }
+      const json = await res.json();
+      setSubmittedEmail(data.email);
+      setReferenceCode(json.referenceCode ?? "");
+      if (json.deposit) setDeposit(json.deposit);
       setStatus("success");
     } catch {
+      setErrorKind("network");
       setStatus("error");
+    }
+  };
+
+  const handleCopy = async () => {
+    const text = `Zelle: ${deposit.zelleName} - ${deposit.zellePhone}\n${t("deposit_amount_label")}: $${deposit.amount}.00 USD\n${t("deposit_reference_label")}: ${referenceCode}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard failed, do nothing
     }
   };
 
   if (status === "success") {
     return (
-      <div className="text-center py-12">
-        <CheckCircle className="h-16 w-16 text-cafe mx-auto mb-4" />
-        <h3 className="text-2xl font-semibold text-cafe mb-2">
-          {t("success_title")}
-        </h3>
-        <p className="text-text-light">{t("success_message")}</p>
+      <div className="py-8 px-4 sm:px-8 max-w-2xl mx-auto">
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-champagne-light mb-5">
+            <CheckCircle className="h-12 w-12 text-cafe" />
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-semibold text-cafe mb-3 font-[family-name:var(--font-heading)]">
+            {t("success_title")}
+          </h3>
+          <p className="text-text-light">{t("success_message")}</p>
+        </div>
+
+        {/* Deposit box — the main visual element */}
+        <div className="bg-cafe text-white rounded-2xl p-6 sm:p-8 mb-6 shadow-lg">
+          <h4 className="text-lg sm:text-xl font-semibold mb-5 text-center">
+            {t("deposit_box_title")}
+          </h4>
+
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+              <DollarSign className="h-6 w-6 text-champagne shrink-0" />
+              <div className="flex-1">
+                <p className="text-xs text-champagne uppercase tracking-wide">
+                  {t("deposit_amount_label")}
+                </p>
+                <p className="text-2xl font-bold">${deposit.amount}.00 USD</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+              <Smartphone className="h-6 w-6 text-champagne shrink-0" />
+              <div className="flex-1">
+                <p className="text-xs text-champagne uppercase tracking-wide">
+                  {t("deposit_zelle_label")}
+                </p>
+                <p className="text-lg font-semibold">{deposit.zelleName}</p>
+                <p className="text-base font-mono">{deposit.zellePhone}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+              <Hash className="h-6 w-6 text-champagne shrink-0" />
+              <div className="flex-1">
+                <p className="text-xs text-champagne uppercase tracking-wide">
+                  {t("deposit_reference_label")}
+                </p>
+                <p className="text-xl font-bold font-mono tracking-wider">
+                  {referenceCode}
+                </p>
+                <p className="text-xs text-champagne mt-1">
+                  ⚠️ {t("deposit_reference_hint")}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="mt-5 w-full flex items-center justify-center gap-2 bg-white text-cafe rounded-xl px-4 py-3 text-sm font-semibold hover:bg-champagne-light transition-colors cursor-pointer"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                {t("deposit_copied")}
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                {t("deposit_copy")}
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Next steps */}
+        <div className="text-left bg-champagne-light/50 border border-mushroom/30 rounded-2xl p-5 sm:p-6 mb-6">
+          <h4 className="text-sm font-semibold text-cafe-dark uppercase tracking-wide mb-4">
+            {t("success_next_steps_title")}
+          </h4>
+          <ol className="space-y-3">
+            {[
+              t("success_next_step_1", { amount: deposit.amount }),
+              t("success_next_step_2"),
+              t("success_next_step_3"),
+            ].map((step, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="flex-shrink-0 h-6 w-6 rounded-full bg-cafe text-white text-xs font-semibold flex items-center justify-center mt-0.5">
+                  {i + 1}
+                </span>
+                <span className="text-sm text-text-dark">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {submittedEmail && (
+          <div className="flex items-start gap-3 text-left text-sm text-text-light bg-white border border-mushroom/30 rounded-xl p-4">
+            <Mail className="h-4 w-4 text-cafe shrink-0 mt-0.5" />
+            <span>
+              {t("success_check_email")}
+              <br />
+              <span className="text-cafe font-medium">{submittedEmail}</span>
+            </span>
+          </div>
+        )}
       </div>
     );
   }
+
+  const errorMessage = t(`error_${errorKind}`);
 
   const inputClass =
     "w-full rounded-xl border border-mushroom/40 bg-white px-4 py-3 text-text-dark placeholder:text-text-muted focus:border-cafe focus:ring-1 focus:ring-cafe outline-none transition-colors";
@@ -66,9 +218,9 @@ export function BookingForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {status === "error" && (
-        <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm">
-          <AlertCircle className="h-4 w-4 shrink-0" />
-          {t("error_message")}
+        <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm">
+          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+          <span>{errorMessage}</span>
         </div>
       )}
 
@@ -181,8 +333,28 @@ export function BookingForm() {
         />
       </div>
 
+      {/* Deposit notice — shown before submit */}
+      <div className="flex items-start gap-3 bg-champagne-light/60 border border-cafe/20 rounded-xl p-4">
+        <Info className="h-5 w-5 text-cafe shrink-0 mt-0.5" />
+        <div className="text-sm">
+          <p className="font-semibold text-cafe mb-1">
+            {t("deposit_notice_title")}
+          </p>
+          <p className="text-text-dark leading-relaxed">
+            {t("deposit_notice_text", { amount: depositConfig.amount })}
+          </p>
+        </div>
+      </div>
+
       <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? t("submitting") : t("submit")}
+        {isSubmitting ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {t("submitting")}
+          </span>
+        ) : (
+          t("submit")
+        )}
       </Button>
     </form>
   );

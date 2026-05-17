@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Inbox } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Pagination } from "@/components/admin/Pagination";
@@ -89,7 +90,15 @@ export default function LeadsPage() {
         ]}
         data={leads}
         onRowClick={(row) => router.push(`/admin/leads/${row.id}`)}
-        emptyMessage="No leads found"
+        emptyIcon={Inbox}
+        emptyTitle={
+          status === "all" ? "No leads yet" : `No ${status} leads`
+        }
+        emptyDescription={
+          status === "all"
+            ? "When visitors send messages from your contact form, they'll appear here so you can follow up."
+            : `You don't have any leads with status "${status}" right now.`
+        }
       />
 
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
