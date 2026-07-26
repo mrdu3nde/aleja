@@ -47,3 +47,6 @@ dev.db
 dev.db-journal
 dev.sh
 gmail.txt
+
+# Respaldo temporal con datos personales — no debe ir al repositorio
+prisma/leads-backup.json

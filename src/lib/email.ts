@@ -64,6 +64,17 @@ function button(text: string, href: string) {
   </td></tr></table>`;
 }
 
+// Resend does NOT throw on API errors — it returns { data, error }. Without this
+// wrapper a rejected send (unverified domain, bad key, rate limit) looks like success
+// and the caller's .catch() never fires.
+async function send(payload: Parameters<typeof resend.emails.send>[0]) {
+  const { data, error } = await resend.emails.send(payload);
+  if (error) {
+    throw new Error(`Resend rejected the email (${error.name}): ${error.message}`);
+  }
+  return data;
+}
+
 // ─── Email functions ───
 
 export async function sendBookingConfirmation(data: {
@@ -80,7 +91,7 @@ export async function sendBookingConfirmation(data: {
     ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
     : "To be confirmed";
 
-  await resend.emails.send({
+  await send({
     from: FROM,
     to: data.clientEmail,
     subject: "Booking Received — Pending Deposit · Aluh Studio",
@@ -115,7 +126,7 @@ export async function sendDepositConfirmation(data: {
     ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
     : "To be confirmed";
 
-  await resend.emails.send({
+  await send({
     from: FROM,
     to: data.clientEmail,
     subject: "Deposit received — Appointment confirmed · Aluh Studio",
@@ -139,7 +150,7 @@ export async function sendBookingAdminNotification(data: {
   preferredDate?: string | null;
   message?: string | null;
 }) {
-  await resend.emails.send({
+  await send({
     from: FROM,
     to: ADMIN_EMAIL,
     subject: `New Booking — ${data.clientName}`,
@@ -153,46 +164,7 @@ export async function sendBookingAdminNotification(data: {
         row("Date", data.preferredDate || "Not specified") +
         row("Message", data.message || "—")
       )}
-      ${button("View in Dashboard", `${SITE_URL}/admin/appointments`)}
-    `),
-  });
-}
-
-export async function sendLeadWelcome(data: {
-  name: string;
-  email: string;
-}) {
-  await resend.emails.send({
-    from: FROM,
-    to: data.email,
-    subject: "Thanks for reaching out — Aluh Studio",
-    html: layout("Thanks for contacting us!", `
-      <p style="color:${brand.muted};line-height:1.6;">Hi <strong>${data.name}</strong>, we appreciate you reaching out to Aluh Beauty Studio!</p>
-      <p style="color:${brand.muted};line-height:1.6;">We've received your message and will get back to you as soon as possible. In the meantime, feel free to browse our services.</p>
-      ${button("View Our Services", `${SITE_URL}/en/services`)}
-    `),
-  });
-}
-
-export async function sendLeadAdminNotification(data: {
-  name: string;
-  email: string;
-  phone?: string | null;
-  message: string;
-}) {
-  await resend.emails.send({
-    from: FROM,
-    to: ADMIN_EMAIL,
-    subject: `New Lead — ${data.name}`,
-    html: layout("New Contact Lead", `
-      <p style="color:${brand.muted};line-height:1.6;">Someone contacted you through the website.</p>
-      ${dataTable(
-        row("Name", data.name) +
-        row("Email", data.email) +
-        row("Phone", data.phone || "—") +
-        row("Message", data.message)
-      )}
-      ${button("View in Dashboard", `${SITE_URL}/admin/leads`)}
+      ${button("View in Dashboard", `${SITE_URL}/studio/appointments`)}
     `),
   });
 }
@@ -230,7 +202,7 @@ export async function sendAppointmentStatusUpdate(data: {
       ? button("Book a New Appointment", `${SITE_URL}/en/book`)
       : "";
 
-  await resend.emails.send({
+  await send({
     from: FROM,
     to: data.clientEmail,
     subject: `${subject} — Aluh Studio`,
@@ -246,11 +218,39 @@ export async function sendAppointmentStatusUpdate(data: {
   });
 }
 
+export async function sendClientConfirmedNotification(data: {
+  clientName: string;
+  clientEmail: string;
+  clientPhone?: string | null;
+  service: string;
+  preferredDate?: string | null;
+  preferredTime?: string | null;
+  appointmentId: string;
+}) {
+  await send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `${data.clientName} confirmed her appointment`,
+    html: layout("A client just confirmed", `
+      <p style="color:${brand.muted};line-height:1.6;"><strong>${data.clientName}</strong> opened the link you shared and confirmed her appointment. She has been shown the Zelle deposit details.</p>
+      ${dataTable(
+        row("Service", data.service) +
+        row("Date", data.preferredDate || "Not set") +
+        row("Time", data.preferredTime || "Not set") +
+        row("Phone", data.clientPhone || "—") +
+        row("Email", data.clientEmail || "—")
+      )}
+      <p style="color:${brand.muted};font-size:13px;line-height:1.6;">Watch your Zelle for the deposit, then mark it as received in the dashboard.</p>
+      ${button("Open appointment", `${SITE_URL}/studio/appointments/${data.appointmentId}`)}
+    `),
+  });
+}
+
 export async function sendClientWelcome(data: {
   name: string;
   email: string;
 }) {
-  await resend.emails.send({
+  await send({
     from: FROM,
     to: data.email,
     subject: "Welcome to Aluh Studio!",

@@ -10,14 +10,20 @@ datasource db {
 model Client {
   id                String        @id @default(uuid())
   name              String
-  email             String        @unique
+  // Optional: the owner often books someone she only has a phone number for.
+  // Postgres allows many NULLs under a unique index, so this stays safe.
+  email             String?       @unique
   phone             String?
+  // Last 10 digits of `phone`, kept in sync on write. Lets us match and search
+  // by phone regardless of how it was typed. See src/lib/phone.ts
+  phoneNormalized   String?
   contactPreference String?
   notes             String?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   appointments      Appointment[]
-  convertedLeads    Lead[]
+
+  @@index([phoneNormalized])
 }
 
 model Appointment {
@@ -29,15 +35,78 @@ model Appointment {
   clientPhone       String?
   service           String
   preferredDate     String?
+  // "HH:MM" 24h. Set by the owner when booking; the client only confirms it.
+  preferredTime     String?
   status            String    @default("pending")
   message           String?
   source            String    @default("website")
+
+  // What the service costs in total. The deposit is an advance against this,
+  // and `payments` records whatever is collected afterwards.
+  servicePrice      Decimal?  @db.Decimal(10, 2)
+  payments          Payment[]
   depositRequired   Boolean   @default(true)
   depositAmount     Decimal?  @default(20.00) @db.Decimal(10, 2)
   depositStatus     String    @default("pending")
   depositReceivedAt DateTime?
+
+  // Share-to-confirm flow: the owner pre-books, shares an opaque link, and the
+  // client fills in whatever is still missing. Token is random (not derived from
+  // ids or dates) so a link cannot be guessed from another one.
+  shareToken        String?   @unique
+  sharedAt          DateTime?
+  clientConfirmedAt DateTime?
+  confirmationSeen  Boolean   @default(false)
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+}
+
+/// A service the studio offers. Editable from the studio: add, remove, reorder,
+/// price and photo. The translated title/description stay in `Content` under
+/// `services_section.<slug>.*` so the public site keeps its two languages.
+model Service {
+  id        String   @id @default(uuid())
+  /// Stable key used for the Content lookups. Never reused.
+  slug      String   @unique
+  /// Label stored on appointments and shown in the studio.
+  name      String
+  price     Decimal? @db.Decimal(10, 2)
+  /// Vercel Blob URL. Falls back to `icon` when empty.
+  imageUrl  String?
+  /// lucide icon name, used when there is no photo yet.
+  icon      String?
+  sortOrder Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, sortOrder])
+}
+
+/// Money collected for an appointment after the deposit — a log rather than a
+/// single field, so a client can settle in parts and each entry keeps its own
+/// method and date.
+model Payment {
+  id            String      @id @default(uuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  amount        Decimal     @db.Decimal(10, 2)
+  method        String      @default("cash")
+  note          String?
+  createdAt     DateTime    @default(now())
+
+  @@index([appointmentId])
+}
+
+/// Web push endpoints for the owner's devices. One row per browser/device.
+model PushSubscription {
+  id        String   @id @default(uuid())
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  label     String?
+  createdAt DateTime @default(now())
 }
 
 model Content {
@@ -47,19 +116,4 @@ model Content {
   updatedAt DateTime @updatedAt
 
   @@unique([key, locale])
-}
-
-model Lead {
-  id                String   @id @default(uuid())
-  name              String
-  email             String
-  phone             String?
-  message           String
-  source            String?
-  status            String   @default("new")
-  convertedClientId String?
-  convertedClient   Client?  @relation(fields: [convertedClientId], references: [id], onDelete: SetNull)
-  locale            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
 }

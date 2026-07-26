@@ -5,6 +5,8 @@ type ConfirmDialogProps = {
   title: string;
   message: string;
   confirmLabel?: string;
+  variant?: "danger" | "success";
+  busy?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
@@ -14,10 +16,17 @@ export function ConfirmDialog({
   title,
   message,
   confirmLabel = "Confirm",
+  variant = "danger",
+  busy = false,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
   if (!open) return null;
+
+  const confirmColors =
+    variant === "success"
+      ? "bg-green-600 hover:bg-green-700"
+      : "bg-red-600 hover:bg-red-700";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
@@ -30,7 +39,8 @@ export function ConfirmDialog({
         <div className="flex gap-3 justify-end">
           <button
             onClick={onCancel}
-            className="px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+            disabled={busy}
+            className="px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer disabled:opacity-40"
             style={{ color: "var(--admin-text)" }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--admin-hover)"}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
@@ -39,7 +49,8 @@ export function ConfirmDialog({
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 rounded-xl text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors cursor-pointer"
+            disabled={busy}
+            className={`px-4 py-2 rounded-xl text-sm font-medium text-white transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed ${confirmColors}`}
           >
             {confirmLabel}
           </button>

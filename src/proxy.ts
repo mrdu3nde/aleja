@@ -7,8 +7,12 @@ const intlMiddleware = createMiddleware(routing);
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Admin and API routes: pass through
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api")) {
+  // Studio (admin), API and the public confirm links: pass through
+  if (
+    pathname.startsWith("/studio") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/confirm")
+  ) {
     return NextResponse.next();
   }
 

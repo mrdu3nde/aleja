@@ -12,7 +12,6 @@ const navItems = [
   { key: "services", href: "/services" },
   { key: "gallery", href: "/gallery" },
   { key: "book", href: "/book" },
-  { key: "contact", href: "/contact" },
 ] as const;
 
 export function MobileMenu() {

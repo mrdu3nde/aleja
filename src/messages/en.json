@@ -9,7 +9,6 @@
     "services": "Services",
     "gallery": "Gallery",
     "book": "Book",
-    "contact": "Contact",
     "faq": "FAQ",
     "policies": "Policies"
   },
@@ -339,34 +338,6 @@
       "error_server": "Something went wrong on our end. Please try again in a moment or contact us directly.",
       "error_generic": "Something went wrong. Please try again or contact us directly."
     }
-  },
-  "contact_page": {
-    "title": "Contact Us",
-    "subtitle": "Have a question or want to learn more? We'd love to hear from you.",
-    "form": {
-      "name": "Full Name",
-      "name_placeholder": "Your full name",
-      "email": "Email",
-      "email_placeholder": "your@email.com",
-      "phone": "Phone (optional)",
-      "phone_placeholder": "+1 (555) 000-0000",
-      "message": "Your Message",
-      "message_placeholder": "How can we help you?",
-      "submit": "Send Message",
-      "submitting": "Sending...",
-      "success_title": "Message sent!",
-      "success_message": "Thank you for reaching out. We'll get back to you within 24 hours.",
-      "success_check_email": "Please check your inbox (and spam folder) for our reply.",
-      "error_network": "We couldn't reach our servers. Please check your connection and try again.",
-      "error_validation": "Some fields need attention. Please review and try again.",
-      "error_server": "Something went wrong on our end. Please try again in a moment.",
-      "error_generic": "Something went wrong. Please try again."
-    },
-    "info_title": "Get in Touch",
-    "email_label": "Email",
-    "phone_label": "Phone",
-    "hours_label": "Hours",
-    "social_label": "Follow Us"
   },
   "faq_page": {
     "title": "Frequently Asked Questions",

@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   Users,
   Calendar,
-  Inbox,
   FileText,
   ExternalLink,
   Menu,
@@ -16,11 +15,10 @@ import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/clients", label: "Clients", icon: Users },
-  { href: "/admin/appointments", label: "Appointments", icon: Calendar },
-  { href: "/admin/leads", label: "Leads", icon: Inbox },
-  { href: "/admin/content", label: "Content", icon: FileText },
+  { href: "/studio", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/studio/clients", label: "Clients", icon: Users },
+  { href: "/studio/appointments", label: "Appointments", icon: Calendar },
+  { href: "/studio/content", label: "Content", icon: FileText },
 ] as const;
 
 export function Sidebar() {
@@ -29,7 +27,7 @@ export function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) =>
-    href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+    href === "/studio" ? pathname === "/studio" : pathname.startsWith(href);
 
   return (
     <>

@@ -7,12 +7,12 @@ const Ctx = createContext<ThemeCtx>({ dark: true, toggle: () => {} });
 export const useTheme = () => useContext(Ctx);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [dark, setDark] = useState(true);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("admin-theme");
-    if (saved === "light") setDark(false);
-  }, []);
+  // Read the stored preference during initialisation instead of in an effect,
+  // which would render the wrong theme once and then flip it.
+  const [dark, setDark] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem("admin-theme") !== "light";
+  });
 
   useEffect(() => {
     localStorage.setItem("admin-theme", dark ? "dark" : "light");

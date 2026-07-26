@@ -4,19 +4,22 @@ import { useTranslations, useLocale } from "next-intl";
 import { Section } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Scissors, Palette, Eye, Sparkles, Droplets, Crown } from "lucide-react";
+import { Scissors, Palette, Eye, Sparkles, Droplets, Crown, type LucideIcon } from "lucide-react";
+import type { PublicService } from "@/lib/services";
 import { motion } from "framer-motion";
 
-const services = [
-  { key: "hair", icon: Scissors },
-  { key: "nails", icon: Palette },
-  { key: "brows", icon: Eye },
-  { key: "lashes", icon: Sparkles },
-  { key: "facial", icon: Droplets },
-  { key: "special", icon: Crown },
-] as const;
+/** Icons the studio can pick from; used when a service has no photo yet. */
+const ICONS: Record<string, LucideIcon> = {
+  Scissors, Palette, Eye, Sparkles, Droplets, Crown,
+};
 
-export function FeaturedServices({ content }: { content: Record<string, string> }) {
+export function FeaturedServices({
+  content,
+  services,
+}: {
+  content: Record<string, string>;
+  services: PublicService[];
+}) {
   const t = useTranslations("services_section");
   const locale = useLocale();
 
@@ -32,23 +35,43 @@ export function FeaturedServices({ content }: { content: Record<string, string> 
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map((service, i) => (
+        {services.map((service, i) => {
+          const Icon = (service.icon && ICONS[service.icon]) || Sparkles;
+          const title =
+            content[`services_section.${service.slug}.title`] || service.name;
+          const description =
+            content[`services_section.${service.slug}.description`] ?? "";
+          return (
           <motion.div
-            key={service.key}
+            key={service.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.08 }}
           >
-            <Card hover className="h-full flex flex-col">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-champagne">
-                <service.icon className="h-6 w-6 text-cafe" />
-              </div>
+            <Card hover className="h-full flex flex-col overflow-hidden">
+              {service.imageUrl ? (
+                /* plain img: Blob hostnames are not registered in next.config */
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={service.imageUrl}
+                  alt={title}
+                  className="mb-4 -mx-6 -mt-6 h-44 w-[calc(100%+3rem)] object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-champagne">
+                  <Icon className="h-6 w-6 text-cafe" />
+                </div>
+              )}
               <h3 className="text-xl font-semibold text-text-dark mb-2">
-                {content[`services_section.${service.key}.title`] || t(`${service.key}.title`)}
+                {title}
               </h3>
+              {service.price != null && service.price > 0 && (
+                <p className="text-cafe font-semibold mb-2">${service.price}</p>
+              )}
               <p className="text-text-light text-sm leading-relaxed flex-1">
-                {content[`services_section.${service.key}.description`] || t(`${service.key}.description`)}
+                {description}
               </p>
               <div className="mt-4">
                 <Button href={`/${locale}/services`} variant="ghost" size="sm">
@@ -57,7 +80,8 @@ export function FeaturedServices({ content }: { content: Record<string, string> 
               </div>
             </Card>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="text-center mt-10">

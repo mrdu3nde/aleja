@@ -22,10 +22,6 @@ export const routing = defineRouting({
       en: "/book",
       es: "/reservar",
     },
-    "/contact": {
-      en: "/contact",
-      es: "/contacto",
-    },
     "/faq": "/faq",
     "/policies": {
       en: "/policies",

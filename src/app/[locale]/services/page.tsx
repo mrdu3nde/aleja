@@ -91,7 +91,7 @@ export default function ServicesPage() {
           <p className="text-champagne/80 mb-8 max-w-lg mx-auto">
             {t("consult_text")}
           </p>
-          <Button href={`/${locale}/contact`} variant="secondary" size="lg">
+          <Button href={`/${locale}/book`} variant="secondary" size="lg">
             {t("consult_cta")}
           </Button>
         </div>

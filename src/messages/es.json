@@ -9,7 +9,6 @@
     "services": "Servicios",
     "gallery": "Galería",
     "book": "Reservar",
-    "contact": "Contacto",
     "faq": "Preguntas",
     "policies": "Políticas"
   },
@@ -339,34 +338,6 @@
       "error_server": "Hubo un problema de nuestro lado. Inténtalo en un momento o contáctanos directamente.",
       "error_generic": "Algo salió mal. Inténtalo de nuevo o contáctanos directamente."
     }
-  },
-  "contact_page": {
-    "title": "Contáctanos",
-    "subtitle": "¿Tienes una pregunta o quieres saber más? Nos encantaría saber de ti.",
-    "form": {
-      "name": "Nombre Completo",
-      "name_placeholder": "Tu nombre completo",
-      "email": "Correo Electrónico",
-      "email_placeholder": "tu@email.com",
-      "phone": "Teléfono (opcional)",
-      "phone_placeholder": "+1 (555) 000-0000",
-      "message": "Tu Mensaje",
-      "message_placeholder": "¿En qué podemos ayudarte?",
-      "submit": "Enviar Mensaje",
-      "submitting": "Enviando...",
-      "success_title": "¡Mensaje enviado!",
-      "success_message": "Gracias por escribirnos. Te responderemos en menos de 24 horas.",
-      "success_check_email": "Por favor revisa tu bandeja de entrada (y carpeta de spam) para nuestra respuesta.",
-      "error_network": "No pudimos conectar con el servidor. Verifica tu conexión e inténtalo de nuevo.",
-      "error_validation": "Algunos campos necesitan atención. Por favor revísalos e inténtalo de nuevo.",
-      "error_server": "Hubo un problema de nuestro lado. Inténtalo en un momento.",
-      "error_generic": "Algo salió mal. Inténtalo de nuevo."
-    },
-    "info_title": "Ponte en Contacto",
-    "email_label": "Correo",
-    "phone_label": "Teléfono",
-    "hours_label": "Horario",
-    "social_label": "Síguenos"
   },
   "faq_page": {
     "title": "Preguntas Frecuentes",
