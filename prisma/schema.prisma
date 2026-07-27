@@ -37,6 +37,9 @@ model Appointment {
   preferredDate     String?
   // "HH:MM" 24h. Set by the owner when booking; the client only confirms it.
   preferredTime     String?
+  /// Snapshot of the service duration at booking time, so later edits to the
+  /// service never rewrite how long a past appointment took.
+  durationMinutes   Int?
   status            String    @default("pending")
   message           String?
   source            String    @default("website")
@@ -72,6 +75,8 @@ model Service {
   /// Label stored on appointments and shown in the studio.
   name      String
   price     Decimal? @db.Decimal(10, 2)
+  /// How long a booking of this service occupies the chair.
+  durationMinutes Int  @default(60)
   /// Vercel Blob URL. Falls back to `icon` when empty.
   imageUrl  String?
   /// lucide icon name, used when there is no photo yet.
@@ -116,4 +121,22 @@ model Content {
   updatedAt DateTime @updatedAt
 
   @@unique([key, locale])
+}
+
+/// Recurring weekly opening hours. One row per weekday she works.
+/// Times are minutes from midnight, which makes overlap maths trivial.
+model Availability {
+  id           String  @id @default(uuid())
+  /// 0 = Sunday … 6 = Saturday
+  dayOfWeek    Int     @unique
+  startMinutes Int
+  endMinutes   Int
+  active       Boolean @default(true)
+}
+
+/// A single day off: holiday, vacation, or anything that overrides the weekly
+/// hours. Stored as "YYYY-MM-DD" to match how appointment dates are kept.
+model BlockedDate {
+  date   String  @id
+  reason String?
 }

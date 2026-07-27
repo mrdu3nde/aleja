@@ -26,47 +26,47 @@ export function daysFromToday(iso: string): number {
   return Math.round((target.getTime() - today.getTime()) / 86400000);
 }
 
-/** "Sun, Jul 26" */
+/** "dom, 26 jul" */
 export function formatDay(iso: string): string {
-  return parseDay(iso).toLocaleDateString("en-US", {
+  return parseDay(iso).toLocaleDateString("es-US", {
     weekday: "short",
     day: "numeric",
     month: "short",
   });
 }
 
-/** "Sunday, July 26" */
+/** "domingo, 26 de julio" */
 export function formatDayLong(iso: string): string {
-  return parseDay(iso).toLocaleDateString("en-US", {
+  return parseDay(iso).toLocaleDateString("es-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
   });
 }
 
-/** Heading for a day group: "Today", "Tomorrow", or the long date. */
+/** Heading for a day group: "Hoy", "Mañana", or the long date. */
 export function dayHeading(iso: string): string {
   const diff = daysFromToday(iso);
-  if (diff === 0) return "Today";
-  if (diff === 1) return "Tomorrow";
-  if (diff === -1) return "Yesterday";
+  if (diff === 0) return "Hoy";
+  if (diff === 1) return "Mañana";
+  if (diff === -1) return "Ayer";
   return formatDayLong(iso);
 }
 
-/** Compact relative label for a row: "Today", "in 3 days", "2 days ago". */
+/** Compact relative label for a row: "Hoy", "en 3 días", "hace 2 días". */
 export function relativeDay(iso: string): string | null {
   const diff = daysFromToday(iso);
-  if (diff === 0) return "Today";
-  if (diff === 1) return "Tomorrow";
-  if (diff === -1) return "Yesterday";
-  if (diff > 1 && diff <= 7) return `in ${diff} days`;
-  if (diff < -1 && diff >= -7) return `${Math.abs(diff)} days ago`;
+  if (diff === 0) return "Hoy";
+  if (diff === 1) return "Mañana";
+  if (diff === -1) return "Ayer";
+  if (diff > 1 && diff <= 7) return `en ${diff} días`;
+  if (diff < -1 && diff >= -7) return `hace ${Math.abs(diff)} días`;
   return null;
 }
 
 export const STATUS_LABELS: Record<string, string> = {
-  pending: "Pending",
-  confirmed: "Confirmed",
-  completed: "Completed",
-  cancelled: "Cancelled",
+  pending: "Pendiente",
+  confirmed: "Confirmada",
+  completed: "Completada",
+  cancelled: "Cancelada",
 };

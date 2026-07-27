@@ -66,7 +66,7 @@ export default function ClientDetailPage() {
   };
 
   if (!client) {
-    return <p style={{ color: "var(--admin-muted)" }}>Loading...</p>;
+    return <p style={{ color: "var(--admin-muted)" }}>Cargando...</p>;
   }
 
   // What this client has actually left in the studio, across every visit.
@@ -88,7 +88,7 @@ export default function ClientDetailPage() {
         className="flex items-center gap-1 text-sm hover:text-[#6B4E3D] mb-4 cursor-pointer"
         style={{ color: "var(--admin-muted)" }}
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Clients
+        <ArrowLeft className="h-4 w-4" /> Volver a Clientas
       </button>
 
       <div className="flex items-center gap-3 mb-6">
@@ -97,8 +97,8 @@ export default function ClientDetailPage() {
         <button
           type="button"
           onClick={() => setShowDelete(true)}
-          aria-label="Delete client"
-          title="Delete client"
+          aria-label="Eliminar clienta"
+          title="Eliminar clienta"
           className="shrink-0 flex items-center justify-center h-9 w-9 rounded-lg cursor-pointer transition-colors"
           style={{ color: "var(--admin-muted)", backgroundColor: "transparent" }}
           onMouseEnter={(e) => {
@@ -119,24 +119,24 @@ export default function ClientDetailPage() {
       {/* Edit form */}
       <div className="rounded-2xl p-6" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormField label="Name" error={errors.name?.message}>
+          <FormField label="Nombre" error={errors.name?.message}>
             <input {...register("name")} className={inputClass} style={inputStyle} />
           </FormField>
-          <FormField label="Email" error={errors.email?.message}>
+          <FormField label="Correo" error={errors.email?.message}>
             <input {...register("email")} type="email" className={inputClass} style={inputStyle} />
           </FormField>
-          <FormField label="Phone">
+          <FormField label="Teléfono">
             <input {...register("phone")} type="tel" className={inputClass} style={inputStyle} />
           </FormField>
-          <FormField label="Contact Preference" error={errors.contactPreference?.message}>
+          <FormField label="Prefiere contacto por" error={errors.contactPreference?.message}>
             <select {...register("contactPreference")} className={inputClass} style={inputStyle}>
-              <option value="">Select...</option>
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
+              <option value="">Elige...</option>
+              <option value="email">Correo</option>
+              <option value="phone">Teléfono</option>
               <option value="whatsapp">WhatsApp</option>
             </select>
           </FormField>
-          <FormField label="Notes">
+          <FormField label="Notas">
             <textarea {...register("notes")} rows={3} className={inputClass} style={inputStyle} />
           </FormField>
           {isDirty && (
@@ -145,7 +145,7 @@ export default function ClientDetailPage() {
               disabled={isSubmitting}
               className="rounded-xl bg-[#6B4E3D] text-white px-6 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
             >
-              {isSubmitting ? "Saving..." : "Save Changes"}
+              {isSubmitting ? "Guardando..." : "Guardar cambios"}
             </button>
           )}
         </form>
@@ -155,7 +155,7 @@ export default function ClientDetailPage() {
       <div>
         <div className="flex items-baseline justify-between gap-3 mb-3">
           <h2 className="text-lg font-semibold" style={{ color: "var(--admin-text)" }}>
-            Appointment History
+            Historial de citas
             {client.appointments?.length ? (
               <span className="ml-2 text-sm font-normal" style={{ color: "var(--admin-muted)" }}>
                 {client.appointments.length}
@@ -164,11 +164,11 @@ export default function ClientDetailPage() {
           </h2>
           {lifetime.collected > 0 && (
             <span className="text-sm shrink-0" style={{ color: "var(--admin-muted)" }}>
-              paid{" "}
+              pagó{" "}
               <strong style={{ color: "var(--admin-text)" }}>{money(lifetime.collected)}</strong>
               {lifetime.remaining > 0 && (
                 <>
-                  {" · owes "}
+                  {" · debe "}
                   <strong style={{ color: "#B45309" }}>{money(lifetime.remaining)}</strong>
                 </>
               )}
@@ -176,7 +176,7 @@ export default function ClientDetailPage() {
           )}
         </div>
       {!client.appointments?.length ? (
-        <p className="text-sm" style={{ color: "var(--admin-muted)" }}>No appointments yet</p>
+        <p className="text-sm" style={{ color: "var(--admin-muted)" }}>Aún no tiene citas</p>
       ) : (
         <div className="rounded-2xl" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
           {/* Scrolls inside itself past a handful of visits, and sideways on a
@@ -189,16 +189,16 @@ export default function ClientDetailPage() {
                 style={{ borderBottom: "1px solid var(--admin-border)", backgroundColor: "var(--admin-card)" }}
               >
                 <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--admin-muted)" }}>
-                  Service
+                  Servicio
                 </th>
                 <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--admin-muted)" }}>
-                  Date
+                  Fecha
                 </th>
                 <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--admin-muted)" }}>
-                  Status
+                  Estado
                 </th>
                 <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--admin-muted)" }}>
-                  Paid
+                  Pagado
                 </th>
               </tr>
             </thead>
@@ -249,9 +249,9 @@ export default function ClientDetailPage() {
 
       <ConfirmDialog
         open={showDelete}
-        title="Delete Client"
-        message="Are you sure? This action cannot be undone."
-        confirmLabel="Delete"
+        title="Eliminar clienta"
+        message="¿Segura? Esta acción no se puede deshacer."
+        confirmLabel="Eliminar"
         onConfirm={handleDelete}
         onCancel={() => setShowDelete(false)}
       />

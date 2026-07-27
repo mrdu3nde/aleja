@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { appointmentSchema, type AppointmentData } from "@/lib/admin-validators";
 import { FormField, inputClass, inputStyle } from "@/components/admin/FormField";
 import { ClientPicker } from "@/components/admin/ClientPicker";
+import { TimeSlotPicker } from "@/components/booking/TimeSlotPicker";
+import { AvailableDatePicker } from "@/components/booking/AvailableDatePicker";
 import { DEPOSIT_PRESETS, depositConfig } from "@/lib/deposit";
 
 import { ArrowLeft } from "lucide-react";
@@ -20,6 +22,9 @@ export default function NewAppointmentPage() {
   const [depositChoice, setDepositChoice] = useState<string>(String(depositConfig.amount));
   const [customDeposit, setCustomDeposit] = useState("");
   const [servicePrice, setServicePrice] = useState("");
+  const [service, setService] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [priceEdited, setPriceEdited] = useState(false);
   const [services, setServices] = useState<
     Array<{ id: string; name: string; price: string | number | null }>
@@ -38,6 +43,7 @@ export default function NewAppointmentPage() {
 
   const pickService = (label: string) => {
     setValue("service", label);
+    setService(label);
     // Don't clobber a price she typed herself.
     if (priceEdited) return;
     const fixed = Number(services.find((s) => s.name === label)?.price ?? 0);
@@ -103,42 +109,42 @@ export default function NewAppointmentPage() {
         className="flex items-center gap-1 text-sm hover:text-[#6B4E3D] mb-4 cursor-pointer"
         style={{ color: "var(--admin-muted)" }}
       >
-        <ArrowLeft className="h-4 w-4" /> Back
+        <ArrowLeft className="h-4 w-4" /> Volver
       </button>
       <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--admin-text)" }}>
-        New Appointment
+        Nueva cita
       </h1>
 
       <div className="max-w-xl rounded-2xl p-6" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormField label="Existing client">
+          <FormField label="Clienta existente">
             <ClientPicker selected={client} onSelect={pickClient} onClear={clearClient} />
           </FormField>
 
           <div style={{ borderTop: "1px solid var(--admin-border)" }} className="pt-4">
-            <FormField label="Client Name" error={errors.clientName?.message}>
-              <input {...register("clientName")} autoComplete="off" data-lpignore="true" data-1p-ignore="" className={inputClass} style={inputStyle} placeholder="Full name" />
+            <FormField label="Nombre" error={errors.clientName?.message}>
+              <input {...register("clientName")} autoComplete="off" data-lpignore="true" data-1p-ignore="" className={inputClass} style={inputStyle} placeholder="Nombre completo" />
             </FormField>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Client Phone">
+            <FormField label="Teléfono">
               <input {...register("clientPhone")} type="tel" autoComplete="off" data-lpignore="true" data-1p-ignore="" className={inputClass} style={inputStyle} placeholder="(555) 000-0000" />
             </FormField>
 
-            <FormField label="Client Email" error={errors.clientEmail?.message}>
-              <input {...register("clientEmail")} type="email" autoComplete="off" data-lpignore="true" data-1p-ignore="" className={inputClass} style={inputStyle} placeholder="Optional" />
+            <FormField label="Correo" error={errors.clientEmail?.message}>
+              <input {...register("clientEmail")} type="email" autoComplete="off" data-lpignore="true" data-1p-ignore="" className={inputClass} style={inputStyle} placeholder="Opcional" />
             </FormField>
           </div>
 
-          <FormField label="Service" error={errors.service?.message}>
+          <FormField label="Servicio" error={errors.service?.message}>
             <select
               {...register("service")}
               onChange={(e) => pickService(e.target.value)}
               className={inputClass}
               style={inputStyle}
             >
-              <option value="">Select service...</option>
+              <option value="">Elige un servicio...</option>
               {services.map((s) => {
                 const fixed = Number(s.price ?? 0);
                 return (
@@ -152,16 +158,38 @@ export default function NewAppointmentPage() {
           </FormField>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Date">
-              <input {...register("preferredDate")} type="date" className={inputClass} style={inputStyle} />
+            <FormField label="Fecha">
+              {/* Not a native date input: it cannot grey out the days she is
+                  closed, so Android offered every one of them. */}
+              <AvailableDatePicker
+                lang="es"
+                service={service}
+                value={date}
+                onChange={(d) => {
+                  setDate(d);
+                  setValue("preferredDate", d);
+                }}
+              />
             </FormField>
 
-            <FormField label="Time">
-              <input {...register("preferredTime")} type="time" className={inputClass} style={inputStyle} />
-            </FormField>
+
           </div>
 
-          <FormField label="Service price">
+          <FormField label="Hora">
+            {/* Only slots that fit the whole service and clash with nothing */}
+            <TimeSlotPicker
+              lang="es"
+              service={service}
+              date={date}
+              value={time}
+              onChange={(t) => {
+                setTime(t);
+                setValue("preferredTime", t);
+              }}
+            />
+          </FormField>
+
+          <FormField label="Precio del servicio">
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: "var(--admin-muted)" }}>
                 $
@@ -175,19 +203,19 @@ export default function NewAppointmentPage() {
                   setServicePrice(e.target.value);
                   setPriceEdited(true);
                 }}
-                placeholder="Set a fixed price in Content"
+                placeholder="Define un precio fijo en Contenido"
                 className={inputClass}
                 style={{ ...inputStyle, paddingLeft: 28 }}
               />
             </div>
             <p className="text-xs mt-1" style={{ color: "var(--admin-muted)" }}>
               {priceEdited
-                ? "Custom price for this booking only."
-                : "Filled from the fixed price in Content. Change it here for a one-off."}
+                ? "Precio especial solo para esta cita."
+                : "Se toma del precio fijo en Contenido. Cámbialo aquí si es un caso puntual."}
             </p>
           </FormField>
 
-          <FormField label="Deposit">
+          <FormField label="Depósito">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <select
                 value={depositChoice}
@@ -200,8 +228,8 @@ export default function NewAppointmentPage() {
                     ${amount} USD
                   </option>
                 ))}
-                <option value="custom">Other amount...</option>
-                <option value="none">No deposit</option>
+                <option value="custom">Otro monto...</option>
+                <option value="none">Sin depósito</option>
               </select>
 
               {depositChoice === "custom" && (
@@ -211,7 +239,7 @@ export default function NewAppointmentPage() {
                   step={5}
                   value={customDeposit}
                   onChange={(e) => setCustomDeposit(e.target.value)}
-                  placeholder="Amount in USD"
+                  placeholder="Monto en USD"
                   className={inputClass}
                   style={inputStyle}
                 />
@@ -220,13 +248,13 @@ export default function NewAppointmentPage() {
             <p className="text-xs mt-1" style={{ color: "var(--admin-muted)" }}>
               {depositChoice === "none" ||
               (depositChoice === "custom" && Number(customDeposit) === 0)
-                ? "No deposit — she confirms and that's it, no payment step."
-                : "Shown to her when she confirms, and on the Zelle instructions."}
+                ? "Sin depósito — ella confirma y listo, sin paso de pago."
+                : "Se le muestra al confirmar, junto con las instrucciones de Zelle."}
             </p>
           </FormField>
 
-          <FormField label="Message">
-            <textarea {...register("message")} rows={3} className={inputClass} style={inputStyle} placeholder="Notes..." />
+          <FormField label="Mensaje">
+            <textarea {...register("message")} rows={3} className={inputClass} style={inputStyle} placeholder="Notas..." />
           </FormField>
 
           <button
@@ -234,11 +262,11 @@ export default function NewAppointmentPage() {
             disabled={isSubmitting}
             className="w-full rounded-xl bg-[#6B4E3D] text-white py-3 font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
           >
-            {isSubmitting ? "Creating..." : "Create and share"}
+            {isSubmitting ? "Creando..." : "Crear y compartir"}
           </button>
           <p className="text-xs text-center" style={{ color: "var(--admin-muted)" }}>
-            Starts as pending. It becomes confirmed when she confirms — or, if
-            there is a deposit, once you mark the payment as received.
+            Nace como pendiente. Pasa a confirmada cuando ella confirme — o, si
+            lleva depósito, cuando marques el pago como recibido.
           </p>
         </form>
       </div>

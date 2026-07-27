@@ -23,14 +23,14 @@ export default function AdminLoginPage() {
       });
 
       if (!res.ok) {
-        setError("Incorrect password");
+        setError("Contraseña incorrecta");
         setLoading(false);
         return;
       }
 
       router.push("/studio");
     } catch {
-      setError("Something went wrong");
+      setError("Algo salió mal");
       setLoading(false);
     }
   };
@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
             <h1 className="text-2xl font-bold text-[#6B4E3D]">
               Aluh
             </h1>
-            <p className="text-[var(--admin-muted)] text-sm mt-1">Admin Dashboard</p>
+            <p className="text-[var(--admin-muted)] text-sm mt-1">Panel de administración</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
+              placeholder="Escribe tu contraseña"
               className="w-full rounded-xl border border-[var(--admin-input-border)] bg-[var(--admin-input)] px-4 py-3 text-[var(--admin-text)] placeholder:text-[var(--admin-placeholder)] focus:border-[#6B4E3D] focus:ring-1 focus:ring-[#6B4E3D] outline-none transition-colors"
               autoFocus
             />
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
               disabled={loading || !password}
               className="w-full rounded-xl bg-[#6B4E3D] text-white py-3 font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
         </div>

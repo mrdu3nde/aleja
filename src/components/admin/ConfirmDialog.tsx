@@ -15,7 +15,7 @@ export function ConfirmDialog({
   open,
   title,
   message,
-  confirmLabel = "Confirm",
+  confirmLabel = "Confirmar",
   variant = "danger",
   busy = false,
   onConfirm,
@@ -45,7 +45,7 @@ export function ConfirmDialog({
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--admin-hover)"}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={onConfirm}

@@ -32,16 +32,16 @@ export function PushToggle() {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const standalone = window.matchMedia?.("(display-mode: standalone)")?.matches;
       if (isIOS && !standalone) {
-        setHint("On iPhone: open in Safari, tap Share → Add to Home Screen, then enable it from there.");
+        setHint("En iPhone: abre en Safari, toca Compartir → Añadir a inicio, y actívalo desde ahí.");
       } else if (!VAPID) {
-        setHint("Missing VAPID key — notifications are not configured on this deployment.");
+        setHint("Falta la clave VAPID — las notificaciones no están configuradas.");
       }
       return;
     }
 
     if (Notification.permission === "denied") {
       setState("denied");
-      setHint("Notifications are blocked for this site in your browser settings.");
+      setHint("Tu navegador tiene bloqueadas las notificaciones para este sitio.");
       return;
     }
 
@@ -59,7 +59,7 @@ export function PushToggle() {
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         setState("denied");
-        setHint("You declined notifications. Allow them in your browser settings to turn this on.");
+        setHint("Rechazaste las notificaciones. Permítelas en los ajustes del navegador para activarlas.");
         return;
       }
 
@@ -79,7 +79,7 @@ export function PushToggle() {
       setState("on");
     } catch {
       setState("off");
-      setHint("Could not enable notifications. Try again.");
+      setHint("No se pudieron activar. Inténtalo de nuevo.");
     }
   };
 
@@ -110,7 +110,7 @@ export function PushToggle() {
       <div>
         <span className={base} style={{ color: "var(--admin-muted)" }}>
           <BellOff className="h-4 w-4" />
-          Notifications unavailable
+          Notificaciones no disponibles
         </span>
         {hint && (
           <p className="text-xs mt-1 max-w-xs" style={{ color: "var(--admin-muted)" }}>
@@ -135,10 +135,10 @@ export function PushToggle() {
       >
         {state === "on" ? <BellRing className="h-4 w-4" /> : <Bell className="h-4 w-4" />}
         {state === "working"
-          ? "Working..."
+          ? "Trabajando..."
           : state === "on"
-            ? "Notifications on"
-            : "Turn on notifications"}
+            ? "Notificaciones activas"
+            : "Activar notificaciones"}
       </button>
       {hint && (
         <p className="text-xs mt-1 max-w-xs" style={{ color: "var(--admin-muted)" }}>

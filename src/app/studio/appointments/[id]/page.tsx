@@ -127,7 +127,7 @@ function AppointmentDetailPageInner() {
     router.push("/studio/appointments");
   };
 
-  if (!apt) return <p style={{ color: "var(--admin-muted)" }}>Loading...</p>;
+  if (!apt) return <p style={{ color: "var(--admin-muted)" }}>Cargando...</p>;
 
   const isCancelled = apt.status === "cancelled";
   const depositReceived = apt.depositStatus === "received";
@@ -142,7 +142,7 @@ function AppointmentDetailPageInner() {
         className="flex items-center gap-1 text-sm hover:text-[#6B4E3D] mb-4 cursor-pointer"
         style={{ color: "var(--admin-muted)" }}
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Appointments
+        <ArrowLeft className="h-4 w-4" /> Volver a Citas
       </button>
 
       <div className="flex items-center gap-3 mb-6 flex-wrap">
@@ -150,8 +150,8 @@ function AppointmentDetailPageInner() {
             header because it acts on the whole record, not on one card. */}
         <button
           onClick={() => setShowDelete(true)}
-          aria-label="Delete appointment"
-          title="Delete appointment"
+          aria-label="Eliminar cita"
+          title="Eliminar cita"
           className="shrink-0 flex items-center justify-center h-9 w-9 rounded-lg cursor-pointer transition-colors"
           style={{ color: "var(--admin-muted)", backgroundColor: "transparent" }}
           onMouseEnter={(e) => {
@@ -178,7 +178,7 @@ function AppointmentDetailPageInner() {
             }}
           >
             <DollarSign className="h-3 w-3" />
-            {depositReceived ? "Deposit received" : "Awaiting deposit"}
+            {depositReceived ? "Depósito recibido" : "Falta depósito"}
           </span>
         )}
       </div>
@@ -190,19 +190,19 @@ function AppointmentDetailPageInner() {
         <div className="space-y-5">
       <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <div className="space-y-4">
-          <FormField label="Service">
+          <FormField label="Servicio">
             <p style={{ color: "var(--admin-text)" }}>{apt.service}</p>
           </FormField>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Email">
+            <FormField label="Correo">
               <p className="text-sm" style={{ color: "var(--admin-text)" }}>{apt.clientEmail}</p>
             </FormField>
-            <FormField label="Phone">
+            <FormField label="Teléfono">
               <p className="text-sm" style={{ color: "var(--admin-text)" }}>{apt.clientPhone ?? "—"}</p>
             </FormField>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Date">
+            <FormField label="Fecha">
               <p className="text-sm" style={{ color: "var(--admin-text)" }}>
                 {apt.preferredDate ? (
                   <>
@@ -217,16 +217,16 @@ function AppointmentDetailPageInner() {
                     )}
                   </>
                 ) : (
-                  <span style={{ color: "var(--admin-muted)" }}>No date set</span>
+                  <span style={{ color: "var(--admin-muted)" }}>Sin fecha</span>
                 )}
               </p>
             </FormField>
-            <FormField label="Source">
+            <FormField label="Origen">
               <p className="text-sm" style={{ color: "var(--admin-text)" }}>{apt.source ?? "—"}</p>
             </FormField>
           </div>
           {apt.message && (
-            <FormField label="Message">
+            <FormField label="Mensaje">
               <p className="text-sm" style={{ color: "var(--admin-muted)" }}>{apt.message}</p>
             </FormField>
           )}
@@ -238,7 +238,7 @@ function AppointmentDetailPageInner() {
       <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <h2 className="text-base font-semibold mb-3 flex items-center gap-2" style={{ color: "var(--admin-text)" }}>
           <User className="h-5 w-5" />
-          Client record
+          Expediente de la clienta
         </h2>
 
         {apt.client ? (
@@ -254,7 +254,7 @@ function AppointmentDetailPageInner() {
                 {formatPhone(apt.client.phone)} · {apt.client.email}
               </p>
               <p className="text-xs mt-0.5" style={{ color: "var(--admin-muted)" }}>
-                {apt.client._count?.appointments ?? 0} appointments on file
+                {apt.client._count?.appointments ?? 0} citas registradas
               </p>
             </button>
             <button
@@ -263,21 +263,21 @@ function AppointmentDetailPageInner() {
               style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)", minHeight: 40 }}
             >
               <Unlink className="h-4 w-4" />
-              Unlink
+              Desvincular
             </button>
           </div>
         ) : (
           <>
             <p className="text-sm mb-4" style={{ color: "var(--admin-muted)" }}>
-              This booking is not linked to a client yet. Linking it keeps her visit
-              history together — it is optional and you can change it any time.
+              Esta cita todavía no está vinculada a un expediente. Vincularla mantiene
+              su historial junto — es opcional y puedes cambiarlo cuando quieras.
             </p>
             <button
               onClick={() => setShowLink(true)}
               className="flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer"
             >
               <UserPlus className="h-4 w-4" />
-              Assign to client
+              Asignar a clienta
             </button>
           </>
         )}
@@ -288,14 +288,14 @@ function AppointmentDetailPageInner() {
       <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <h2 className="text-base font-semibold mb-2 flex items-center gap-2" style={{ color: "var(--admin-text)" }}>
           <Send className="h-5 w-5" />
-          Share with client
+          Compartir con la clienta
         </h2>
 
         {isCancelled ? (
           <p className="text-sm" style={{ color: "var(--admin-muted)" }}>
-            This appointment is cancelled, so there is nothing to confirm. Any
-            link already sent has stopped working. Set it back to pending or
-            confirmed to share it again.
+            Esta cita está cancelada, así que no hay nada que confirmar. El
+            enlace que enviaste dejó de funcionar. Vuélvela a pendiente o
+            confirmada para poder compartirla otra vez.
           </p>
         ) : apt.clientConfirmedAt ? (
           <div
@@ -303,13 +303,13 @@ function AppointmentDetailPageInner() {
             style={{ backgroundColor: "#dcfce7", color: "#166534" }}
           >
             <Check className="h-4 w-4 shrink-0" />
-            She confirmed on {new Date(apt.clientConfirmedAt).toLocaleString()}
+            Confirmó el {new Date(apt.clientConfirmedAt).toLocaleString("es-US")}
           </div>
         ) : (
           <p className="text-sm mb-4" style={{ color: "var(--admin-muted)" }}>
             {apt.shareToken
-              ? "Link already sent — she has not confirmed yet. You can send it again."
-              : "Send her a link so she can fill in her details and see the Zelle deposit."}
+              ? "Ya le enviaste el enlace — todavía no confirma. Puedes enviárselo de nuevo."
+              : "Envíale un enlace para que complete sus datos y vea el depósito por Zelle."}
           </p>
         )}
 
@@ -319,7 +319,7 @@ function AppointmentDetailPageInner() {
             className="flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer"
           >
             <Send className="h-4 w-4" />
-            {apt.shareToken ? "Share again" : "Share appointment"}
+            {apt.shareToken ? "Compartir otra vez" : "Compartir cita"}
           </button>
         )}
       </div>
@@ -345,10 +345,10 @@ function AppointmentDetailPageInner() {
         <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
           <h2 className="text-base font-semibold mb-2 flex items-center gap-2" style={{ color: "var(--admin-text)" }}>
             <DollarSign className="h-5 w-5" />
-            Deposit
+            Depósito
           </h2>
           <p className="text-sm mb-4" style={{ color: "var(--admin-muted)" }}>
-            No deposit for this appointment. She is not asked to pay anything to confirm.
+            Esta cita no lleva depósito. No se le pide pagar nada para confirmar.
           </p>
           <button
             onClick={() => updateDepositAmount(String(depositConfig.amount))}
@@ -357,7 +357,7 @@ function AppointmentDetailPageInner() {
             style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
           >
             <DollarSign className="h-4 w-4" />
-            {savingAmount ? "Saving..." : `Require a $${depositConfig.amount} deposit`}
+            {savingAmount ? "Guardando..." : `Pedir un depósito de $${depositConfig.amount}`}
           </button>
         </div>
       )}
@@ -367,10 +367,10 @@ function AppointmentDetailPageInner() {
         <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
           <h2 className="text-base font-semibold mb-3 flex items-center gap-2" style={{ color: "var(--admin-text)" }}>
             <DollarSign className="h-5 w-5" />
-            Deposit
+            Depósito
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
-            <FormField label="Amount">
+            <FormField label="Monto">
               {depositReceived ? (
                 <p className="text-sm font-semibold" style={{ color: "var(--admin-text)" }}>
                   ${String(depositAmount)} USD
@@ -401,14 +401,14 @@ function AppointmentDetailPageInner() {
                   {!DEPOSIT_PRESETS.some((p) => p === Number(depositAmount)) && (
                     <option value="custom">${String(depositAmount)} USD</option>
                   )}
-                  <option value="0">No deposit</option>
+                  <option value="0">Sin depósito</option>
                 </select>
               )}
             </FormField>
-            <FormField label="Reference">
+            <FormField label="Referencia">
               <p className="text-sm font-mono font-semibold" style={{ color: "var(--admin-text)" }}>{referenceCode}</p>
             </FormField>
-            <FormField label="Received at">
+            <FormField label="Recibido el">
               <p className="text-sm" style={{ color: "var(--admin-text)" }}>
                 {apt.depositReceivedAt
                   ? new Date(apt.depositReceivedAt).toLocaleString()
@@ -425,7 +425,7 @@ function AppointmentDetailPageInner() {
               style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
             >
               <X className="h-4 w-4" />
-              Unmark deposit
+              Quitar depósito
             </button>
           ) : (
             <button
@@ -434,14 +434,14 @@ function AppointmentDetailPageInner() {
               className="flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors cursor-pointer disabled:opacity-40"
             >
               <Check className="h-4 w-4" />
-              {depositSaving ? "Saving..." : "Mark deposit as received"}
+              {depositSaving ? "Guardando..." : "Marcar depósito como recibido"}
             </button>
           )}
           {!depositReceived && (
             <p className="text-xs mt-3" style={{ color: "var(--admin-muted)" }}>
               {isCancelled
-                ? "Cancelled — no deposit can be taken for this appointment."
-                : "Marking this will set the appointment to confirmed and email the client."}
+                ? "Cancelada — no se puede cobrar depósito para esta cita."
+                : "Al marcarlo, la cita pasa a confirmada y se le envía un correo a la clienta."}
             </p>
           )}
         </div>
@@ -453,7 +453,7 @@ function AppointmentDetailPageInner() {
       {/* Full width under both columns: changing status or deleting applies
           to the whole appointment, not to either side. */}
       <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--admin-text)" }}>
-        Update status
+        Cambiar estado
       </h2>
       <div className="flex flex-wrap gap-2">
         {statuses.map((s) => (
@@ -505,9 +505,9 @@ function AppointmentDetailPageInner() {
 
       <ConfirmDialog
         open={depositConfirm === "received"}
-        title="Confirm deposit received"
-        message={`Confirm that ${apt.clientName} sent the $${String(depositAmount)} USD deposit (reference ${referenceCode}). This will set the appointment to CONFIRMED and immediately email the client. Check your Zelle before continuing.`}
-        confirmLabel={depositSaving ? "Saving..." : "Yes, deposit received"}
+        title="Confirmar depósito recibido"
+        message={`Confirma que ${apt.clientName} envió el depósito de $${String(depositAmount)} USD (referencia ${referenceCode}). La cita pasará a CONFIRMADA y se le enviará un correo de inmediato. Revisa tu Zelle antes de continuar.`}
+        confirmLabel={depositSaving ? "Guardando..." : "Sí, recibí el depósito"}
         variant="success"
         busy={depositSaving}
         onConfirm={() => updateDeposit("received")}
@@ -516,9 +516,9 @@ function AppointmentDetailPageInner() {
 
       <ConfirmDialog
         open={depositConfirm === "unmark"}
-        title="Unmark deposit"
-        message="This reverts the deposit to pending and sets the appointment back to PENDING. No email is sent now — but if you mark it as received again later, the client will get the confirmation email a second time."
-        confirmLabel={depositSaving ? "Saving..." : "Yes, unmark it"}
+        title="Quitar depósito"
+        message="Esto devuelve el depósito a pendiente y la cita a PENDIENTE. Ahora no se envía ningún correo, pero si vuelves a marcarlo como recibido más adelante, la clienta recibirá el correo de confirmación por segunda vez."
+        confirmLabel={depositSaving ? "Guardando..." : "Sí, quítalo"}
         busy={depositSaving}
         onConfirm={() => updateDeposit("unmark")}
         onCancel={() => setDepositConfirm(null)}
@@ -526,9 +526,9 @@ function AppointmentDetailPageInner() {
 
       <ConfirmDialog
         open={showDelete}
-        title="Delete Appointment"
-        message="This permanently removes the appointment and its deposit record. No email is sent to the client. This action cannot be undone."
-        confirmLabel="Delete"
+        title="Eliminar cita"
+        message="Esto elimina la cita y su registro de depósito de forma permanente. No se envía ningún correo a la clienta. Esta acción no se puede deshacer."
+        confirmLabel="Eliminar"
         onConfirm={handleDelete}
         onCancel={() => setShowDelete(false)}
       />
@@ -542,7 +542,7 @@ function AppointmentDetailPageInner() {
  */
 export default function AppointmentDetailPage() {
   return (
-    <Suspense fallback={<p style={{ color: "var(--admin-muted)" }}>Loading...</p>}>
+    <Suspense fallback={<p style={{ color: "var(--admin-muted)" }}>Cargando...</p>}>
       <AppointmentDetailPageInner />
     </Suspense>
   );

@@ -11,16 +11,17 @@ import { Pagination } from "@/components/admin/Pagination";
 import { SearchInput } from "@/components/admin/SearchInput";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { isoDay } from "@/lib/dates";
+import type { OpeningHours } from "@/lib/time";
 
 type Appointment = Record<string, unknown>;
 
 /** Filters named after the owner's daily tasks, not after internal status values. */
 const FILTERS = [
-  { key: "upcoming", label: "Upcoming" },
-  { key: "deposit", label: "Needs deposit" },
-  { key: "all", label: "All" },
-  { key: "past", label: "Past" },
-  { key: "cancelled", label: "Cancelled" },
+  { key: "upcoming", label: "Próximas" },
+  { key: "deposit", label: "Falta depósito" },
+  { key: "all", label: "Todas" },
+  { key: "past", label: "Pasadas" },
+  { key: "cancelled", label: "Canceladas" },
 ] as const;
 
 type FilterKey = (typeof FILTERS)[number]["key"];
@@ -47,6 +48,7 @@ function AppointmentsPageInner() {
   const [reloadKey, setReloadKey] = useState(0);
   const [depositTarget, setDepositTarget] = useState<Appointment | null>(null);
   const [markingId, setMarkingId] = useState<string | null>(null);
+  const [hours, setHours] = useState<OpeningHours | null>(null);
   const router = useRouter();
 
   const buildParams = useCallback(() => {
@@ -130,6 +132,23 @@ function AppointmentsPageInner() {
         if (!cancelled) setPendingDeposits(res.total ?? 0);
       })
       .catch(() => {});
+    // Opening hours are stable, so one fetch feeds both calendar views.
+    fetch("/api/studio/availability")
+      .then((r) => r.json())
+      .then((res) => {
+        if (cancelled) return;
+        const days: OpeningHours["days"] = {};
+        for (let i = 0; i < 7; i++) days[i] = null;
+        for (const d of res.days ?? []) {
+          days[d.dayOfWeek] = d.active
+            ? { startMinutes: d.startMinutes, endMinutes: d.endMinutes }
+            : null;
+        }
+        const blocked: OpeningHours["blocked"] = {};
+        for (const b of res.blocked ?? []) blocked[b.date] = b.reason ?? "";
+        setHours({ days, blocked });
+      })
+      .catch(() => {});
     fetch("/api/studio/confirmations")
       .then((r) => r.json())
       .then((res) => {
@@ -171,14 +190,14 @@ function AppointmentsPageInner() {
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>
-            Appointments
+            Citas
           </h1>
           <p className="text-sm mt-1" style={{ color: "var(--admin-muted)" }}>
             {loading && !total ? (
-              "Loading..."
+              "Cargando..."
             ) : (
               <>
-                {total} {total === 1 ? "appointment" : "appointments"}
+                {total} {total === 1 ? "cita" : "citas"}
                 {pendingDeposits > 0 && (
                   <>
                     {" · "}
@@ -187,7 +206,7 @@ function AppointmentsPageInner() {
                       className="underline cursor-pointer font-medium"
                       style={{ color: "#B45309" }}
                     >
-                      {pendingDeposits} awaiting deposit
+                      {pendingDeposits} esperan depósito
                     </button>
                   </>
                 )}
@@ -202,9 +221,9 @@ function AppointmentsPageInner() {
             style={{ backgroundColor: "var(--admin-filter-bg)" }}
           >
             {([
-              { key: "list", label: "List", icon: List },
-              { key: "week", label: "Week", icon: CalendarRange },
-              { key: "month", label: "Month", icon: CalendarDays },
+              { key: "list", label: "Lista", icon: List },
+              { key: "week", label: "Semana", icon: CalendarRange },
+              { key: "month", label: "Mes", icon: CalendarDays },
             ] as const).map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -231,7 +250,7 @@ function AppointmentsPageInner() {
             style={{ border: "1px solid var(--admin-border)", color: "var(--admin-text)" }}
           >
             <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline">New appointment</span>
+            <span className="hidden sm:inline">Nueva cita</span>
           </button>
         </div>
       </div>
@@ -242,14 +261,14 @@ function AppointmentsPageInner() {
           style={{ backgroundColor: "#dcfce7", color: "#166534" }}
         >
           <BellRing className="h-4 w-4 shrink-0" />
-          {newConfirmations} {newConfirmations === 1 ? "client" : "clients"} confirmed since
-          you last looked — open the appointment to see the details.
+          {newConfirmations} {newConfirmations === 1 ? "clienta confirmó" : "clientas confirmaron"} desde
+          la última vez — abre la cita para ver los detalles.
         </div>
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
         <div className="flex-1">
-          <SearchInput value={search} onChange={setSearch} placeholder="Search client..." />
+          <SearchInput value={search} onChange={setSearch} placeholder="Buscar clienta..." />
         </div>
         <PushToggle />
       </div>
@@ -297,6 +316,7 @@ function AppointmentsPageInner() {
           onWeekChange={setWeekStart}
           onSelect={(id) => router.push(`/studio/appointments/${id}`)}
           loading={loading}
+          hours={hours}
         />
       ) : view === "month" ? (
         <AppointmentCalendar
@@ -305,6 +325,7 @@ function AppointmentsPageInner() {
           onMonthChange={setMonth}
           onSelect={(id) => router.push(`/studio/appointments/${id}`)}
           loading={loading}
+          hours={hours}
         />
       ) : (
         <>
@@ -318,23 +339,23 @@ function AppointmentsPageInner() {
             markingId={markingId}
             emptyTitle={
               search
-                ? "No results"
+                ? "Sin resultados"
                 : filter === "deposit"
-                  ? "No appointment is awaiting deposit"
+                  ? "Ninguna cita espera depósito"
                   : filter === "past"
-                    ? "No past appointments"
+                    ? "No hay citas pasadas"
                     : filter === "cancelled"
-                      ? "Nothing cancelled"
-                      : "No upcoming appointments"
+                      ? "Nada cancelado"
+                      : "No tienes citas próximas"
             }
             emptyDescription={
               search
-                ? `No client matches "${search}".`
+                ? `Ninguna clienta coincide con "${search}".`
                 : filter === "deposit"
-                  ? "All deposits are up to date."
+                  ? "Todos los depósitos están al día."
                   : filter === "cancelled"
-                    ? "No appointment has been cancelled."
-                    : "Bookings from your website will show up here automatically."
+                    ? "Ninguna cita ha sido cancelada."
+                    : "Las reservas de tu web aparecerán aquí automáticamente."
             }
             emptyAction={
               !search &&
@@ -342,7 +363,7 @@ function AppointmentsPageInner() {
                 filter !== "past" &&
                 filter !== "cancelled"
                 ? {
-                    label: "+ Create one manually",
+                    label: "+ Crear una a mano",
                     onClick: () => router.push("/studio/appointments/new"),
                   }
                 : undefined
@@ -354,15 +375,15 @@ function AppointmentsPageInner() {
 
       <ConfirmDialog
         open={depositTarget !== null}
-        title="Confirm deposit received"
+        title="Confirmar depósito recibido"
         message={
           depositTarget
-            ? `Confirm that ${depositTarget.clientName} sent the $${String(
+            ? `Confirma que ${depositTarget.clientName} envió el depósito de $${String(
                 depositTarget.depositAmount ?? 20,
-              )} USD deposit. This will set the appointment to CONFIRMED and immediately email the client. Check your Zelle before continuing.`
+              )} USD. La cita pasará a CONFIRMADA y se le enviará un correo de inmediato. Revisa tu Zelle antes de continuar.`
             : ""
         }
-        confirmLabel={markingId ? "Saving..." : "Yes, deposit received"}
+        confirmLabel={markingId ? "Guardando..." : "Sí, recibí el depósito"}
         variant="success"
         busy={markingId !== null}
         onConfirm={confirmDeposit}

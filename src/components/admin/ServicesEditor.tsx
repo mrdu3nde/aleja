@@ -13,12 +13,14 @@ import {
   Eye,
 } from "lucide-react";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
+import { humanDuration } from "@/lib/time";
 
 export type Service = {
   id: string;
   slug: string;
   name: string;
   price: string | number | null;
+  durationMinutes: number;
   imageUrl: string | null;
   icon: string | null;
   sortOrder: number;
@@ -103,7 +105,7 @@ export function ServicesEditor({
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && add()}
-          placeholder="New service name..."
+          placeholder="Nombre del servicio nuevo..."
           autoComplete="off"
           style={inputStyle}
         />
@@ -113,19 +115,19 @@ export function ServicesEditor({
           className="shrink-0 flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer disabled:opacity-40"
         >
           <Plus className="h-4 w-4" />
-          {adding ? "Adding..." : "Add"}
+          {adding ? "Agregando..." : "Agregar"}
         </button>
       </div>
 
       <ConfirmDialog
         open={deleteTarget !== null}
-        title="Delete service"
+        title="Eliminar servicio"
         message={
           deleteTarget
-            ? `Delete "${deleteTarget.name}"? It disappears from your website and from the list when booking. Past appointments keep the name, so your history stays intact.`
+            ? `¿Eliminar "${deleteTarget.name}"? Desaparece de tu web y de la lista al agendar. Las citas pasadas conservan el nombre, así que tu historial queda intacto.`
             : ""
         }
-        confirmLabel={deleting ? "Deleting..." : "Delete"}
+        confirmLabel={deleting ? "Eliminando..." : "Eliminar"}
         busy={deleting}
         onConfirm={confirmDelete}
         onCancel={() => setDeleteTarget(null)}
@@ -157,6 +159,7 @@ function ServiceRow({
   const [price, setPrice] = useState(
     service.price != null ? String(Number(service.price)) : "",
   );
+  const [duration, setDuration] = useState(String(service.durationMinutes ?? 60));
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -164,7 +167,8 @@ function ServiceRow({
   useEffect(() => {
     setName(service.name);
     setPrice(service.price != null ? String(Number(service.price)) : "");
-  }, [service.name, service.price]);
+    setDuration(String(service.durationMinutes ?? 60));
+  }, [service.name, service.price, service.durationMinutes]);
 
   const pickPhoto = async (file: File) => {
     setUploading(true);
@@ -180,8 +184,8 @@ function ServiceRow({
       const message = (err as Error).message ?? "";
       setUploadError(
         message.includes("501") || message.toLowerCase().includes("not set up")
-          ? "Photo storage is not connected yet."
-          : "Could not upload the photo. Try a smaller image.",
+          ? "El almacenamiento de fotos aún no está conectado."
+          : "No se pudo subir la foto. Prueba con una imagen más pequeña.",
       );
     } finally {
       setUploading(false);
@@ -227,15 +231,20 @@ function ServiceRow({
           {service.name}
           {!service.active && (
             <span className="ml-2 text-xs font-normal" style={{ color: "var(--admin-muted)" }}>
-              hidden
+              oculto
             </span>
           )}
+        </span>
+        <span className="text-xs shrink-0" style={{ color: "var(--admin-muted)" }}>
+          {(service.durationMinutes ?? 60) < 60
+            ? `${service.durationMinutes}min`
+            : `${Math.floor((service.durationMinutes ?? 60) / 60)}h`}
         </span>
         <span
           className="text-sm font-medium shrink-0"
           style={{ color: Number(service.price) > 0 ? "var(--admin-text)" : "var(--admin-muted)" }}
         >
-          {Number(service.price) > 0 ? `$${Number(service.price)}` : "no price"}
+          {Number(service.price) > 0 ? `$${Number(service.price)}` : "sin precio"}
         </span>
       </button>
 
@@ -244,7 +253,7 @@ function ServiceRow({
           <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--admin-text)" }}>
-                Name
+                Nombre
               </label>
               <input
                 type="text"
@@ -257,7 +266,7 @@ function ServiceRow({
             </div>
             <div>
               <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--admin-text)" }}>
-                Price
+                Precio
               </label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm" style={{ color: "var(--admin-muted)" }}>
@@ -281,7 +290,30 @@ function ServiceRow({
 
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--admin-text)" }}>
-              Title on the website
+              Cuánto dura
+            </label>
+            <select
+              value={duration}
+              onChange={(e) => {
+                setDuration(e.target.value);
+                onPatch({ durationMinutes: Number(e.target.value) });
+              }}
+              style={inputStyle}
+            >
+              {[15, 30, 45, 60, 90, 120, 150, 180, 240].map((mins) => (
+                <option key={mins} value={String(mins)}>
+                  {humanDuration(mins)}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs mt-1" style={{ color: "var(--admin-muted)" }}>
+Sirve para calcular en qué horarios todavía te pueden reservar.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--admin-text)" }}>
+              Título en la web
             </label>
             <input
               type="text"
@@ -295,7 +327,7 @@ function ServiceRow({
 
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--admin-text)" }}>
-              Description
+              Descripción
             </label>
             <textarea
               value={values[`services_section.${service.slug}.description`] ?? ""}
@@ -310,7 +342,7 @@ function ServiceRow({
           {/* Photo */}
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--admin-text)" }}>
-              Photo
+              Foto
             </label>
             <div className="flex items-center gap-3">
               {service.imageUrl ? (
@@ -354,7 +386,7 @@ function ServiceRow({
                   ) : (
                     <ImagePlus className="h-4 w-4" />
                   )}
-                  {uploading ? "Uploading..." : service.imageUrl ? "Replace photo" : "Upload photo"}
+                  {uploading ? "Subiendo..." : service.imageUrl ? "Cambiar foto" : "Subir foto"}
                 </button>
                 {service.imageUrl && (
                   <button
@@ -363,7 +395,7 @@ function ServiceRow({
                     className="text-xs text-left cursor-pointer"
                     style={{ color: "var(--admin-muted)" }}
                   >
-                    Remove photo
+                    Quitar foto
                   </button>
                 )}
               </div>
@@ -385,13 +417,13 @@ function ServiceRow({
               style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
             >
               {service.active ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              {service.active ? "Hide from website" : "Show on website"}
+              {service.active ? "Ocultar de la web" : "Mostrar en la web"}
             </button>
             <button
               type="button"
               onClick={onDelete}
-              aria-label={`Delete ${service.name}`}
-              title={`Delete ${service.name}`}
+              aria-label={`Eliminar ${service.name}`}
+              title={`Eliminar ${service.name}`}
               className="flex items-center justify-center px-4 py-2 rounded-xl cursor-pointer transition-colors sm:ml-auto"
               style={{ backgroundColor: "#fee2e2", color: "#b91c1c" }}
             >

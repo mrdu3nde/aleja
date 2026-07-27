@@ -11,12 +11,12 @@ const dmSans = DM_Sans({
 });
 
 export const metadata = {
-  title: "Admin — Aluh",
+  title: "Panel — Aluh",
 };
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={dmSans.variable} data-admin-theme="dark">
+    <html lang="es" className={dmSans.variable} data-admin-theme="dark">
       <body
         className="min-h-screen antialiased"
         style={{

@@ -45,7 +45,7 @@ export function WeeklyChart({ data }: Props) {
         className="flex items-center justify-center"
         style={{ height: 200, color: "var(--admin-muted)" }}
       >
-        <p className="text-sm">No appointments this week yet</p>
+        <p className="text-sm">Aún no hay citas esta semana</p>
       </div>
     );
   }

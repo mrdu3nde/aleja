@@ -6,6 +6,7 @@ export const bookingSchema = z.object({
   phone: z.string().min(7),
   service: z.string().min(1),
   preferredDate: z.string().optional(),
+  preferredTime: z.string().optional(),
   message: z.string().optional(),
   contactPreference: z.enum(["email", "phone", "whatsapp"]),
   locale: z.string().optional(),

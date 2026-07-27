@@ -77,7 +77,7 @@ export function ClientPicker({
         <button
           type="button"
           onClick={onClear}
-          aria-label="Clear selected client"
+          aria-label="Quitar clienta seleccionada"
           className="p-1.5 rounded-lg cursor-pointer shrink-0"
           style={{ color: "var(--admin-muted)" }}
         >
@@ -116,7 +116,7 @@ export function ClientPicker({
           setQuery(e.target.value);
           setOpen(true);
         }}
-        placeholder="Type to find an existing client..."
+        placeholder="Escribe para buscar una clienta..."
         className="w-full rounded-xl pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-1 focus:ring-[#6B4E3D]"
         style={{
           border: "1px solid var(--admin-input-border)",
@@ -134,11 +134,11 @@ export function ClientPicker({
         >
           {loading ? (
             <p className="text-sm p-3" style={{ color: "var(--admin-muted)" }}>
-              Loading...
+              Cargando...
             </p>
           ) : results.length === 0 ? (
             <p className="text-sm p-3" style={{ color: "var(--admin-muted)" }}>
-              {query ? "No match — fill the fields below to create a new one." : "No clients yet."}
+              {query ? "Sin coincidencias — llena los campos de abajo para crear una." : "Aún no tienes clientas."}
             </p>
           ) : (
             results.map((c) => (

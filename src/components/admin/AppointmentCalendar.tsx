@@ -2,10 +2,14 @@
 
 import { ChevronLeft, ChevronRight, DollarSign } from "lucide-react";
 import { isoDay, STATUS_LABELS } from "@/lib/dates";
+import { openingFor, formatTime12, toHHMM, type OpeningHours } from "@/lib/time";
 
 type Appointment = Record<string, unknown>;
 
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const WEEKDAYS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+
+/** Diagonal hatching marks a day the studio does not work. */
+const CLOSED_HATCH = "repeating-linear-gradient(45deg, transparent, transparent 5px, color-mix(in srgb, var(--admin-muted) 22%, transparent) 5px, color-mix(in srgb, var(--admin-muted) 22%, transparent) 6px)";
 
 const statusColor: Record<string, string> = {
   pending: "#F59E0B",
@@ -28,12 +32,15 @@ export function AppointmentCalendar({
   onMonthChange,
   onSelect,
   loading,
+  hours,
 }: {
   month: Date;
   appointments: Appointment[];
   onMonthChange: (next: Date) => void;
   onSelect: (id: string) => void;
   loading?: boolean;
+  /** Opening hours, so closed days read as closed rather than merely empty. */
+  hours?: OpeningHours | null;
 }) {
   const year = month.getFullYear();
   const monthIndex = month.getMonth();
@@ -69,21 +76,21 @@ export function AppointmentCalendar({
           onClick={() => onMonthChange(new Date(year, monthIndex - 1, 1))}
           className="p-2 rounded-lg cursor-pointer transition-colors"
           style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
-          aria-label="Previous month"
+          aria-label="Mes anterior"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
 
         <div className="flex items-center gap-3">
           <h2 className="text-lg font-semibold capitalize" style={{ color: "var(--admin-text)" }}>
-            {month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+            {month.toLocaleDateString("es-US", { month: "long", year: "numeric" })}
           </h2>
           <button
             onClick={() => onMonthChange(new Date())}
             className="px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors"
             style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
           >
-            Today
+            Hoy
           </button>
         </div>
 
@@ -91,7 +98,7 @@ export function AppointmentCalendar({
           onClick={() => onMonthChange(new Date(year, monthIndex + 1, 1))}
           className="p-2 rounded-lg cursor-pointer transition-colors"
           style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
-          aria-label="Next month"
+          aria-label="Mes siguiente"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -120,29 +127,58 @@ export function AppointmentCalendar({
           {cells.map((day, i) => {
             const items = day ? byDay.get(day) ?? [] : [];
             const isToday = day === today;
+            const opening = day ? openingFor(day, hours ?? null) : null;
+            const closed = opening !== null && !opening.open;
             return (
               <div
                 key={i}
                 className="p-1.5 min-h-[104px]"
+                title={
+                  closed && opening && !opening.open
+                    ? opening.reason
+                    : opening && opening.open && hours
+                      ? `${formatTime12(toHHMM(opening.startMinutes))} – ${formatTime12(toHHMM(opening.endMinutes))}`
+                      : undefined
+                }
                 style={{
                   borderBottom: "1px solid var(--admin-border)",
                   borderRight: (i + 1) % 7 === 0 ? "none" : "1px solid var(--admin-border)",
-                  backgroundColor: day ? "transparent" : "var(--admin-filter-bg)",
+                  backgroundColor: !day ? "var(--admin-filter-bg)" : "transparent",
+                  // Diagonal hatching rather than a dimmer shade: a closed day
+                  // has to be unmistakable at a glance, and lowering the opacity
+                  // of the whole cell made its own label unreadable.
+                  backgroundImage: closed ? CLOSED_HATCH : undefined,
                 }}
               >
                 {day && (
                   <>
+                    {/* The day number and its bookings fade out on a closed day
+                        so it reads as unavailable. The label sits outside the
+                        fade, or it would be the least legible thing in the cell. */}
                     <div
                       className="text-xs font-semibold mb-1 w-6 h-6 flex items-center justify-center rounded-full"
                       style={
                         isToday
                           ? { backgroundColor: "#6B4E3D", color: "#fff" }
-                          : { color: "var(--admin-muted)" }
+                          : closed
+                            ? { color: "var(--admin-muted)", opacity: 0.45 }
+                            : { color: "var(--admin-text)" }
                       }
                     >
                       {Number(day.slice(8))}
                     </div>
-                    <div className="flex flex-col gap-1">
+                    {closed && opening && !opening.open && (
+                      <p
+                        className="text-[11px] font-medium truncate mb-1"
+                        style={{ color: "var(--admin-muted)" }}
+                      >
+                        {opening.reason}
+                      </p>
+                    )}
+                    <div
+                      className="flex flex-col gap-1"
+                      style={closed ? { opacity: 0.45 } : undefined}
+                    >
                       {items.slice(0, 3).map((apt) => {
                         const status = (apt.status as string) ?? "pending";
                         const depositPending =
@@ -151,7 +187,7 @@ export function AppointmentCalendar({
                           <button
                             key={apt.id as string}
                             onClick={() => onSelect(apt.id as string)}
-                            aria-label={`${apt.clientName} — ${apt.service}, ${STATUS_LABELS[status] ?? status}${depositPending ? ", deposit pending" : ""}`}
+                            aria-label={`${apt.clientName} — ${apt.service}, ${STATUS_LABELS[status] ?? status}${depositPending ? ", falta depósito" : ""}`}
                             className="w-full text-left px-1.5 rounded-md text-[11px] leading-tight cursor-pointer truncate flex items-center gap-1"
                             style={{
                               backgroundColor: `${statusColor[status] ?? "#9CA3AF"}22`,
@@ -176,7 +212,7 @@ export function AppointmentCalendar({
                       })}
                       {items.length > 3 && (
                         <span className="text-[11px] px-1.5" style={{ color: "var(--admin-muted)" }}>
-                          +{items.length - 3} more
+                          +{items.length - 3} más
                         </span>
                       )}
                     </div>
@@ -204,13 +240,22 @@ export function AppointmentCalendar({
         ))}
         <span className="flex items-center gap-1.5">
           <DollarSign className="h-3 w-3" style={{ color: "#F59E0B" }} />
-          Deposit pending
+          Falta depósito
         </span>
+        {hours && (
+          <span className="flex items-center gap-1.5">
+            <span
+              className="w-4 h-4 rounded-sm"
+              style={{ border: "1px solid var(--admin-border)", backgroundImage: CLOSED_HATCH }}
+            />
+            Cerrado
+          </span>
+        )}
       </div>
 
       {loading && (
         <p className="text-sm mt-3" style={{ color: "var(--admin-muted)" }}>
-          Loading...
+          Cargando...
         </p>
       )}
 
@@ -221,7 +266,7 @@ export function AppointmentCalendar({
           style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}
         >
           <h3 className="text-sm font-semibold mb-3" style={{ color: "var(--admin-text)" }}>
-            No date set ({undated.length})
+            Sin fecha ({undated.length})
           </h3>
           <div className="flex flex-wrap gap-2">
             {undated.map((apt) => (

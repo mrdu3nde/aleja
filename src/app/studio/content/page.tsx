@@ -9,12 +9,12 @@ type SectionDef = { key: string; label: string; keys: string[] };
 const sections: SectionDef[] = [
   {
     key: "hero",
-    label: "Hero Section",
+    label: "Portada",
     keys: ["hero.headline", "hero.subheadline"],
   },
   {
     key: "trust",
-    label: "Trust Pillars",
+    label: "Pilares de confianza",
     keys: [
       "trust.title",
       "trust.personalized",
@@ -29,7 +29,7 @@ const sections: SectionDef[] = [
   },
   {
     key: "services",
-    label: "Services",
+    label: "Servicios",
     keys: [
       "services_section.title",
       "services_section.subtitle",
@@ -49,7 +49,7 @@ const sections: SectionDef[] = [
   },
   {
     key: "about",
-    label: "About",
+    label: "Nosotros",
     keys: [
       "about_preview.title",
       "about_preview.text",
@@ -221,12 +221,12 @@ export default function ContentPage() {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>
-          Website Content
+          Contenido del sitio
         </h1>
         <div className="flex items-center gap-3">
           {saved && (
             <span className="flex items-center gap-1 text-sm text-green-500">
-              <CheckCircle className="h-4 w-4" /> Saved
+              <CheckCircle className="h-4 w-4" /> Guardado
             </span>
           )}
           <button
@@ -235,7 +235,7 @@ export default function ContentPage() {
             className="flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
           >
             <Save className="h-4 w-4" />
-            {saving ? "Saving..." : "Save All"}
+            {saving ? "Guardando..." : "Guardar todo"}
           </button>
         </div>
       </div>
@@ -287,7 +287,7 @@ export default function ContentPage() {
                 {section.label}
               </h2>
               <span className="text-sm" style={{ color: "var(--admin-muted)" }}>
-                {section.key === "services" ? `${services.length} services` : `${section.keys.length} fields`}
+                {section.key === "services" ? `${services.length} servicios` : `${section.keys.length} campos`}
               </span>
             </button>
 

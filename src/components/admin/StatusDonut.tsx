@@ -7,10 +7,10 @@ type Props = {
 };
 
 const COLORS: Record<string, { fill: string; label: string }> = {
-  pending: { fill: "#F59E0B", label: "Pending" },
-  confirmed: { fill: "#2563EB", label: "Confirmed" },
-  completed: { fill: "#10B981", label: "Completed" },
-  cancelled: { fill: "#EF4444", label: "Cancelled" },
+  pending: { fill: "#F59E0B", label: "Pendientes" },
+  confirmed: { fill: "#2563EB", label: "Confirmadas" },
+  completed: { fill: "#10B981", label: "Completadas" },
+  cancelled: { fill: "#EF4444", label: "Canceladas" },
 };
 
 export function StatusDonut({ data }: Props) {
@@ -42,7 +42,7 @@ export function StatusDonut({ data }: Props) {
             marginBottom: 12,
           }}
         >
-          <span className="text-xs">No data</span>
+          <span className="text-xs">Sin datos</span>
         </div>
       </div>
     );

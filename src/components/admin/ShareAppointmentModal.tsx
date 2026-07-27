@@ -179,7 +179,7 @@ export function ShareAppointmentModal({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Share appointment"
+        aria-label="Compartir cita"
         onClick={(e) => e.stopPropagation()}
         className="rounded-2xl w-full max-w-lg shadow-xl flex flex-col"
         style={{
@@ -191,7 +191,7 @@ export function ShareAppointmentModal({
         <div className="p-5 pb-4" style={{ borderBottom: "1px solid var(--admin-border)" }}>
           <div className="flex items-center gap-3">
             <h3 className="text-lg font-semibold flex-1 min-w-0" style={{ color: "var(--admin-text)" }}>
-              Share appointment
+              Compartir cita
             </h3>
 
             {/* Language sits with the title: it governs both the message and the
@@ -217,7 +217,7 @@ export function ShareAppointmentModal({
 
             <button
               onClick={onClose}
-              aria-label="Close"
+              aria-label="Cerrar"
               className="p-2 rounded-lg cursor-pointer shrink-0"
               style={{ color: "var(--admin-muted)" }}
             >
@@ -225,7 +225,7 @@ export function ShareAppointmentModal({
             </button>
           </div>
           <p className="text-sm mt-1" style={{ color: "var(--admin-muted)" }}>
-            She fills in what is missing, then sees the Zelle details
+            Ella completa lo que falta y luego ve los datos del Zelle
           </p>
         </div>
 
@@ -233,16 +233,16 @@ export function ShareAppointmentModal({
           {error ? (
             <div className="flex items-start gap-2 p-3 rounded-xl text-sm" style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "#B91C1C" }}>
               <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
-              Could not create the share link. Close this and try again.
+No se pudo crear el enlace. Cierra esto e inténtalo de nuevo.
             </div>
           ) : !shared ? (
             <p className="text-sm" style={{ color: "var(--admin-muted)" }}>
-              Preparing link...
+              Preparando el enlace...
             </p>
           ) : (
             <>
               <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--admin-muted)" }}>
-                Message to send
+                Mensaje para enviar
               </p>
 
               {/* overflowWrap:anywhere — the share URL is one long unbroken
@@ -267,8 +267,8 @@ export function ShareAppointmentModal({
                   style={{ backgroundColor: "#fef3c7", color: "#92400e" }}
                 >
                   <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
-                  Your browser blocked automatic copying. Tap and hold the message
-                  above to select it, then copy.
+                  Tu navegador bloqueó la copia automática. Mantén presionado el
+                  mensaje de arriba para seleccionarlo y cópialo.
                 </div>
               )}
 
@@ -278,12 +278,12 @@ export function ShareAppointmentModal({
                 style={{ backgroundColor: "#6B4E3D", minHeight: 44 }}
               >
                 {copied === "message" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                {copied === "message" ? "Copied" : "Copy message"}
+                {copied === "message" ? "Copiado" : "Copiar mensaje"}
               </button>
 
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--admin-muted)" }}>
-                  Link only
+                  Solo el enlace
                 </p>
                 <div className="flex gap-2">
                   <input
@@ -299,7 +299,7 @@ export function ShareAppointmentModal({
                   />
                   <button
                     onClick={() => copy(url, "link")}
-                    aria-label="Copy link"
+                    aria-label="Copiar enlace"
                     className="shrink-0 px-3 rounded-xl cursor-pointer"
                     style={{ border: "1px solid var(--admin-border)", color: "var(--admin-text)" }}
                   >

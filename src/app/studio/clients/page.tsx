@@ -56,13 +56,13 @@ export default function ClientsPage() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>Clients</h1>
+        <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>Clientas</h1>
         <button
           onClick={() => router.push("/studio/clients/new")}
           className="flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer"
         >
           <Plus className="h-4 w-4" />
-          New Client
+          Nueva clienta
         </button>
       </div>
 
@@ -70,18 +70,18 @@ export default function ClientsPage() {
         <SearchInput
           value={search}
           onChange={changeSearch}
-          placeholder="Search by name, phone or email..."
+          placeholder="Buscar por nombre, teléfono o correo..."
         />
       </div>
 
       <DataTable
         columns={[
-          { key: "name", label: "Name" },
-          { key: "email", label: "Email" },
-          { key: "phone", label: "Phone" },
+          { key: "name", label: "Nombre" },
+          { key: "email", label: "Correo" },
+          { key: "phone", label: "Teléfono" },
           {
             key: "createdAt",
-            label: "Added",
+            label: "Alta",
             render: (row) =>
               new Date(row.createdAt as string).toLocaleDateString(),
           },
@@ -95,8 +95,8 @@ export default function ClientsPage() {
                   e.stopPropagation();
                   setDeleteTarget(row);
                 }}
-                aria-label={`Delete ${row.name as string}`}
-                title={`Delete ${row.name as string}`}
+                aria-label={`Eliminar ${row.name as string}`}
+                title={`Eliminar ${row.name as string}`}
                 className="flex items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-colors"
                 style={{ backgroundColor: "rgba(239,68,68,0.14)", color: "#f05252" }}
               >
@@ -109,18 +109,18 @@ export default function ClientsPage() {
         onRowClick={(row) => router.push(`/studio/clients/${row.id}`)}
         emptyIcon={search ? Search : Users}
         emptyTitle={
-          search ? "No clients match your search" : "No clients yet"
+          search ? "Ninguna clienta coincide" : "Aún no tienes clientas"
         }
         emptyDescription={
           search
-            ? `We couldn't find any clients matching "${search}". Try a different name or email.`
-            : "Add your first client to start tracking their info, history, and bookings."
+            ? `No encontramos ninguna clienta que coincida con "${search}". Prueba otro nombre o correo.`
+            : "Agrega tu primera clienta para llevar su información, historial y citas."
         }
         emptyAction={
           search
             ? undefined
             : {
-                label: "+ Add Client",
+                label: "+ Nueva clienta",
                 onClick: () => router.push("/studio/clients/new"),
               }
         }
@@ -130,13 +130,13 @@ export default function ClientsPage() {
 
       <ConfirmDialog
         open={deleteTarget !== null}
-        title="Delete client"
+        title="Eliminar clienta"
         message={
           deleteTarget
-            ? `Delete ${deleteTarget.name as string}? Her appointments are kept — they simply stop being linked to a client record. This cannot be undone.`
+            ? `¿Eliminar a ${deleteTarget.name as string}? Sus citas se conservan — solo dejan de estar vinculadas a un expediente. Esto no se puede deshacer.`
             : ""
         }
-        confirmLabel={deleting ? "Deleting..." : "Delete"}
+        confirmLabel={deleting ? "Eliminando..." : "Eliminar"}
         busy={deleting}
         onConfirm={confirmDelete}
         onCancel={() => setDeleteTarget(null)}

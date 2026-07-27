@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { TimeSlotPicker } from "@/components/booking/TimeSlotPicker";
+import { AvailableDatePicker } from "@/components/booking/AvailableDatePicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
 import { bookingSchema, type BookingData } from "@/lib/validators";
@@ -57,11 +59,19 @@ export function BookingForm() {
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<BookingData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: { contactPreference: "email", locale },
   });
+
+  // useWatch rather than watch(): it subscribes per field and is safe to pass
+  // into a child, which watch() is not.
+  const watchedService = useWatch({ control, name: "service" });
+  const watchedDate = useWatch({ control, name: "preferredDate" });
+  const watchedTime = useWatch({ control, name: "preferredTime" });
 
   const onSubmit = async (data: BookingData) => {
     try {
@@ -292,12 +302,28 @@ export function BookingForm() {
           <label className="block text-sm font-medium text-text-dark mb-1.5">
             {t("date")}
           </label>
-          <input
-            {...register("preferredDate")}
-            type="date"
-            className={inputClass}
+          <AvailableDatePicker
+            service={watchedService ?? ""}
+            value={watchedDate ?? ""}
+            onChange={(d) => setValue("preferredDate", d)}
+            lang={locale === "es" ? "es" : "en"}
           />
         </div>
+      </div>
+
+      {/* Times come from the studio's opening hours minus what is already
+          booked, so a client can only ask for a slot that really exists. */}
+      <div>
+        <label className="block text-sm font-medium text-text-dark mb-1.5">
+          {t("time")}
+        </label>
+        <TimeSlotPicker
+          service={watchedService ?? ""}
+          date={watchedDate ?? ""}
+          value={watchedTime ?? ""}
+          onChange={(time) => setValue("preferredTime", time)}
+          lang={locale === "es" ? "es" : "en"}
+        />
       </div>
 
       <div>

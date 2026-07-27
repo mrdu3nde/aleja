@@ -337,7 +337,8 @@
       "error_validation": "Algunos campos necesitan atención. Por favor revísalos e inténtalo de nuevo.",
       "error_server": "Hubo un problema de nuestro lado. Inténtalo en un momento o contáctanos directamente.",
       "error_generic": "Algo salió mal. Inténtalo de nuevo o contáctanos directamente."
-    }
+    },
+    "time": "Hora preferida"
   },
   "faq_page": {
     "title": "Preguntas Frecuentes",

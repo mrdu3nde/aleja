@@ -7,6 +7,7 @@ const updateSchema = z.object({
   name: z.string().min(2).max(80).optional(),
   price: z.number().min(0).max(100000).nullable().optional(),
   imageUrl: z.string().url().nullable().optional(),
+  durationMinutes: z.number().int().min(15).max(480).optional(),
   active: z.boolean().optional(),
   sortOrder: z.number().int().min(0).optional(),
 });
@@ -37,6 +38,7 @@ export async function PUT(
         ...(data.name !== undefined && { name: data.name }),
         ...(data.price !== undefined && { price: data.price }),
         ...(data.imageUrl !== undefined && { imageUrl: data.imageUrl }),
+        ...(data.durationMinutes !== undefined && { durationMinutes: data.durationMinutes }),
         ...(data.active !== undefined && { active: data.active }),
         ...(data.sortOrder !== undefined && { sortOrder: data.sortOrder }),
       },

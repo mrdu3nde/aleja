@@ -257,12 +257,12 @@ function QuickAction({
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return "Ahora mismo";
+  if (mins < 60) return `hace ${mins}m`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
+  if (hrs < 24) return `hace ${hrs}h`;
   const days = Math.floor(hrs / 24);
-  return `${days}d ago`;
+  return `hace ${days}d`;
 }
 
 export default function AdminDashboard() {
@@ -282,12 +282,12 @@ export default function AdminDashboard() {
 
   const greeting = () => {
     const h = new Date().getHours();
-    if (h < 12) return "Good morning";
-    if (h < 18) return "Good afternoon";
-    return "Good evening";
+    if (h < 12) return "Buenos días";
+    if (h < 18) return "Buenas tardes";
+    return "Buenas noches";
   };
 
-  const today = new Date().toLocaleDateString("en-US", {
+  const today = new Date().toLocaleDateString("es-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
@@ -315,7 +315,7 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
-          label="Clients"
+          label="Clientas"
           value={stats?.totalClients ?? 0}
           icon={Users}
           color="#6B4E3D"
@@ -323,7 +323,7 @@ export default function AdminDashboard() {
           onClick={() => router.push("/studio/clients")}
         />
         <StatCard
-          label="Active Bookings"
+          label="Citas activas"
           value={stats?.activeAppointments ?? 0}
           icon={Calendar}
           color="#2563EB"
@@ -331,7 +331,7 @@ export default function AdminDashboard() {
           onClick={() => router.push("/studio/appointments?filter=upcoming")}
         />
         <StatCard
-          label="Awaiting Deposit"
+          label="Falta depósito"
           value={stats?.pendingDeposits ?? 0}
           icon={DollarSign}
           color="#F59E0B"
@@ -339,7 +339,7 @@ export default function AdminDashboard() {
           onClick={() => router.push("/studio/appointments?filter=deposit")}
         />
         <StatCard
-          label="Completed"
+          label="Completadas"
           value={stats?.completedThisMonth ?? 0}
           icon={CheckCircle2}
           color="#10B981"
@@ -356,16 +356,16 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-2 mb-5">
           <Wallet size={18} style={{ color: "#6B4E3D" }} />
           <h2 className="text-base font-semibold" style={{ color: "var(--admin-text)" }}>
-            Money collected
+            Dinero cobrado
           </h2>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <Money label="This week" value={stats?.money?.week} loading={loading} />
-          <Money label="This month" value={stats?.money?.month} loading={loading} big />
-          <Money label="All time" value={stats?.money?.allTime} loading={loading} />
+          <Money label="Esta semana" value={stats?.money?.week} loading={loading} />
+          <Money label="Este mes" value={stats?.money?.month} loading={loading} big />
+          <Money label="Histórico" value={stats?.money?.allTime} loading={loading} />
           <Money
-            label="Still owed"
+            label="Por cobrar"
             value={stats?.money?.outstanding}
             loading={loading}
             color="#B45309"
@@ -374,8 +374,8 @@ export default function AdminDashboard() {
         </div>
 
         <p className="text-xs mt-4" style={{ color: "var(--admin-muted)" }}>
-          Counts deposits you marked as received plus payments recorded on each
-          appointment. Deleting an appointment removes its money from here too.
+          Cuenta los depósitos que marcaste como recibidos más los pagos
+          registrados en cada cita. Si borras una cita, su dinero también se va.
         </p>
       </div>
 
@@ -394,10 +394,10 @@ export default function AdminDashboard() {
                 className="text-base font-semibold"
                 style={{ color: "var(--admin-text)" }}
               >
-                This Week
+                Esta semana
               </h2>
               <p className="text-xs" style={{ color: "var(--admin-muted)" }}>
-                Appointments received
+                Citas recibidas
               </p>
             </div>
             <div
@@ -408,7 +408,7 @@ export default function AdminDashboard() {
               }}
             >
               <TrendingUp size={14} />
-              Active
+              Activo
             </div>
           </div>
           {loading ? (
@@ -429,10 +429,10 @@ export default function AdminDashboard() {
             className="text-base font-semibold mb-2"
             style={{ color: "var(--admin-text)" }}
           >
-            Status Overview
+            Resumen de estados
           </h2>
           <p className="text-xs mb-4" style={{ color: "var(--admin-muted)" }}>
-            All appointments
+            Todas las citas
           </p>
           {loading ? (
             <SkeletonPulse className="h-[200px] w-full" />
@@ -457,7 +457,7 @@ export default function AdminDashboard() {
               className="text-base font-semibold"
               style={{ color: "var(--admin-text)" }}
             >
-              Recent Activity
+              Actividad reciente
             </h2>
             <Clock size={16} style={{ color: "var(--admin-muted)" }} />
           </div>
@@ -478,7 +478,7 @@ export default function AdminDashboard() {
             <div className="text-center py-10">
               <Calendar size={40} style={{ color: "var(--admin-border)", margin: "0 auto 12px" }} />
               <p className="text-sm" style={{ color: "var(--admin-muted)" }}>
-                No activity yet — new bookings will appear here
+Aún no hay actividad — las reservas nuevas aparecerán aquí
               </p>
             </div>
           ) : (
@@ -553,27 +553,27 @@ export default function AdminDashboard() {
             className="text-base font-semibold mb-5"
             style={{ color: "var(--admin-text)" }}
           >
-            Quick Actions
+            Acciones rápidas
           </h2>
           <div className="grid grid-cols-2 gap-3">
             <QuickAction
               icon={CalendarPlus}
-              label="New Booking"
+              label="Nueva cita"
               onClick={() => router.push("/studio/appointments/new")}
             />
             <QuickAction
               icon={UserPlus}
-              label="Add Client"
+              label="Nueva clienta"
               onClick={() => router.push("/studio/clients/new")}
             />
             <QuickAction
               icon={FileText}
-              label="Edit Content"
+              label="Editar contenido"
               onClick={() => router.push("/studio/content")}
             />
             <QuickAction
               icon={Calendar}
-              label="Appointments"
+              label="Citas"
               onClick={() => router.push("/studio/appointments")}
             />
           </div>
@@ -590,16 +590,16 @@ export default function AdminDashboard() {
               className="text-xs font-semibold mb-2"
               style={{ color: "#6B4E3D" }}
             >
-              💡 Quick Tip
+              💡 Consejo
             </p>
             <p className="text-xs leading-relaxed" style={{ color: "var(--admin-muted)" }}>
-              Keep your content fresh! Update your services and pricing in the{" "}
+              ¡Mantén tu contenido al día! Actualiza tus servicios y precios en el{" "}
               <span
                 className="cursor-pointer underline"
                 style={{ color: "#6B4E3D" }}
                 onClick={() => router.push("/studio/content")}
               >
-                Content Manager
+                Editor de contenido
               </span>
               .
             </p>

@@ -25,11 +25,11 @@ type Props = {
 };
 
 const METHODS = [
-  { key: "cash", label: "Cash" },
+  { key: "cash", label: "Efectivo" },
   { key: "zelle", label: "Zelle" },
-  { key: "card", label: "Card" },
-  { key: "transfer", label: "Transfer" },
-  { key: "other", label: "Other" },
+  { key: "card", label: "Tarjeta" },
+  { key: "transfer", label: "Transferencia" },
+  { key: "other", label: "Otro" },
 ] as const;
 
 const money = (n: number) => `$${n.toFixed(2)}`;
@@ -102,13 +102,13 @@ export function PaymentsSection({
     >
       <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: "var(--admin-text)" }}>
         <Wallet className="h-5 w-5" />
-        Payment
+        Pagos
       </h2>
 
       {/* Service price */}
       <div className="mb-5">
         <label className="block text-xs font-medium mb-1" style={{ color: "var(--admin-muted)" }}>
-          Service price
+          Precio del servicio
         </label>
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -140,7 +140,7 @@ export function PaymentsSection({
             className="shrink-0 px-4 rounded-xl text-sm font-medium cursor-pointer disabled:opacity-40 transition-colors"
             style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
           >
-            {savingPrice ? "Saving..." : "Save"}
+            {savingPrice ? "Guardando..." : "Guardar"}
           </button>
         </div>
       </div>
@@ -151,34 +151,34 @@ export function PaymentsSection({
           className="rounded-xl p-4 mb-5 space-y-2"
           style={{ backgroundColor: "var(--admin-filter-bg)" }}
         >
-          <Line label="Service price" value={money(balance.total)} />
+          <Line label="Precio del servicio" value={money(balance.total)} />
           {balance.depositPaid > 0 && (
-            <Line label="Deposit received" value={`− ${money(balance.depositPaid)}`} muted />
+            <Line label="Depósito recibido" value={`− ${money(balance.depositPaid)}`} muted />
           )}
           {balance.paid > 0 && (
-            <Line label="Payments" value={`− ${money(balance.paid)}`} muted />
+            <Line label="Pagos" value={`− ${money(balance.paid)}`} muted />
           )}
           <div style={{ borderTop: "1px solid var(--admin-border)" }} className="pt-2">
             {balance.settled ? (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold flex items-center gap-1.5" style={{ color: "#166534" }}>
                   <Check className="h-4 w-4" />
-                  Paid in full
+                  Pagado completo
                 </span>
                 {balance.change > 0 && (
                   <span className="text-sm" style={{ color: "var(--admin-muted)" }}>
-                    change {money(balance.change)}
+                    vuelto {money(balance.change)}
                   </span>
                 )}
               </div>
             ) : (
-              <Line label="Balance due" value={money(balance.remaining)} strong />
+              <Line label="Saldo pendiente" value={money(balance.remaining)} strong />
             )}
           </div>
         </div>
       ) : (
         <p className="text-sm mb-5" style={{ color: "var(--admin-muted)" }}>
-          Set the service price to track what is still owed.
+Pon el precio del servicio para llevar la cuenta de lo que falta.
         </p>
       )}
 
@@ -207,7 +207,7 @@ export function PaymentsSection({
               </span>
               <button
                 onClick={() => removePayment(p.id)}
-                aria-label="Delete payment"
+                aria-label="Eliminar pago"
                 className="shrink-0 text-red-600 hover:text-red-700 cursor-pointer"
               >
                 <Trash2 className="h-4 w-4" />
@@ -219,8 +219,8 @@ export function PaymentsSection({
 
       {cancelled && (
         <p className="text-sm" style={{ color: "var(--admin-muted)" }}>
-          This appointment is cancelled. Whatever was already collected stays on
-          record, but no new payment can be added.
+          Esta cita está cancelada. Lo que ya cobraste queda registrado, pero no
+          se puede agregar ningún pago nuevo.
         </p>
       )}
 
@@ -234,7 +234,7 @@ export function PaymentsSection({
               className="w-full mb-3 flex items-center justify-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-semibold hover:bg-[#553D2F] transition-colors cursor-pointer disabled:opacity-40"
             >
               <Check className="h-4 w-4" />
-              {saving ? "Saving..." : `Collect the remaining ${money(balance.remaining)}`}
+              {saving ? "Guardando..." : `Cobrar el resto: ${money(balance.remaining)}`}
             </button>
           )}
 
@@ -249,7 +249,7 @@ export function PaymentsSection({
                 step="0.01"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="Partial amount"
+                placeholder="Abono parcial"
                 className="w-full rounded-xl pl-7 pr-3 py-2.5 text-sm outline-none focus:ring-1 focus:ring-[#6B4E3D]"
                 style={{
                   border: "1px solid var(--admin-input-border)",
@@ -281,7 +281,7 @@ export function PaymentsSection({
               style={{ border: "1px solid var(--admin-border)", color: "var(--admin-text)" }}
             >
               <Plus className="h-4 w-4" />
-              Add
+              Agregar
             </button>
           </div>
 
@@ -289,7 +289,7 @@ export function PaymentsSection({
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Note (optional)"
+            placeholder="Nota (opcional)"
             className="w-full mt-2 rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#6B4E3D]"
             style={{
               border: "1px solid var(--admin-input-border)",

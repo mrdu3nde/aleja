@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { sendBookingConfirmation, sendBookingAdminNotification } from "@/lib/email";
 import { depositConfig, buildReferenceCode } from "@/lib/deposit";
 import { resolveService } from "@/lib/services";
+import { serviceDuration } from "@/lib/availability";
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
     // The form posts a slug; store the real name and carry the fixed price over
     // so the booking arrives priced instead of blank.
     const resolved = await resolveService(data.service);
+    const duration = await serviceDuration(data.service);
 
     const appointment = await prisma.appointment.create({
       data: {
@@ -22,6 +24,8 @@ export async function POST(request: Request) {
         service: resolved?.name ?? data.service,
         servicePrice: resolved?.price ?? null,
         preferredDate: data.preferredDate || null,
+        preferredTime: data.preferredTime || null,
+        durationMinutes: duration,
         message: data.message || null,
         source: "website",
         status: "pending",

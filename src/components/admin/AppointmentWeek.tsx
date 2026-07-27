@@ -2,10 +2,14 @@
 
 import { ChevronLeft, ChevronRight, DollarSign } from "lucide-react";
 import { isoDay, STATUS_LABELS } from "@/lib/dates";
+import { openingFor, formatTime12, toHHMM, type OpeningHours } from "@/lib/time";
 
 type Appointment = Record<string, unknown>;
 
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const WEEKDAYS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+
+/** Diagonal hatching marks a day the studio does not work. */
+const CLOSED_HATCH = "repeating-linear-gradient(45deg, transparent, transparent 5px, color-mix(in srgb, var(--admin-muted) 22%, transparent) 5px, color-mix(in srgb, var(--admin-muted) 22%, transparent) 6px)";
 
 const statusColor: Record<string, string> = {
   pending: "#F59E0B",
@@ -46,12 +50,14 @@ export function AppointmentWeek({
   onWeekChange,
   onSelect,
   loading,
+  hours,
 }: {
   weekStart: Date;
   appointments: Appointment[];
   onWeekChange: (next: Date) => void;
   onSelect: (id: string) => void;
   loading?: boolean;
+  hours?: OpeningHours | null;
 }) {
   const days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart);
@@ -67,9 +73,11 @@ export function AppointmentWeek({
 
   // Only render hours that actually hold something, padded to a normal working
   // day, so the grid never becomes a wall of empty 3 AM rows.
-  const hours = inWeek.map((a) => hourOf(a.preferredTime)).filter((h): h is number => h !== null);
-  const minHour = Math.min(9, ...hours);
-  const maxHour = Math.max(19, ...hours);
+  const bookedHours = inWeek
+    .map((a) => hourOf(a.preferredTime))
+    .filter((h): h is number => h !== null);
+  const minHour = Math.min(9, ...bookedHours);
+  const maxHour = Math.max(19, ...bookedHours);
   const hourRange = Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i);
 
   // day -> hour -> appointments
@@ -90,7 +98,7 @@ export function AppointmentWeek({
     const end = days[6];
     const sameMonth = weekStart.getMonth() === end.getMonth();
     const fmt = (d: Date, withMonth: boolean) =>
-      d.toLocaleDateString("en-US", withMonth ? { month: "short", day: "numeric" } : { day: "numeric" });
+      d.toLocaleDateString("es-US", withMonth ? { month: "short", day: "numeric" } : { day: "numeric" });
     return `${fmt(weekStart, true)} – ${fmt(end, !sameMonth)}, ${end.getFullYear()}`;
   };
 
@@ -100,7 +108,7 @@ export function AppointmentWeek({
     return (
       <button
         onClick={() => onSelect(apt.id as string)}
-        aria-label={`${apt.clientName} — ${apt.service}, ${STATUS_LABELS[status] ?? status}${depositPending ? ", deposit pending" : ""}`}
+        aria-label={`${apt.clientName} — ${apt.service}, ${STATUS_LABELS[status] ?? status}${depositPending ? ", falta depósito" : ""}`}
         className="w-full text-left px-1.5 py-1 rounded-md text-[11px] leading-tight cursor-pointer"
         style={{
           backgroundColor: `${statusColor[status] ?? "#9CA3AF"}22`,
@@ -135,7 +143,7 @@ export function AppointmentWeek({
           }}
           className="p-2 rounded-lg cursor-pointer transition-colors"
           style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
-          aria-label="Previous week"
+          aria-label="Semana anterior"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -149,7 +157,7 @@ export function AppointmentWeek({
             className="px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors"
             style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
           >
-            This week
+            Esta semana
           </button>
         </div>
 
@@ -161,7 +169,7 @@ export function AppointmentWeek({
           }}
           className="p-2 rounded-lg cursor-pointer transition-colors"
           style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)" }}
-          aria-label="Next week"
+          aria-label="Semana siguiente"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -180,25 +188,48 @@ export function AppointmentWeek({
             {days.map((d, i) => {
               const key = dayKeys[i];
               const isToday = key === today;
+              const opening = openingFor(key, hours ?? null);
               return (
                 <div
                   key={key}
                   className="px-2 py-2 text-center"
+                  title={
+                    opening.open
+                      ? hours
+                        ? `${formatTime12(toHHMM(opening.startMinutes))} – ${formatTime12(toHHMM(opening.endMinutes))}`
+                        : undefined
+                      : opening.reason
+                  }
                   style={{
                     borderBottom: "1px solid var(--admin-border)",
                     borderLeft: "1px solid var(--admin-border)",
                     backgroundColor: isToday ? "rgba(107,78,61,0.08)" : "transparent",
+                    backgroundImage: opening.open ? undefined : CLOSED_HATCH,
                   }}
                 >
-                  <p className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "var(--admin-muted)" }}>
+                  <p
+                    className="text-[11px] font-semibold uppercase tracking-wider"
+                    style={{ color: "var(--admin-muted)", opacity: opening.open ? 1 : 0.45 }}
+                  >
                     {WEEKDAYS[d.getDay()]}
                   </p>
                   <p
                     className="text-sm font-bold mt-0.5 w-6 h-6 mx-auto flex items-center justify-center rounded-full"
-                    style={isToday ? { backgroundColor: "#6B4E3D", color: "#fff" } : { color: "var(--admin-text)" }}
+                    style={
+                      isToday
+                        ? { backgroundColor: "#6B4E3D", color: "#fff" }
+                        : opening.open
+                          ? { color: "var(--admin-text)" }
+                          : { color: "var(--admin-muted)", opacity: 0.45 }
+                    }
                   >
                     {d.getDate()}
                   </p>
+                  {!opening.open && (
+                    <p className="text-[11px] font-medium truncate" style={{ color: "var(--admin-muted)" }}>
+                      {opening.reason}
+                    </p>
+                  )}
                 </div>
               );
             })}
@@ -211,7 +242,7 @@ export function AppointmentWeek({
                 className="px-1 py-2 text-[10px] font-semibold uppercase text-right"
                 style={{ color: "var(--admin-muted)", borderBottom: "1px solid var(--admin-border)" }}
               >
-                No time
+                Sin hora
               </div>
               {dayKeys.map((key) => (
                 <div
@@ -253,6 +284,7 @@ export function AppointmentWeek({
                       borderBottom: rowIndex === hourRange.length - 1 ? "none" : "1px solid var(--admin-border)",
                       borderLeft: "1px solid var(--admin-border)",
                       backgroundColor: key === today ? "rgba(107,78,61,0.04)" : "transparent",
+                      backgroundImage: openingFor(key, hours ?? null).open ? undefined : CLOSED_HATCH,
                       minHeight: 44,
                     }}
                   >
@@ -282,13 +314,13 @@ export function AppointmentWeek({
         ))}
         <span className="flex items-center gap-1.5">
           <DollarSign className="h-3 w-3" style={{ color: "#F59E0B" }} />
-          Deposit pending
+          Falta depósito
         </span>
       </div>
 
       {loading && (
         <p className="text-sm mt-3" style={{ color: "var(--admin-muted)" }}>
-          Loading...
+          Cargando...
         </p>
       )}
 
@@ -298,7 +330,7 @@ export function AppointmentWeek({
           style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}
         >
           <h3 className="text-sm font-semibold mb-3" style={{ color: "var(--admin-text)" }}>
-            No date set ({undated.length})
+            Sin fecha ({undated.length})
           </h3>
           <div className="flex flex-wrap gap-2">
             {undated.map((apt) => (

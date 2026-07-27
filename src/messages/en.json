@@ -337,7 +337,8 @@
       "error_validation": "Some fields need attention. Please review and try again.",
       "error_server": "Something went wrong on our end. Please try again in a moment or contact us directly.",
       "error_generic": "Something went wrong. Please try again or contact us directly."
-    }
+    },
+    "time": "Preferred time"
   },
   "faq_page": {
     "title": "Frequently Asked Questions",

@@ -27,7 +27,7 @@ function groupByDay(appointments: Appointment[]) {
     } else {
       groups.push({
         key,
-        heading: iso ? dayHeading(iso) : "No date",
+        heading: iso ? dayHeading(iso) : "Sin fecha",
         items: [apt],
       });
     }
@@ -66,17 +66,17 @@ export function AppointmentList({
       >
         <AlertCircle size={40} style={{ color: "#EF4444", margin: "0 auto 12px" }} />
         <h3 className="text-base font-semibold mb-1" style={{ color: "var(--admin-text)" }}>
-          Could not load appointments
+          No se pudieron cargar las citas
         </h3>
         <p className="text-sm mb-5" style={{ color: "var(--admin-muted)" }}>
-          Check your connection and try again. Your appointments are safe.
+          Revisa tu conexión e inténtalo de nuevo. Tus citas siguen guardadas.
         </p>
         <button
           onClick={onRetry}
           className="inline-flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer"
         >
           <RefreshCw className="h-4 w-4" />
-          Retry
+          Reintentar
         </button>
       </div>
     );
@@ -148,7 +148,7 @@ export function AppointmentList({
           >
             {group.heading}
             <span className="ml-2 font-normal normal-case tracking-normal">
-              · {group.items.length} {group.items.length === 1 ? "appointment" : "appointments"}
+              · {group.items.length} {group.items.length === 1 ? "cita" : "citas"}
             </span>
           </h2>
 
@@ -204,7 +204,7 @@ export function AppointmentList({
                   <div className="shrink-0">
                     {apt.depositRequired === false ? (
                       <span className="text-xs" style={{ color: "var(--admin-muted)" }}>
-                        No deposit
+                        Sin depósito
                       </span>
                     ) : needsDeposit ? (
                       <button
@@ -214,7 +214,7 @@ export function AppointmentList({
                         style={{ backgroundColor: "#fef3c7", color: "#92400e", minHeight: 40 }}
                       >
                         <DollarSign className="h-4 w-4" />
-                        {marking ? "Saving..." : "Mark as paid"}
+                        {marking ? "Guardando..." : "Marcar pagado"}
                       </button>
                     ) : (
                       <span
@@ -222,7 +222,7 @@ export function AppointmentList({
                         style={{ backgroundColor: "#dcfce7", color: "#166534", minHeight: 40 }}
                       >
                         <Check className="h-4 w-4" />
-                        Deposit paid
+                        Depósito pagado
                       </span>
                     )}
                   </div>
@@ -235,7 +235,7 @@ export function AppointmentList({
 
       {/* status text kept out of colour-only signalling */}
       <p className="sr-only">
-        Possible statuses: {Object.values(STATUS_LABELS).join(", ")}.
+        Estados posibles: {Object.values(STATUS_LABELS).join(", ")}.
       </p>
     </div>
   );

@@ -29,18 +29,18 @@ export default function NewClientPage() {
       // A failed create used to do nothing at all, which reads as a dead button.
       if (res.status === 409) {
         const { client } = await res.json();
-        setError(`${client.name} already uses that email.`);
+        setError(`${client.name} ya usa ese correo.`);
         return;
       }
       if (!res.ok) {
-        setError("Could not create the client. Please try again.");
+        setError("No se pudo crear la clienta. Inténtalo de nuevo.");
         return;
       }
 
       const client = await res.json();
       router.push(`/studio/clients/${client.id}`);
     } catch {
-      setError("Could not reach the server. Check your connection.");
+      setError("No se pudo contactar el servidor. Revisa tu conexión.");
     }
   };
 
@@ -51,35 +51,35 @@ export default function NewClientPage() {
         className="flex items-center gap-1 text-sm hover:text-[#6B4E3D] mb-4 cursor-pointer"
         style={{ color: "var(--admin-muted)" }}
       >
-        <ArrowLeft className="h-4 w-4" /> Back
+        <ArrowLeft className="h-4 w-4" /> Volver
       </button>
-      <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--admin-text)" }}>New Client</h1>
+      <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--admin-text)" }}>Nueva clienta</h1>
 
       <div className="max-w-xl rounded-2xl p-6" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormField label="Name" error={errors.name?.message}>
-            <input {...register("name")} className={inputClass} style={inputStyle} placeholder="Full name" />
+          <FormField label="Nombre" error={errors.name?.message}>
+            <input {...register("name")} className={inputClass} style={inputStyle} placeholder="Nombre completo" />
           </FormField>
 
-          <FormField label="Email" error={errors.email?.message}>
+          <FormField label="Correo" error={errors.email?.message}>
             <input {...register("email")} type="email" className={inputClass} style={inputStyle} placeholder="email@example.com" />
           </FormField>
 
-          <FormField label="Phone" error={errors.phone?.message}>
+          <FormField label="Teléfono" error={errors.phone?.message}>
             <input {...register("phone")} type="tel" className={inputClass} style={inputStyle} placeholder="+1 (555) 000-0000" />
           </FormField>
 
-          <FormField label="Contact Preference" error={errors.contactPreference?.message}>
+          <FormField label="Prefiere contacto por" error={errors.contactPreference?.message}>
             <select {...register("contactPreference")} className={inputClass} style={inputStyle}>
-              <option value="">Select...</option>
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
+              <option value="">Elige...</option>
+              <option value="email">Correo</option>
+              <option value="phone">Teléfono</option>
               <option value="whatsapp">WhatsApp</option>
             </select>
           </FormField>
 
-          <FormField label="Notes" error={errors.notes?.message}>
-            <textarea {...register("notes")} rows={3} className={inputClass} style={inputStyle} placeholder="Any notes..." />
+          <FormField label="Notas" error={errors.notes?.message}>
+            <textarea {...register("notes")} rows={3} className={inputClass} style={inputStyle} placeholder="Notas..." />
           </FormField>
 
           {error && (
@@ -97,7 +97,7 @@ export default function NewClientPage() {
             disabled={isSubmitting}
             className="w-full rounded-xl bg-[#6B4E3D] text-white py-3 font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
           >
-            {isSubmitting ? "Creating..." : "Create Client"}
+            {isSubmitting ? "Creando..." : "Crear clienta"}
           </button>
         </form>
       </div>

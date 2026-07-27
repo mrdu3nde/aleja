@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   Calendar,
+  CalendarClock,
   FileText,
   ExternalLink,
   Menu,
@@ -15,10 +16,11 @@ import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
-  { href: "/studio", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/studio/clients", label: "Clients", icon: Users },
-  { href: "/studio/appointments", label: "Appointments", icon: Calendar },
-  { href: "/studio/content", label: "Content", icon: FileText },
+  { href: "/studio", label: "Inicio", icon: LayoutDashboard },
+  { href: "/studio/clients", label: "Clientas", icon: Users },
+  { href: "/studio/appointments", label: "Citas", icon: Calendar },
+  { href: "/studio/availability", label: "Disponibilidad", icon: CalendarClock },
+  { href: "/studio/content", label: "Contenido", icon: FileText },
 ] as const;
 
 export function Sidebar() {
@@ -131,7 +133,7 @@ export function Sidebar() {
               padding: "8px 12px 6px",
             }}
           >
-            Menu
+            Menú
           </p>
           {navItems.map((item) => {
             const active = isActive(item.href);
@@ -209,7 +211,7 @@ export function Sidebar() {
             onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,230,211,0.55)")}
           >
             <ExternalLink size={18} />
-            View Website
+            Ver sitio web
           </button>
         </div>
       </aside>

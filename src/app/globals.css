@@ -41,6 +41,11 @@ html {
 /* Admin theme variables */
 @layer base {
   [data-admin-theme="dark"] {
+    /* Native controls — date and time pickers, number spinners, select popups,
+       scrollbars — are painted by the browser, not by our variables. Without
+       this they render dark-on-dark and the value is invisible. */
+    color-scheme: dark;
+
     --admin-bg: #1a1a1a;
     --admin-card: #242424;
     --admin-border: #333;
@@ -48,13 +53,15 @@ html {
     --admin-input: #2a2a2a;
     --admin-input-border: #444;
     --admin-text: #e0d6cc;
-    --admin-muted: #8a7b6e;
-    --admin-placeholder: #666;
+    --admin-muted: #a5978a;
+    --admin-placeholder: #7d7269;
     --admin-filter-bg: #333;
     --admin-filter-hover: #444;
   }
 
   [data-admin-theme="light"] {
+    color-scheme: light;
+
     --admin-bg: #FEFCFA;
     --admin-card: #ffffff;
     --admin-border: #e5ddd4;
@@ -62,9 +69,29 @@ html {
     --admin-input: #ffffff;
     --admin-input-border: #C4B5A6;
     --admin-text: #3A2E26;
-    --admin-muted: #8A7B6E;
-    --admin-placeholder: #B0A396;
+    --admin-muted: #6F6055;
+    --admin-placeholder: #9C8E80;
     --admin-filter-bg: #D9CFC4;
     --admin-filter-hover: #C4B5A6;
   }
+}
+
+/* Native date and time controls.
+   `color-scheme` above tells the browser which palette to paint them with, but
+   Chrome still draws the little calendar/clock button almost black, which
+   disappears on the dark admin. Inverting it keeps it visible on both themes,
+   and pinning the field's own colours stops the value rendering dark-on-dark. */
+[data-admin-theme="dark"] input[type="date"],
+[data-admin-theme="dark"] input[type="time"],
+[data-admin-theme="dark"] input[type="datetime-local"] {
+  color-scheme: dark;
+  color: var(--admin-text);
+  background-color: var(--admin-input);
+}
+
+[data-admin-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-admin-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator,
+[data-admin-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.7);
+  cursor: pointer;
 }

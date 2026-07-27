@@ -19,9 +19,9 @@ type Props = {
 };
 
 function matchLabel(matchedOn: unknown) {
-  if (matchedOn === "both") return "same email and phone";
-  if (matchedOn === "email") return "same email";
-  return "same phone";
+  if (matchedOn === "both") return "mismo correo y teléfono";
+  if (matchedOn === "email") return "mismo correo";
+  return "mismo teléfono";
 }
 
 function ClientRow({
@@ -65,8 +65,8 @@ function ClientRow({
           {formatPhone(client.phone as string | null)} · {client.email as string}
         </p>
         <p className="text-xs mt-0.5" style={{ color: "var(--admin-muted)" }}>
-          {count} {count === 1 ? "appointment" : "appointments"}
-          {last?.preferredDate ? ` · last ${formatDay(last.preferredDate)}` : ""}
+          {count} {count === 1 ? "cita" : "citas"}
+          {last?.preferredDate ? ` · última ${formatDay(last.preferredDate)}` : ""}
         </p>
       </div>
       <button
@@ -76,7 +76,7 @@ function ClientRow({
         style={{ minHeight: 40 }}
       >
         <Link2 className="h-4 w-4" />
-        Link
+        Vincular
       </button>
     </div>
   );
@@ -160,7 +160,7 @@ export function ClientLinkModal({
         onLinked();
         onClose();
       } catch {
-        setError("Could not link the client. Please try again.");
+        setError("No se pudo vincular. Inténtalo de nuevo.");
       } finally {
         setBusy(false);
       }
@@ -193,7 +193,7 @@ export function ClientLinkModal({
       const created = await res.json();
       await link(created.id);
     } catch {
-      setError("Could not create the client. Check the email is valid.");
+      setError("No se pudo crear la clienta. Revisa que el correo sea válido.");
       setBusy(false);
     }
   }, [clientName, clientEmail, clientPhone, link]);
@@ -211,7 +211,7 @@ export function ClientLinkModal({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Link appointment to a client"
+        aria-label="Vincular la cita a una clienta"
         onClick={(e) => e.stopPropagation()}
         className="rounded-2xl w-full max-w-lg shadow-xl flex flex-col"
         style={{
@@ -227,15 +227,15 @@ export function ClientLinkModal({
         >
           <div>
             <h3 className="text-lg font-semibold" style={{ color: "var(--admin-text)" }}>
-              Link to client
+              Vincular a clienta
             </h3>
             <p className="text-sm" style={{ color: "var(--admin-muted)" }}>
-              Booked as {clientName}
+              Reservó como {clientName}
             </p>
           </div>
           <button
             onClick={onClose}
-            aria-label="Close"
+            aria-label="Cerrar"
             className="p-2 rounded-lg cursor-pointer"
             style={{ color: "var(--admin-muted)" }}
           >
@@ -255,7 +255,7 @@ export function ClientLinkModal({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Type to find a client..."
+              placeholder="Escribe para buscar una clienta..."
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
@@ -292,7 +292,7 @@ export function ClientLinkModal({
                 className="text-xs font-semibold uppercase tracking-wider mb-2"
                 style={{ color: "var(--admin-muted)" }}
               >
-                Suggested {matches.length === 1 ? "match" : "matches"}
+                {matches.length === 1 ? "Coincidencia sugerida" : "Coincidencias sugeridas"}
               </p>
               <div className="space-y-2">
                 {matches.map((c) => (
@@ -314,16 +314,16 @@ export function ClientLinkModal({
                 className="text-xs font-semibold uppercase tracking-wider mb-2"
                 style={{ color: "var(--admin-muted)" }}
               >
-                All clients
+                Todas las clientas
               </p>
             )}
             {loading ? (
               <p className="text-sm py-4 text-center" style={{ color: "var(--admin-muted)" }}>
-                Loading...
+                Cargando...
               </p>
             ) : rest.length === 0 ? (
               <p className="text-sm py-4 text-center" style={{ color: "var(--admin-muted)" }}>
-                {search ? `No client matches "${search}".` : "No clients yet."}
+                {search ? `Ninguna clienta coincide con "${search}".` : "Aún no tienes clientas."}
               </p>
             ) : (
               <div className="space-y-2">
@@ -349,10 +349,10 @@ export function ClientLinkModal({
             style={{ border: "1px solid var(--admin-border)", color: "var(--admin-text)" }}
           >
             <UserPlus className="h-4 w-4" />
-            {busy ? "Working..." : "Not here — create client from this booking"}
+            {busy ? "Trabajando..." : "No está — crear clienta con estos datos"}
           </button>
           <p className="text-xs mt-2 text-center" style={{ color: "var(--admin-muted)" }}>
-            Uses {clientName} · {clientEmail}
+            Usa {clientName} · {clientEmail}
             {clientPhone ? ` · ${formatPhone(clientPhone)}` : ""}
           </p>
         </div>

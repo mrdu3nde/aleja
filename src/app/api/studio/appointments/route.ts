@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { appointmentSchema } from "@/lib/admin-validators";
 import { resolveDeposit } from "@/lib/deposit";
 import { resolveService } from "@/lib/services";
+import { serviceDuration } from "@/lib/availability";
 
 export async function GET(request: NextRequest) {
   try {
@@ -101,6 +102,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const data = appointmentSchema.parse(body);
     const resolved = await resolveService(data.service);
+    const duration = await serviceDuration(data.service);
 
     const appointment = await prisma.appointment.create({
       data: {
@@ -111,6 +113,8 @@ export async function POST(request: Request) {
         service: resolved?.name ?? data.service,
         preferredDate: data.preferredDate || null,
         preferredTime: data.preferredTime || null,
+        // snapshot: later edits to the service never rewrite this booking
+        durationMinutes: duration,
         message: data.message || null,
         status: data.status || "pending",
         source: "admin",
