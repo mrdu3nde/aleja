@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import {
   Users,
@@ -15,10 +15,52 @@ import {
   Clock,
   Sparkles,
   Wallet,
+  NotebookPen,
 } from "lucide-react";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { WeeklyChart } from "@/components/admin/WeeklyChart";
 import { StatusDonut } from "@/components/admin/StatusDonut";
+import { WelcomeScreen } from "@/components/admin/WelcomeScreen";
+
+/** Recuerda el día en que ya se mostró la bienvenida. */
+const WELCOME_KEY = "studio-bienvenida";
+
+/** useSyncExternalStore pide una suscripción, pero "ya montó" no vuelve a
+ *  cambiar, así que no hay nada a lo que suscribirse. */
+const subscribeNever = () => () => {};
+
+/** Saludo y fecha en la hora de ELLA, no la del servidor. */
+function readClock() {
+  const now = new Date();
+  const h = now.getHours();
+  return {
+    greeting: h < 12 ? "Buenos días" : h < 18 ? "Buenas tardes" : "Buenas noches",
+    today: now.toLocaleDateString("es-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }),
+    dayKey: [now.getFullYear(), now.getMonth() + 1, now.getDate()].join("-"),
+  };
+}
+
+// Modo privado o almacenamiento bloqueado no son motivo para romper el panel.
+function readWelcomeSeen() {
+  try {
+    return localStorage.getItem(WELCOME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function markWelcomeSeen(dayKey: string) {
+  try {
+    localStorage.setItem(WELCOME_KEY, dayKey);
+  } catch {
+    // Sin recuerdo, la bienvenida saldrá otra vez. Es el fallo correcto.
+  }
+}
 
 type Stats = {
   totalClients: number;
@@ -280,22 +322,43 @@ export default function AdminDashboard() {
       .catch(() => setLoading(false));
   }, []);
 
-  const greeting = () => {
-    const h = new Date().getHours();
-    if (h < 12) return "Buenos días";
-    if (h < 18) return "Buenas tardes";
-    return "Buenas noches";
-  };
+  // La hora del servidor es UTC y la de ella no. Calcular el saludo durante el
+  // render hacía que el HTML del servidor no coincidiera con el del navegador,
+  // y podía saludarla con "buenas noches" a las tres de la tarde.
+  // useSyncExternalStore devuelve false en el servidor y en el primer render
+  // del navegador, así que la hidratación cuadra y solo después aparece la
+  // hora local de verdad. Sin setState dentro de un efecto.
+  const mounted = useSyncExternalStore(subscribeNever, () => true, () => false);
+  const [dismissed, setDismissed] = useState(false);
+  const [reopened, setReopened] = useState(false);
 
-  const today = new Date().toLocaleDateString("es-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const clock = mounted ? readClock() : null;
+  const dayKey = clock?.dayKey ?? "";
+  // Una vez al día: si ya se saludó hoy, no vuelve a aparecer sola.
+  const greetedToday = mounted ? readWelcomeSeen() === dayKey : true;
+  const welcomeOpen = reopened || (mounted && !greetedToday && !dismissed);
+
+  useEffect(() => {
+    if (welcomeOpen && dayKey) markWelcomeSeen(dayKey);
+  }, [welcomeOpen, dayKey]);
 
   return (
     <div style={{ maxWidth: 1200 }}>
+      <WelcomeScreen
+        open={welcomeOpen}
+        greeting={clock?.greeting ?? ""}
+        today={clock?.today ?? ""}
+        onClose={() => {
+          setReopened(false);
+          setDismissed(true);
+        }}
+        onCapture={() => {
+          setReopened(false);
+          setDismissed(true);
+          router.push("/studio/notes/new");
+        }}
+      />
+
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-1">
@@ -304,12 +367,27 @@ export default function AdminDashboard() {
             className="text-2xl font-bold"
             style={{ color: "var(--admin-text)" }}
           >
-            {greeting()}, Aluh
+            {clock ? clock.greeting + ", Aluh" : "Aluh"}
           </h1>
         </div>
         <p className="text-sm" style={{ color: "var(--admin-muted)", marginLeft: 36 }}>
-          {today}
+          {clock?.today ?? ""}
         </p>
+        <button
+          onClick={() => setReopened(true)}
+          className="text-sm underline"
+          style={{
+            marginLeft: 36,
+            marginTop: 6,
+            background: "none",
+            border: "none",
+            padding: 0,
+            color: "#6B4E3D",
+            cursor: "pointer",
+          }}
+        >
+          ¿Cómo dejo una nota?
+        </button>
       </div>
 
       {/* Stats Grid */}
@@ -565,6 +643,11 @@ Aún no hay actividad — las reservas nuevas aparecerán aquí
               icon={UserPlus}
               label="Nueva clienta"
               onClick={() => router.push("/studio/clients/new")}
+            />
+            <QuickAction
+              icon={NotebookPen}
+              label="Mis notas"
+              onClick={() => router.push("/studio/notes")}
             />
             <QuickAction
               icon={FileText}

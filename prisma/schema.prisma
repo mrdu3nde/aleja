@@ -140,3 +140,37 @@ model BlockedDate {
   date   String  @id
   reason String?
 }
+
+/// Una foto de algo que la dueña escribió a mano. Un modelo de visión la
+/// transcribe y el texto queda aquí para poder leerlo desde el desarrollo:
+/// es el buzón por donde ella pide cambios sin tener que teclearlos.
+model Note {
+  id         String   @id @default(uuid())
+  /// URL de Vercel Blob. Vacía cuando no hay BLOB_READ_WRITE_TOKEN y la foto
+  /// entró como data URL (ver `imageData`).
+  imageUrl   String?
+  /// Respaldo para cuando Blob no está configurado: la foto ya reducida en el
+  /// navegador, guardada como data URL. Se excluye a propósito del listado.
+  imageData  String?
+  /// Título corto que genera el modelo, para listar sin abrir cada nota.
+  title      String?
+  /// Transcripción cruda del modelo. Nunca se sobrescribe: es la evidencia de
+  /// lo que decía el papel aunque ella corrija el texto después.
+  transcript String?
+  /// Su corrección a mano cuando el modelo leyó mal. Si existe, manda esta.
+  editedText String?
+  /// "new" | "read" | "done". "read" lo marca al abrirla o al traérsela al
+  /// desarrollo; "done" cuando el cambio que pedía ya está implementado.
+  status     String   @default("new")
+  /// "pending" | "ok" | "failed" — separa "todavía no hay texto" de "el modelo
+  /// falló", que para ella son dos mensajes distintos en pantalla.
+  ocrStatus  String   @default("pending")
+  /// Motivo del fallo, para depurar sin ir a los logs de Vercel.
+  ocrError   String?
+  /// Modelo que transcribió. Si mañana se cambia, se sabe qué leyó qué.
+  ocrModel   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([status, createdAt])
+}

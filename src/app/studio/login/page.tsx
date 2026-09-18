@@ -36,9 +36,8 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <html lang="en">
-      <body className="min-h-screen flex items-center justify-center bg-[var(--admin-bg)] font-sans">
-        <div className="w-full max-w-sm mx-4">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-sm mx-4">
           <div className="text-center mb-8">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F5E6D3]">
               <Lock className="h-7 w-7 text-[#6B4E3D]" />
@@ -74,8 +73,7 @@ export default function AdminLoginPage() {
               {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
-        </div>
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }

@@ -7,6 +7,7 @@ import {
   Users,
   Calendar,
   CalendarClock,
+  NotebookPen,
   FileText,
   ExternalLink,
   Menu,
@@ -17,6 +18,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { href: "/studio", label: "Inicio", icon: LayoutDashboard },
+  { href: "/studio/notes", label: "Mis notas", icon: NotebookPen },
   { href: "/studio/clients", label: "Clientas", icon: Users },
   { href: "/studio/appointments", label: "Citas", icon: Calendar },
   { href: "/studio/availability", label: "Disponibilidad", icon: CalendarClock },
@@ -28,8 +30,14 @@ export function Sidebar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // El login vive dentro de este layout, pero enseñar el menú del panel a
+  // quien todavía no ha entrado no tiene sentido.
+  const hidden = pathname === "/studio/login";
+
   const isActive = (href: string) =>
     href === "/studio" ? pathname === "/studio" : pathname.startsWith(href);
+
+  if (hidden) return null;
 
   return (
     <>
