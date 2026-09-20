@@ -145,34 +145,55 @@ model BlockedDate {
 /// transcribe y el texto queda aquí para poder leerlo desde el desarrollo:
 /// es el buzón por donde ella pide cambios sin tener que teclearlos.
 model Note {
-  id         String   @id @default(uuid())
-  /// URL de Vercel Blob. Vacía cuando no hay BLOB_READ_WRITE_TOKEN y la foto
-  /// entró como data URL (ver `imageData`).
+  id         String    @id @default(uuid())
+  /// Título corto que genera el modelo, para listar sin abrir cada nota.
+  title      String?
+  /// Lo que el modelo oyó, palabra por palabra. Nunca se sobrescribe: es la
+  /// evidencia de lo que ella pidió, aunque después corrija el texto.
+  transcript String?
+  /// Su corrección a mano cuando el modelo oyó mal. Si existe, manda esta.
+  editedText String?
+  /// "voice" | "text" — cómo la dictó. El audio no se guarda: se transcribe al
+  /// vuelo y se descarta, así que esto es lo único que queda de su origen.
+  source     String    @default("voice")
+  /// "new" | "read" | "needs_info" | "done". "needs_info" lo pongo yo desde
+  /// código cuando la nota no me alcanza para implementar lo que pide.
+  status     String    @default("new")
+  /// Transcripción del audio: "pending" | "ok" | "failed".
+  aiStatus   String    @default("pending")
+  /// Motivo del fallo, para depurar sin ir a los logs de Vercel.
+  aiError    String?
+  /// Modelo que transcribió. Si mañana se cambia, se sabe qué oyó qué.
+  aiModel    String?
+  /// Foto de respaldo, opcional. NO se transcribe: está para mirarla cuando el
+  /// texto no basta (un boceto de pantalla, una captura, un papel viejo).
   imageUrl   String?
   /// Respaldo para cuando Blob no está configurado: la foto ya reducida en el
   /// navegador, guardada como data URL. Se excluye a propósito del listado.
   imageData  String?
-  /// Título corto que genera el modelo, para listar sin abrir cada nota.
-  title      String?
-  /// Transcripción cruda del modelo. Nunca se sobrescribe: es la evidencia de
-  /// lo que decía el papel aunque ella corrija el texto después.
-  transcript String?
-  /// Su corrección a mano cuando el modelo leyó mal. Si existe, manda esta.
-  editedText String?
-  /// "new" | "read" | "done". "read" lo marca al abrirla o al traérsela al
-  /// desarrollo; "done" cuando el cambio que pedía ya está implementado.
-  status     String   @default("new")
-  /// "pending" | "ok" | "failed" — separa "todavía no hay texto" de "el modelo
-  /// falló", que para ella son dos mensajes distintos en pantalla.
-  ocrStatus  String   @default("pending")
-  /// Motivo del fallo, para depurar sin ir a los logs de Vercel.
-  ocrError   String?
-  /// Modelo que transcribió. Si mañana se cambia, se sabe qué leyó qué.
-  ocrModel   String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  /// Cuándo quedó resuelta desde código.
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  messages   NoteMessage[]
 
   @@index([status, createdAt])
+}
+
+/// La conversación sobre una nota. Yo pregunto cuando algo no se entiende y
+/// ella contesta desde el panel, por voz o escribiendo. Sin esto, cada duda
+/// tendría que pasar por su esposo.
+model NoteMessage {
+  id        String   @id @default(uuid())
+  noteId    String
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  /// "claude" (lo escribo desde código) | "owner" (lo contesta ella).
+  author    String
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([noteId, createdAt])
 }
 
 /// Llave de acceso (passkey) que la dueña registró desde un dispositivo suyo.

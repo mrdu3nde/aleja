@@ -2,25 +2,27 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Camera, NotebookPen, Loader2 } from "lucide-react";
+import { Mic, Sparkles, Loader2, Keyboard, MessageCircleQuestion } from "lucide-react";
 import { NoteStatusBadge } from "@/components/admin/NoteStatusBadge";
 import { noteText } from "@/lib/notes";
 
 type Note = {
   id: string;
-  imageUrl: string | null;
   title: string | null;
   transcript: string | null;
   editedText: string | null;
+  source: string;
   status: string;
-  ocrStatus: string;
+  aiStatus: string;
+  imageUrl: string | null;
   createdAt: string;
 };
 
 const FILTERS = [
   { key: "all", label: "Todas" },
   { key: "new", label: "Nuevas" },
-  { key: "done", label: "Hechas" },
+  { key: "needs_info", label: "Falta info" },
+  { key: "done", label: "Resueltas" },
 ] as const;
 
 function timeAgo(dateStr: string) {
@@ -64,10 +66,11 @@ export default function NotesPage() {
     <div style={{ maxWidth: 720 }}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>
-          Mis notas
+          Mejoras
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--admin-muted)" }}>
-          Todo lo que fotografiaste, pasado a texto.
+          Lo que quieres que cambie en la plataforma. Lo dictas aquí y yo lo
+          implemento; cuando quede hecho lo verás marcado como resuelto.
         </p>
       </div>
 
@@ -89,11 +92,11 @@ export default function NotesPage() {
           marginBottom: 20,
         }}
       >
-        <Camera size={22} />
-        Tomar foto de mi nota
+        <Mic size={22} />
+        Pedir una mejora
       </Link>
 
-      <div className="flex gap-2 mb-5">
+      <div className="flex flex-wrap gap-2 mb-5">
         {FILTERS.map((f) => {
           const active = filter === f.key;
           return (
@@ -124,15 +127,19 @@ export default function NotesPage() {
         </div>
       ) : notes.length === 0 ? (
         <div className="text-center py-14">
-          <NotebookPen
+          <Sparkles
             size={44}
             style={{ color: "var(--admin-border)", margin: "0 auto 14px" }}
           />
           <p style={{ fontSize: 16, color: "var(--admin-text)", marginBottom: 6 }}>
-            Todavía no tienes notas.
+            {filter === "all"
+              ? "Todavía no has pedido nada."
+              : "Nada por aquí con ese filtro."}
           </p>
           <p style={{ fontSize: 14, color: "var(--admin-muted)" }}>
-            Toma una foto de lo que escribiste en papel y aparecerá aquí.
+            {filter === "all"
+              ? "Toca el botón de arriba y cuéntame qué te gustaría cambiar."
+              : "Prueba con otro filtro."}
           </p>
         </div>
       ) : (
@@ -153,30 +160,24 @@ export default function NotesPage() {
                 textDecoration: "none",
               }}
             >
-              {note.imageUrl ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={note.imageUrl}
-                  alt=""
-                  className="rounded-xl object-cover"
-                  style={{ width: 64, height: 64, flexShrink: 0 }}
-                />
-              ) : (
-                <div
-                  className="rounded-xl flex items-center justify-center"
-                  style={{
-                    width: 64,
-                    height: 64,
-                    flexShrink: 0,
-                    backgroundColor: "var(--admin-hover)",
-                  }}
-                >
-                  {/* Sin Blob la foto vive en la base y el listado no la trae.
-                      Un icono de libreta se lee como "es una nota"; uno de
-                      imagen rota se leería como un error que no existe. */}
-                  <NotebookPen size={20} style={{ color: "var(--admin-muted)" }} />
-                </div>
-              )}
+              <div
+                className="rounded-xl flex items-center justify-center"
+                style={{
+                  width: 56,
+                  height: 56,
+                  flexShrink: 0,
+                  backgroundColor:
+                    note.status === "needs_info" ? "#DC262622" : "var(--admin-hover)",
+                }}
+              >
+                {note.status === "needs_info" ? (
+                  <MessageCircleQuestion size={20} style={{ color: "#DC2626" }} />
+                ) : note.source === "text" ? (
+                  <Keyboard size={20} style={{ color: "var(--admin-muted)" }} />
+                ) : (
+                  <Mic size={20} style={{ color: "var(--admin-muted)" }} />
+                )}
+              </div>
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="flex items-center gap-2 mb-1">
@@ -184,7 +185,7 @@ export default function NotesPage() {
                     className="text-sm font-semibold truncate"
                     style={{ color: "var(--admin-text)" }}
                   >
-                    {note.title ?? "Nota sin título"}
+                    {note.title ?? "Sin título"}
                   </p>
                   <NoteStatusBadge status={note.status} />
                 </div>
@@ -199,7 +200,9 @@ export default function NotesPage() {
                     overflow: "hidden",
                   }}
                 >
-                  {noteText(note) || "Sin texto todavía"}
+                  {note.status === "needs_info"
+                    ? "Te dejé una pregunta. Ábrela para contestarme."
+                    : noteText(note) || "Sin texto"}
                 </p>
                 <p style={{ fontSize: 12, color: "var(--admin-muted)", marginTop: 4 }}>
                   {timeAgo(note.createdAt)}

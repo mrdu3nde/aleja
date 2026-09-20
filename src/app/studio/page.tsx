@@ -15,7 +15,6 @@ import {
   Clock,
   Sparkles,
   Wallet,
-  NotebookPen,
 } from "lucide-react";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { WeeklyChart } from "@/components/admin/WeeklyChart";
@@ -645,8 +644,8 @@ Aún no hay actividad — las reservas nuevas aparecerán aquí
               onClick={() => router.push("/studio/clients/new")}
             />
             <QuickAction
-              icon={NotebookPen}
-              label="Mis notas"
+              icon={Sparkles}
+              label="Mejoras"
               onClick={() => router.push("/studio/notes")}
             />
             <QuickAction

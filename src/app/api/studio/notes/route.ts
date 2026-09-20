@@ -1,26 +1,26 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { noteListSelect, runTranscription } from "@/lib/notes-server";
+import { noteListSelect } from "@/lib/notes-server";
 import { NOTE_STATUSES } from "@/lib/notes";
+import { decodeDataUrl, transcribeVoiceNote } from "@/lib/notes-ai";
 
-// Transcribir una foto tarda varios segundos; el default de Next se queda corto.
+// Transcribir tarda unos segundos; el default de Next se queda corto.
 export const maxDuration = 60;
 
 const noteSchema = z
   .object({
-    /// URL que devuelve Vercel Blob cuando está configurado.
+    /// WAV mono 16 kHz que arma el navegador. El tope son ~4 minutos de voz.
+    audio: z.string().startsWith("data:audio/").max(12_000_000).optional(),
+    /// Salida de escape: dictar no siempre se puede (un lugar ruidoso, la
+    /// vergüenza de hablarle al teléfono). Entonces lo escribe.
+    text: z.string().trim().min(1).max(20_000).optional(),
+    /// Foto de respaldo, opcional y sin transcribir.
     imageUrl: z.string().url().optional(),
-    /// Respaldo sin Blob: la foto ya reducida en el navegador. El tope evita
-    /// que una foto sin comprimir reviente la fila y el body de la función.
-    imageData: z
-      .string()
-      .startsWith("data:image/")
-      .max(1_500_000)
-      .optional(),
+    imageData: z.string().startsWith("data:image/").max(1_500_000).optional(),
   })
-  .refine((v) => Boolean(v.imageUrl || v.imageData), {
-    message: "Falta la foto",
+  .refine((v) => Boolean(v.audio || v.text), {
+    message: "Hace falta la grabación o el texto",
   });
 
 export async function GET(request: Request) {
@@ -39,22 +39,58 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  let body: z.infer<typeof noteSchema>;
   try {
-    const body = noteSchema.parse(await request.json());
+    body = noteSchema.parse(await request.json());
+  } catch {
+    return NextResponse.json({ error: "invalid_body" }, { status: 400 });
+  }
 
-    // La foto se guarda primero y se transcribe después, en ese orden: si el
-    // modelo falla o no hay cuota, la nota de ella no se pierde igual.
-    const created = await prisma.note.create({
-      data: { imageUrl: body.imageUrl ?? null, imageData: body.imageData ?? null },
-      select: { id: true },
+  let transcript = body.text?.trim() ?? "";
+  let title: string | null = null;
+  let model: string | null = null;
+
+  if (body.audio) {
+    // Se transcribe ANTES de crear la nota, a propósito. El audio no se
+    // guarda, así que una nota creada con la transcripción fallida sería una
+    // nota vacía y sin forma de recuperarla. Fallando aquí, el navegador
+    // todavía tiene la grabación y ella puede reintentar o escribirla.
+    try {
+      const { bytes, mediaType } = decodeDataUrl(body.audio);
+      const result = await transcribeVoiceNote(bytes, mediaType);
+
+      if (!result.transcripcion.trim()) {
+        return NextResponse.json({ error: "sin_voz" }, { status: 422 });
+      }
+
+      transcript = result.transcripcion.trim();
+      title = result.titulo || null;
+      model = result.model;
+    } catch (error) {
+      const reason = (error as Error).message || "unknown";
+      console.error("Note transcription error:", reason);
+      return NextResponse.json(
+        { error: reason === "no_api_key" ? "sin_configurar" : "transcripcion_fallo" },
+        { status: 503 },
+      );
+    }
+  }
+
+  try {
+    const note = await prisma.note.create({
+      data: {
+        transcript,
+        title,
+        source: body.audio ? "voice" : "text",
+        aiStatus: "ok",
+        aiModel: model,
+        imageUrl: body.imageUrl ?? null,
+        imageData: body.imageData ?? null,
+      },
+      select: noteListSelect,
     });
-
-    const note = await runTranscription(created.id);
     return NextResponse.json({ data: note }, { status: 201 });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "invalid_body" }, { status: 400 });
-    }
     console.error("Note create error:", error);
     return NextResponse.json({ error: "Failed to save" }, { status: 500 });
   }

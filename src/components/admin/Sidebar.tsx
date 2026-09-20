@@ -7,7 +7,7 @@ import {
   Users,
   Calendar,
   CalendarClock,
-  NotebookPen,
+  Sparkles,
   FileText,
   ShieldCheck,
   ExternalLink,
@@ -20,7 +20,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { href: "/studio", label: "Inicio", icon: LayoutDashboard },
-  { href: "/studio/notes", label: "Mis notas", icon: NotebookPen },
+  { href: "/studio/notes", label: "Mejoras", icon: Sparkles },
   { href: "/studio/clients", label: "Clientas", icon: Users },
   { href: "/studio/appointments", label: "Citas", icon: Calendar },
   { href: "/studio/availability", label: "Disponibilidad", icon: CalendarClock },
