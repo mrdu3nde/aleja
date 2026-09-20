@@ -12,6 +12,8 @@ type Props = {
   onRecorded: (audioDataUrl: string) => void;
   disabled?: boolean;
   label?: string;
+  /** "big" es el botón principal del listado: un solo toque y ya está grabando. */
+  variant?: "big" | "normal";
 };
 
 function clock(seconds: number) {
@@ -20,7 +22,12 @@ function clock(seconds: number) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-export function VoiceRecorder({ onRecorded, disabled, label = "Grabar nota" }: Props) {
+export function VoiceRecorder({
+  onRecorded,
+  disabled,
+  label = "Grabar nota",
+  variant = "normal",
+}: Props) {
   const [recording, setRecording] = useState(false);
   const [preparing, setPreparing] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -109,11 +116,81 @@ export function VoiceRecorder({ onRecorded, disabled, label = "Grabar nota" }: P
 
   const stop = () => recorderRef.current?.stop();
 
+  const big = variant === "big";
+
+  const bigButton = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+    width: "100%",
+    minHeight: 76,
+    borderRadius: 18,
+    color: "#fff",
+    fontSize: 17,
+    fontWeight: 600,
+    border: "none",
+    cursor: "pointer",
+  } as const;
+
   if (preparing) {
-    return (
+    return big ? (
+      <div style={{ ...bigButton, background: "var(--admin-filter-bg)", color: "var(--admin-muted)" }}>
+        <Loader2 className="h-5 w-5 animate-spin" />
+        Preparando el audio...
+      </div>
+    ) : (
       <div className="flex items-center gap-2 text-sm" style={{ color: "var(--admin-muted)" }}>
         <Loader2 className="h-4 w-4 animate-spin" />
         Preparando el audio...
+      </div>
+    );
+  }
+
+  if (big) {
+    return (
+      <div>
+        {error && (
+          <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm mb-3">
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+            {error}
+          </div>
+        )}
+
+        {recording ? (
+          <button
+            onClick={stop}
+            style={{ ...bigButton, background: "linear-gradient(135deg, #DC2626, #B91C1C)" }}
+          >
+            <Square className="h-5 w-5" />
+            <span>Terminé</span>
+            <span className="tabular-nums" style={{ opacity: 0.85, fontWeight: 400 }}>
+              {clock(seconds)}
+            </span>
+          </button>
+        ) : (
+          <button
+            onClick={start}
+            disabled={disabled}
+            style={{
+              ...bigButton,
+              background: "linear-gradient(135deg, #6B4E3D, #553D2F)",
+              opacity: disabled ? 0.5 : 1,
+            }}
+          >
+            <Mic size={24} />
+            {label}
+          </button>
+        )}
+
+        <p
+          className="text-xs text-center mt-2"
+          style={{ color: "var(--admin-muted)" }}
+        >
+          {recording
+            ? "Te estoy escuchando. Toca cuando acabes."
+            : "Un toque y empiezas a hablar."}
+        </p>
       </div>
     );
   }

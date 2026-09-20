@@ -32,7 +32,7 @@ export default function NewNotePage() {
   const [audio, setAudio] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   const [text, setText] = useState("");
-  const [writing, setWriting] = useState(false);
+  const [writing, setWriting] = useState(true);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -110,11 +110,11 @@ export default function NewNotePage() {
       </Link>
 
       <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>
-        Pedir una mejora
+        Escribir una mejora
       </h1>
       <p className="text-sm mt-1 mb-6" style={{ color: "var(--admin-muted)" }}>
-        Cuenta con tus palabras qué quieres que cambie en la plataforma. No hace
-        falta que sea ordenado — habla como si me lo estuvieras explicando.
+        Cuenta con tus palabras qué quieres que cambie. No hace falta que sea
+        ordenado — escríbelo como si me lo estuvieras explicando.
       </p>
 
       {error && (
@@ -171,20 +171,20 @@ export default function NewNotePage() {
                 className="text-sm underline cursor-pointer"
                 style={{ color: "var(--admin-muted)" }}
               >
-                Mejor lo dicto
+                Mejor lo digo hablando
               </button>
             </div>
           </>
         ) : (
           <>
-            <VoiceRecorder onRecorded={onRecorded} label="Grabar lo que quiero" />
+            <VoiceRecorder onRecorded={onRecorded} label="Grabar" />
             <button
               onClick={() => setWriting(true)}
               className="flex items-center gap-2 text-sm underline mt-4 cursor-pointer"
               style={{ color: "var(--admin-muted)" }}
             >
               <Keyboard className="h-4 w-4" />
-              Prefiero escribirlo
+              Volver a escribir
             </button>
           </>
         )}
@@ -197,7 +197,7 @@ export default function NewNotePage() {
         <p className="text-sm mb-3" style={{ color: "var(--admin-muted)" }}>
           Si te sirve mostrarme algo —un papel, una captura de pantalla, un
           ejemplo que te gustó— súbela aquí. No hace falta: la foto es solo para
-          mirarla, lo que vale es lo que dictes.
+          mirarla; lo que vale es lo que cuentes.
         </p>
 
         {photo ? (

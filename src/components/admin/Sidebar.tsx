@@ -227,8 +227,10 @@ export function Sidebar() {
           <button
             onClick={async () => {
               await fetch("/api/studio/auth/logout", { method: "POST" }).catch(() => {});
-              router.push("/studio/login");
-              router.refresh();
+              // Recarga completa, igual que al entrar: si se navega del lado
+              // del cliente, el router conserva en memoria las páginas del
+              // panel que ya había dibujado con la sesión abierta.
+              window.location.assign("/studio/login");
             }}
             style={{
               display: "flex",

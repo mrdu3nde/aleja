@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Lock, AlertCircle, Fingerprint } from "lucide-react";
 import {
   browserSupportsWebAuthn,
@@ -18,7 +17,23 @@ export default function AdminLoginPage() {
   // `startAuthentication` salga del mismo gesto del dedo, sin un fetch en medio.
   const [passkeyOptions, setPasskeyOptions] =
     useState<PublicKeyCredentialRequestOptionsJSON | null>(null);
-  const router = useRouter();
+
+  /**
+   * Entrar recargando la página entera, no con `router.push`.
+   *
+   * La sesión es una cookie que valida `proxy.ts` en el servidor, y `/studio`
+   * es una página prerenderizada: el router del navegador ya tenía guardada la
+   * versión de "no has entrado" (la que redirige al login), así que al navegar
+   * del lado del cliente reusaba esa copia y se quedaba pegado. Encima el
+   * `router.refresh()` que iba después competía con esa misma navegación.
+   *
+   * Con una carga completa el navegador manda la cookie recién puesta, el
+   * proxy la valida y el servidor dibuja el panel limpio. Se entra una vez
+   * cada treinta días: la recarga no le cuesta nada a nadie.
+   */
+  const enterStudio = () => {
+    window.location.assign("/studio");
+  };
 
   useEffect(() => {
     if (!browserSupportsWebAuthn()) return;
@@ -60,8 +75,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push("/studio");
-      router.refresh();
+      enterStudio();
     } catch (err) {
       // Cancelar con el botón de atrás o el dedo equivocado cae aquí. No es un
       // error que valga la pena mostrar en rojo.
@@ -101,8 +115,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push("/studio");
-      router.refresh();
+      enterStudio();
     } catch {
       setError("Algo salió mal");
       setLoading(false);

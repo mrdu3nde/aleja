@@ -2,8 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Mic, Sparkles, Loader2, Keyboard, MessageCircleQuestion } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  Mic,
+  Sparkles,
+  Loader2,
+  Keyboard,
+  MessageCircleQuestion,
+  AlertCircle,
+} from "lucide-react";
 import { NoteStatusBadge } from "@/components/admin/NoteStatusBadge";
+import { VoiceRecorder } from "@/components/admin/VoiceRecorder";
 import { noteText } from "@/lib/notes";
 
 type Note = {
@@ -25,6 +34,12 @@ const FILTERS = [
   { key: "done", label: "Resueltas" },
 ] as const;
 
+const ERRORS: Record<string, string> = {
+  sin_voz: "No se oyó nada. Inténtalo otra vez, más cerca del micrófono.",
+  sin_configurar: "La transcripción no está conectada todavía. Puedes escribirla.",
+  transcripcion_fallo: "Los modelos están saturados. Vuelve a intentarlo, o escríbela.",
+};
+
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -40,6 +55,36 @@ export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  // Se graba y se guarda desde aquí mismo. Antes había que entrar a otra
+  // pantalla y tocar un segundo botón para empezar: dos pasos que no aportaban
+  // nada, y un botón que decía "pedir una mejora" mientras mostraba un
+  // micrófono, así que no se entendía qué iba a pasar al tocarlo.
+  const saveRecording = async (audio: string) => {
+    setError("");
+    setSending(true);
+    try {
+      const res = await fetch("/api/studio/notes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ audio }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(ERRORS[data.error] ?? "No se pudo guardar.");
+        setSending(false);
+        return;
+      }
+      const { data } = await res.json();
+      router.push(`/studio/notes/${data.id}`);
+    } catch {
+      setError("Se perdió la conexión. Vuelve a intentarlo.");
+      setSending(false);
+    }
+  };
 
   useEffect(() => {
     // El "cargando" lo enciende el botón del filtro, no este efecto:
@@ -74,27 +119,48 @@ export default function NotesPage() {
         </p>
       </div>
 
-      <Link
-        href="/studio/notes/new"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 10,
-          width: "100%",
-          minHeight: 60,
-          borderRadius: 18,
-          background: "linear-gradient(135deg, #6B4E3D, #553D2F)",
-          color: "#fff",
-          fontSize: 16,
-          fontWeight: 600,
-          textDecoration: "none",
-          marginBottom: 20,
-        }}
-      >
-        <Mic size={22} />
-        Pedir una mejora
-      </Link>
+      {error && (
+        <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm mb-3">
+          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+          {error}
+        </div>
+      )}
+
+      <div style={{ marginBottom: 20 }}>
+        {sending ? (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 12,
+              width: "100%",
+              minHeight: 76,
+              borderRadius: 18,
+              background: "var(--admin-filter-bg)",
+              color: "var(--admin-text)",
+              fontSize: 16,
+              fontWeight: 500,
+            }}
+          >
+            <Loader2 size={20} className="animate-spin" />
+            Pasando tu voz a texto...
+          </div>
+        ) : (
+          <VoiceRecorder variant="big" label="Toca y cuéntame" onRecorded={saveRecording} />
+        )}
+
+        <div className="flex justify-center mt-3">
+          <Link
+            href="/studio/notes/new"
+            className="inline-flex items-center gap-1.5 text-sm underline"
+            style={{ color: "var(--admin-muted)" }}
+          >
+            <Keyboard size={14} />
+            Prefiero escribirlo
+          </Link>
+        </div>
+      </div>
 
       <div className="flex flex-wrap gap-2 mb-5">
         {FILTERS.map((f) => {
@@ -138,7 +204,7 @@ export default function NotesPage() {
           </p>
           <p style={{ fontSize: 14, color: "var(--admin-muted)" }}>
             {filter === "all"
-              ? "Toca el botón de arriba y cuéntame qué te gustaría cambiar."
+              ? "Toca el botón de arriba y dime qué te gustaría cambiar."
               : "Prueba con otro filtro."}
           </p>
         </div>
