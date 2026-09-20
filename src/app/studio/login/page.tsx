@@ -1,14 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, AlertCircle } from "lucide-react";
+import { Lock, AlertCircle, Fingerprint } from "lucide-react";
+import {
+  browserSupportsWebAuthn,
+  startAuthentication,
+} from "@simplewebauthn/browser";
+import type { PublicKeyCredentialRequestOptionsJSON } from "@simplewebauthn/browser";
 
 export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [biometricLoading, setBiometricLoading] = useState(false);
+  // Las opciones se piden al cargar, no al tocar el botón: iOS exige que
+  // `startAuthentication` salga del mismo gesto del dedo, sin un fetch en medio.
+  const [passkeyOptions, setPasskeyOptions] =
+    useState<PublicKeyCredentialRequestOptionsJSON | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!browserSupportsWebAuthn()) return;
+    fetch("/api/studio/auth/passkey/login/options", { method: "POST" })
+      // 404 = todavía no hay ningún dispositivo registrado. El botón no aparece.
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setPasskeyOptions)
+      // Sin conexión no hay biometría; queda la contraseña.
+      .catch(() => {});
+  }, []);
+
+  /** Tras un intento fallido el reto ya se gastó: hay que pedir uno nuevo. */
+  const reloadPasskeyOptions = useCallback(() => {
+    fetch("/api/studio/auth/passkey/login/options", { method: "POST" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setPasskeyOptions)
+      .catch(() => {});
+  }, []);
+
+  const handleBiometric = async () => {
+    if (!passkeyOptions) return;
+    setError("");
+    setBiometricLoading(true);
+
+    try {
+      const response = await startAuthentication({ optionsJSON: passkeyOptions });
+
+      const res = await fetch("/api/studio/auth/passkey/login/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ response }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "No se pudo entrar con este dispositivo");
+        setBiometricLoading(false);
+        reloadPasskeyOptions();
+        return;
+      }
+
+      router.push("/studio");
+      router.refresh();
+    } catch (err) {
+      // Cancelar con el botón de atrás o el dedo equivocado cae aquí. No es un
+      // error que valga la pena mostrar en rojo.
+      const name = err instanceof Error ? err.name : "";
+      if (name !== "NotAllowedError" && name !== "AbortError") {
+        setError("Este dispositivo no pudo verificarte");
+      }
+      setBiometricLoading(false);
+      reloadPasskeyOptions();
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,17 +87,29 @@ export default function AdminLoginPage() {
       });
 
       if (!res.ok) {
-        setError("Contraseña incorrecta");
+        const data = await res.json().catch(() => ({}));
+        setError(
+          res.status === 429
+            ? "Demasiados intentos. Espera un momento."
+            : res.status === 503
+              ? "El acceso no está configurado en el servidor"
+              : data.error === "Invalid password"
+                ? "Contraseña incorrecta"
+                : "No se pudo entrar",
+        );
         setLoading(false);
         return;
       }
 
       router.push("/studio");
+      router.refresh();
     } catch {
       setError("Algo salió mal");
       setLoading(false);
     }
   };
+
+  const busy = loading || biometricLoading;
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -48,27 +124,59 @@ export default function AdminLoginPage() {
             <p className="text-[var(--admin-muted)] text-sm mt-1">Panel de administración</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                {error}
-              </div>
-            )}
+          {error && (
+            <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm mb-4">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              {error}
+            </div>
+          )}
 
+          {passkeyOptions && (
+            <>
+              <button
+                type="button"
+                onClick={handleBiometric}
+                disabled={busy}
+                className="w-full rounded-xl py-3 font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
+                style={{ backgroundColor: "#6B4E3D", color: "#ffffff" }}
+              >
+                <Fingerprint className="h-5 w-5" />
+                {biometricLoading ? "Verificando..." : "Entrar con huella o cara"}
+              </button>
+
+              <div className="flex items-center gap-3 my-5">
+                <span className="h-px flex-1" style={{ backgroundColor: "var(--admin-border)" }} />
+                <span className="text-xs" style={{ color: "var(--admin-muted)" }}>
+                  o con tu contraseña
+                </span>
+                <span className="h-px flex-1" style={{ backgroundColor: "var(--admin-border)" }} />
+              </div>
+            </>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Escribe tu contraseña"
               className="w-full rounded-xl border border-[var(--admin-input-border)] bg-[var(--admin-input)] px-4 py-3 text-[var(--admin-text)] placeholder:text-[var(--admin-placeholder)] focus:border-[#6B4E3D] focus:ring-1 focus:ring-[#6B4E3D] outline-none transition-colors"
-              autoFocus
+              autoFocus={!passkeyOptions}
             />
 
             <button
               type="submit"
-              disabled={loading || !password}
-              className="w-full rounded-xl bg-[#6B4E3D] text-white py-3 font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
+              disabled={busy || !password}
+              className={
+                passkeyOptions
+                  ? "w-full rounded-xl border py-3 font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                  : "w-full rounded-xl bg-[#6B4E3D] text-white py-3 font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"
+              }
+              style={
+                passkeyOptions
+                  ? { borderColor: "var(--admin-border)", color: "var(--admin-text)" }
+                  : undefined
+              }
             >
               {loading ? "Entrando..." : "Entrar"}
             </button>

@@ -174,3 +174,25 @@ model Note {
 
   @@index([status, createdAt])
 }
+
+/// Llave de acceso (passkey) que la dueña registró desde un dispositivo suyo.
+/// Aquí solo vive la llave PÚBLICA: su huella y su cara nunca salen del
+/// teléfono, así que esta tabla no contiene ningún dato biométrico.
+model Credential {
+  id           String    @id @default(uuid())
+  /// Identificador que emite el autenticador, en base64url.
+  credentialId String    @unique
+  publicKey    Bytes
+  /// Contador anti-repetición. Los passkeys sincronizados reportan siempre 0;
+  /// las llaves físicas sí lo incrementan, y ahí es donde sirve.
+  counter      BigInt    @default(0)
+  /// Transportes ("internal", "hybrid"…) en JSON, para que el navegador
+  /// ofrezca el método correcto en cada equipo.
+  transports   String?
+  /// Nombre con el que ella lo reconoce: "iPhone de Ale".
+  deviceName   String
+  /// Si el passkey se sincroniza (iCloud / Google), sirve en sus otros equipos.
+  backedUp     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  lastUsedAt   DateTime?
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
-import { AtSign, Mail, Phone } from "lucide-react";
+import { AtSign, Lock, Mail, Phone } from "lucide-react";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -109,8 +109,21 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-champagne/15 text-center text-sm text-champagne/50">
-          &copy; {new Date().getFullYear()} Aluh. {t("rights")}
+        <div className="mt-12 pt-6 border-t border-champagne/15 flex flex-col items-center gap-4 text-sm text-champagne/50 sm:flex-row sm:justify-between">
+          <p>
+            &copy; {new Date().getFullYear()} Aluh. {t("rights")}
+          </p>
+          {/* El panel vive en otro layout raíz, así que Next recarga la página
+              entera igual. Sin prefetch: no tiene sentido precargar una ruta
+              protegida que va a redirigir al login. */}
+          <Link
+            href="/studio"
+            prefetch={false}
+            className="inline-flex items-center gap-1.5 rounded-full border border-champagne/20 px-3 py-1.5 text-champagne/60 transition-colors hover:border-champagne/40 hover:text-white"
+          >
+            <Lock className="h-3.5 w-3.5" />
+            {t("studio_access")}
+          </Link>
         </div>
       </div>
     </footer>

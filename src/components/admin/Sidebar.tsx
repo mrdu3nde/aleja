@@ -9,7 +9,9 @@ import {
   CalendarClock,
   NotebookPen,
   FileText,
+  ShieldCheck,
   ExternalLink,
+  LogOut,
   Menu,
   X,
 } from "lucide-react";
@@ -23,6 +25,7 @@ const navItems = [
   { href: "/studio/appointments", label: "Citas", icon: Calendar },
   { href: "/studio/availability", label: "Disponibilidad", icon: CalendarClock },
   { href: "/studio/content", label: "Contenido", icon: FileText },
+  { href: "/studio/security", label: "Seguridad", icon: ShieldCheck },
 ] as const;
 
 export function Sidebar() {
@@ -220,6 +223,34 @@ export function Sidebar() {
           >
             <ExternalLink size={18} />
             Ver sitio web
+          </button>
+          <button
+            onClick={async () => {
+              await fetch("/api/studio/auth/logout", { method: "POST" }).catch(() => {});
+              router.push("/studio/login");
+              router.refresh();
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "10px 12px",
+              borderRadius: 10,
+              fontSize: 13,
+              fontWeight: 400,
+              color: "rgba(245,230,211,0.55)",
+              background: "none",
+              border: "none",
+              width: "100%",
+              cursor: "pointer",
+              textAlign: "left",
+              transition: "color 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(245,230,211,0.9)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,230,211,0.55)")}
+          >
+            <LogOut size={18} />
+            Cerrar sesión
           </button>
         </div>
       </aside>

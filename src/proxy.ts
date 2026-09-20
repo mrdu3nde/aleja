@@ -1,27 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
+import { SESSION_COOKIE, verifySessionToken } from "./lib/session";
 
 const intlMiddleware = createMiddleware(routing);
 
-/** Lo único del panel que se puede abrir sin haber entrado. */
-const PUBLIC_STUDIO_PATHS = ["/studio/login", "/api/studio/auth"];
+/**
+ * Lo único del panel que se puede abrir sin haber entrado.
+ *
+ * La comparación es exacta, no `startsWith`. Con `startsWith` una ruta nueva
+ * como /api/studio/auth/passkey/register quedaría abierta sin querer, y
+ * registrar un dispositivo nuevo es justo lo que no puede ser público.
+ */
+const PUBLIC_STUDIO_PATHS = new Set([
+  "/studio/login",
+  "/api/studio/auth",
+  "/api/studio/auth/logout",
+  "/api/studio/auth/passkey/login/options",
+  "/api/studio/auth/passkey/login/verify",
+]);
 
-function hasSession(request: NextRequest) {
-  const token = process.env.ADMIN_SESSION_TOKEN;
-  // Sin token configurado no hay forma de validar nada, y dejar pasar a todo el
-  // mundo sería peor: se bloquea y se ve en los logs.
-  if (!token) return false;
-  return request.cookies.get("admin_session")?.value === token;
+async function hasSession(request: NextRequest) {
+  // Sin secreto configurado no hay forma de validar nada, y dejar pasar a todo
+  // el mundo sería peor: se bloquea y se ve en los logs.
+  if (!process.env.ADMIN_SESSION_TOKEN) return false;
+  return verifySessionToken(request.cookies.get(SESSION_COOKIE)?.value);
 }
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isStudio = pathname.startsWith("/studio") || pathname.startsWith("/api/studio");
-  const isPublicStudio = PUBLIC_STUDIO_PATHS.some((p) => pathname.startsWith(p));
+  const isPublicStudio = PUBLIC_STUDIO_PATHS.has(pathname);
 
-  if (isStudio && !isPublicStudio && !hasSession(request)) {
+  if (isStudio && !isPublicStudio && !(await hasSession(request))) {
     // La API responde 401 en vez de redirigir: un fetch que recibe el HTML del
     // login no tiene forma de saber que la sesión se venció.
     if (pathname.startsWith("/api/")) {
