@@ -54,10 +54,10 @@ const sections: SectionDef[] = [
       "about_preview.title",
       "about_preview.text",
       "about_page.title",
-      "about_page.intro",
-      "about_page.story",
+      "about_page.tagline",
       "about_page.philosophy",
-      "about_page.commitment",
+      "about_page.story",
+      "about_page.experience",
     ],
   },
   {
@@ -67,7 +67,27 @@ const sections: SectionDef[] = [
   },
 ];
 
+/**
+ * El panel está en español, pero las claves están en inglés y `keyToLabel` las
+ * derivaba tal cual ("Tagline", "Story"). Aquí van las que se ven raro; el
+ * resto sigue derivándose solo.
+ */
+const LABELS: Record<string, string> = {
+  "about_preview.title": "Título en la portada",
+  "about_preview.text": "Texto en la portada",
+  "about_page.title": "Nombre de la sección",
+  "about_page.tagline": "Frase principal",
+  "about_page.philosophy": "Mi filosofía",
+  "about_page.story": "Mi historia",
+  "about_page.experience": "La experiencia ALUH",
+  "hero.headline": "Titular",
+  "hero.subheadline": "Subtítulo",
+  "booking_cta.title": "Título",
+  "booking_cta.subtitle": "Subtítulo",
+};
+
 function keyToLabel(key: string): string {
+  if (LABELS[key]) return LABELS[key];
   const parts = key.split(".");
   const last = parts[parts.length - 1];
   return last
@@ -103,13 +123,13 @@ const defaults: Record<string, Record<string, string>> = {
     "services_section.facial.description": "Cleansing, hydration, and rejuvenation for healthy, glowing skin.",
     "services_section.special.title": "Special Services",
     "services_section.special.description": "Bridal packages, event prep, and signature beauty experiences.",
-    "about_preview.title": "Meet Aluh",
-    "about_preview.text": "With a passion for beauty and a commitment to personalized care, Aluh creates an experience where every client feels seen, valued, and beautiful.",
-    "about_page.title": "About Aluh",
-    "about_page.intro": "More than a beauty service — a personalized experience built on trust, care, and attention to detail.",
-    "about_page.story": "Beauty has always been my passion. From a young age, I was drawn to the art of enhancing natural features and helping people feel confident in their own skin.",
-    "about_page.philosophy": "I believe beauty should feel effortless, personal, and empowering. Every service I offer is guided by this principle.",
-    "about_page.commitment": "Your trust means everything. I am committed to providing an experience that not only meets your expectations but exceeds them.",
+    "about_preview.title": "Where beauty becomes an experience",
+    "about_preview.text": "ALUH is not just a place where beauty services happen. It is a warm space, designed so that you leave feeling more confident, more present, and connected to your best self.",
+    "about_page.title": "About ALUH",
+    "about_page.tagline": "Where beauty becomes an experience.",
+    "about_page.philosophy": "I believe beauty should be felt from within. It should feel natural, authentic and empowering. That is why every detail at ALUH is designed so that you feel welcome, cared for, and walk out with more confidence.",
+    "about_page.story": "Long before ALUH existed, beauty was already part of my story. I grew up surrounded by this profession, but my connection to it always went further: art, beauty, fashion and everything around aesthetics have been a passion I feel was born with me.\n\nI started working in this world very young, and over the years I understood that when a person feels good about herself, the way she carries herself into the world changes too.\n\nThat is how ALUH was born — from the wish to turn that passion into a warm, special place where every person feels welcome, understood, and excited about the transformation she is about to live.\n\nBecause to me, beauty is not only about how you look. It is about how you feel when you recognise yourself again, connect with your essence, and discover the power of your own presence.",
+    "about_page.experience": "At ALUH, every appointment is a moment for you.\n\nNo rush. No generic results. We listen, we observe, and we care for every detail to create a result that connects with your style and your essence.\n\nThe intention is simple: that you leave with more confidence, more present, and connected to your best self.",
     "booking_cta.title": "Ready to Book Your Next Beauty Appointment?",
     "booking_cta.subtitle": "Let's create something beautiful together. Book your session today.",
   },
@@ -139,13 +159,13 @@ const defaults: Record<string, Record<string, string>> = {
     "services_section.facial.description": "Limpieza, hidrataci\u00f3n y rejuvenecimiento para una piel sana y luminosa.",
     "services_section.special.title": "Servicios Especiales",
     "services_section.special.description": "Paquetes nupciales, preparaci\u00f3n para eventos y experiencias de belleza exclusivas.",
-    "about_preview.title": "Conoce a Aluh",
-    "about_preview.text": "Con pasi\u00f3n por la belleza y un compromiso con el cuidado personalizado, Aluh crea una experiencia donde cada clienta se siente vista, valorada y hermosa.",
-    "about_page.title": "Sobre Aluh",
-    "about_page.intro": "M\u00e1s que un servicio de belleza \u2014 una experiencia personalizada construida sobre confianza, cuidado y atenci\u00f3n al detalle.",
-    "about_page.story": "La belleza siempre ha sido mi pasi\u00f3n. Desde joven, me atrajo el arte de realzar los rasgos naturales y ayudar a las personas a sentirse seguras en su propia piel.",
-    "about_page.philosophy": "Creo que la belleza debe sentirse natural, personal y empoderadora. Cada servicio que ofrezco est\u00e1 guiado por este principio.",
-    "about_page.commitment": "Tu confianza lo es todo. Me comprometo a ofrecer una experiencia que no solo cumpla tus expectativas sino que las supere.",
+    "about_preview.title": "Donde la belleza se convierte en una experiencia",
+    "about_preview.text": "ALUH no es solo un lugar donde se hacen servicios de belleza. Es un espacio cálido, pensado para que salgas sintiéndote más seguro de ti, más presente y en conexión con tu mejor versión.",
+    "about_page.title": "Sobre ALUH",
+    "about_page.tagline": "Donde la belleza se convierte en una experiencia.",
+    "about_page.philosophy": "Creo que la belleza debe sentirse desde adentro. Debe sentirse natural, auténtica y empoderadora. Por eso, en ALUH cada detalle está pensado para que te sientas bienvenid@, cuidad@ y con más confianza al salir de ALUH.",
+    "about_page.story": "Mucho antes de que existiera ALUH, la belleza ya hacía parte de mi historia. Crecí rodeada de esta profesión, pero mi conexión con ella siempre fue mucho más allá: el arte, la belleza, la moda y todo lo relacionado con la estética han sido una pasión que siento que nació conmigo.\n\nDesde muy joven comencé a trabajar en este mundo y, con los años, entendí que cuando una persona se siente bien consigo misma, cambia también la manera en la que se presenta al mundo.\n\nAsí nació ALUH, del deseo de convertir esa pasión en un espacio cálido y especial, donde cada persona se sienta bienvenida, comprendida y emocionada por la transformación que está a punto de vivir.\n\nPorque para mí, la belleza no se trata únicamente de cómo te ves. Se trata de cómo te sientes cuando vuelves a reconocerte, conectas con tu esencia y descubres el poder de tu propia presencia.",
+    "about_page.experience": "En ALUH, cada cita es un momento para ti.\n\nSin prisas. Sin resultados genéricos. Escuchamos, observamos y cuidamos cada detalle para crear un resultado que conecte con tu estilo y tu esencia.\n\nLa intención es simple: que al salir te sientas con más confianza, más presente y en conexión con tu mejor versión.",
     "booking_cta.title": "\u00bfLista para Tu Pr\u00f3xima Cita de Belleza?",
     "booking_cta.subtitle": "Creemos algo hermoso juntas. Reserva tu sesi\u00f3n hoy.",
   },
@@ -214,8 +234,11 @@ export default function ContentPage() {
     key.includes("subtitle") ||
     key.includes("story") ||
     key.includes("philosophy") ||
-    key.includes("commitment") ||
-    key.includes("intro");
+    key.includes("experience");
+
+  /** Su historia son cuatro párrafos: en tres líneas no se puede releer. */
+  const rowsFor = (key: string) =>
+    key.includes("story") ? 12 : key.includes("experience") ? 7 : 3;
 
   return (
     <div>
@@ -324,7 +347,7 @@ export default function ContentPage() {
                         onChange={(e) =>
                           setValues((v) => ({ ...v, [key]: e.target.value }))
                         }
-                        rows={3}
+                        rows={rowsFor(key)}
                         style={contentInputStyle}
                       />
                     ) : (

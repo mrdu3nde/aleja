@@ -61,9 +61,9 @@
     }
   },
   "about_preview": {
-    "title": "Meet Aluh",
-    "text": "With a passion for beauty and a commitment to personalized care, Aluh creates an experience where every client feels seen, valued, and beautiful. Her attention to detail and warm approach set the foundation for lasting results and genuine connections.",
-    "cta": "Learn More About Us"
+    "title": "Where beauty becomes an experience",
+    "text": "ALUH is not just a place where beauty services happen. It is a warm space, designed so that you leave feeling more confident, more present, and connected to your best self.",
+    "cta": "Read my story"
   },
   "gallery_preview": {
     "title": "Our Work",
@@ -106,25 +106,20 @@
     },
     "contact_title": "Contact",
     "rights": "All rights reserved.",
-    "studio_access": "Studio login"
+    "studio_access": "Studio login",
+    "brand_phrase": "PRESENCE IS POWER"
   },
   "about_page": {
-    "title": "About Aluh",
-    "intro": "More than a beauty service — a personalized experience built on trust, care, and attention to detail.",
-    "story_title": "My Story",
-    "story": "Beauty has always been my passion. From a young age, I was drawn to the art of enhancing natural features and helping people feel confident in their own skin. What started as a personal passion grew into Aluh — a space where every client is treated as an individual, not a number.",
-    "philosophy_title": "My Philosophy",
-    "philosophy": "I believe beauty should feel effortless, personal, and empowering. Every service I offer is guided by this principle: understand what makes each client unique, and enhance it with care, skill, and the best products available.",
-    "difference_title": "What Sets Us Apart",
-    "difference_items": [
-      "Genuine one-on-one attention for every appointment",
-      "Carefully selected premium products and tools",
-      "A clean, comfortable, and welcoming environment",
-      "Ongoing education to bring you the latest techniques",
-      "A results-driven approach tailored to your features"
-    ],
-    "commitment_title": "My Commitment",
-    "commitment": "Your trust means everything. I am committed to providing an experience that not only meets your expectations but exceeds them. From the moment you book to the moment you leave, every detail matters."
+    "title": "About ALUH",
+    "story_title": "My story",
+    "story": "Long before ALUH existed, beauty was already part of my story. I grew up surrounded by this profession, but my connection to it always went further: art, beauty, fashion and everything around aesthetics have been a passion I feel was born with me.\n\nI started working in this world very young, and over the years I understood that when a person feels good about herself, the way she carries herself into the world changes too.\n\nThat is how ALUH was born — from the wish to turn that passion into a warm, special place where every person feels welcome, understood, and excited about the transformation she is about to live.\n\nBecause to me, beauty is not only about how you look. It is about how you feel when you recognise yourself again, connect with your essence, and discover the power of your own presence.",
+    "philosophy_title": "My philosophy",
+    "philosophy": "I believe beauty should be felt from within. It should feel natural, authentic and empowering. That is why every detail at ALUH is designed so that you feel welcome, cared for, and walk out with more confidence.",
+    "tagline": "Where beauty becomes an experience.",
+    "experience_title": "The ALUH experience",
+    "experience": "At ALUH, every appointment is a moment for you.\n\nNo rush. No generic results. We listen, we observe, and we care for every detail to create a result that connects with your style and your essence.\n\nThe intention is simple: that you leave with more confidence, more present, and connected to your best self.",
+    "experience_closing": "That is ALUH.",
+    "logo_alt": "ALUH logo"
   },
   "services_page": {
     "title": "Our Services",

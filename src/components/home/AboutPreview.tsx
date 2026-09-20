@@ -4,10 +4,17 @@ import { useTranslations, useLocale } from "next-intl";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import { BrandFrame } from "@/components/ui/BrandFrame";
 
-export function AboutPreview({ content }: { content: Record<string, string> }) {
+export function AboutPreview({
+  content,
+  brandLogo,
+}: {
+  content: Record<string, string>;
+  brandLogo: string | null;
+}) {
   const t = useTranslations("about_preview");
+  const at = useTranslations("about_page");
   const locale = useLocale();
 
   return (
@@ -18,14 +25,8 @@ export function AboutPreview({ content }: { content: Record<string, string> }) {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="aspect-[4/5] rounded-2xl overflow-hidden relative"
         >
-          <Image
-            src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
-            alt="Beauty professional"
-            fill
-            className="object-cover"
-          />
+          <BrandFrame src={brandLogo} alt={at("logo_alt")} />
         </motion.div>
 
         <motion.div

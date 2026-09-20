@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { AtSign, Lock, Mail, Phone } from "lucide-react";
+import { Wordmark } from "@/components/ui/Wordmark";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -25,9 +26,9 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-white mb-3">
-              Aluh
-            </h3>
+            <div className="mb-3">
+              <Wordmark onDark />
+            </div>
             <p className="text-champagne/80 text-sm leading-relaxed">
               {t("brand_description")}
             </p>
@@ -110,9 +111,16 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-champagne/15 flex flex-col items-center gap-4 text-sm text-champagne/50 sm:flex-row sm:justify-between">
-          <p>
-            &copy; {new Date().getFullYear()} Aluh. {t("rights")}
-          </p>
+          <div>
+            {/* La frase de marca vive aquí porque es lo último que se lee del
+                sitio, y no compite con ninguna sección. */}
+            <p className="font-[family-name:var(--font-heading)] tracking-[0.22em] text-champagne/70 mb-1">
+              PRESENCE IS POWER
+            </p>
+            <p>
+              &copy; {new Date().getFullYear()} Aluh. {t("rights")}
+            </p>
+          </div>
           {/* El panel vive en otro layout raíz, así que Next recarga la página
               entera igual. Sin prefetch: no tiene sentido precargar una ruta
               protegida que va a redirigir al login. */}

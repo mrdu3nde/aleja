@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileMenu } from "./MobileMenu";
 import { Button } from "@/components/ui/Button";
+import { Wordmark } from "@/components/ui/Wordmark";
 
 const navItems = [
   { key: "about", href: "/about" },
@@ -21,11 +22,8 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link
-            href={`/${locale}`}
-            className="font-[family-name:var(--font-heading)] text-xl font-bold text-cafe tracking-tight"
-          >
-            Aluh
+          <Link href={`/${locale}`} aria-label="ALUH" className="py-2">
+            <Wordmark />
           </Link>
 
           {/* Desktop nav */}

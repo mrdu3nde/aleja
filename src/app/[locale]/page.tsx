@@ -1,5 +1,6 @@
 import { getLocale } from "next-intl/server";
 import { getPageContent } from "@/lib/get-page-content";
+import { brandImage } from "@/lib/brand-image";
 import { getPublicServices } from "@/lib/services";
 import { Hero } from "@/components/home/Hero";
 import { TrustPillars } from "@/components/home/TrustPillars";
@@ -21,7 +22,7 @@ export default async function HomePage() {
       <Hero content={content} />
       <TrustPillars content={content} />
       <FeaturedServices content={content} services={services} />
-      <AboutPreview content={content} />
+      <AboutPreview content={content} brandLogo={brandImage(content)} />
       <GalleryPreview />
       <Testimonials />
       <BookingCTA content={content} />

@@ -15,6 +15,14 @@
   --color-text-light: #8A7B6E;
   --color-text-muted: #B0A396;
 
+  /* Dorado de la marca. Es un oro viejo, no un amarillo: se eligió a partir de
+     la paleta existente (champagne y café) para que se lea como metal
+     refinado y no como un destello. El claro es para fondos oscuros, donde el
+     tono profundo desaparecería. */
+  --color-gold: #A8823C;
+  --color-gold-light: #D9BE86;
+  --color-gold-deep: #8C6A2B;
+
   /* Typography */
   --font-heading: "Julius Sans One", Georgia, serif;
   --font-body: "DM Sans", system-ui, sans-serif;
@@ -25,6 +33,53 @@ body {
   background-color: var(--color-warm-white);
   color: var(--color-text-dark);
   font-family: var(--font-body);
+}
+
+/* El logo en dorado.
+
+   Un color plano se ve apagado en pantalla; el oro real tiene reflejo. Un
+   degradado muy corto recortado sobre el texto da esa sensación metálica sin
+   caer en el brillo de bisutería. `color` va primero como respaldo: si el
+   navegador no recorta el fondo (o si se imprime la página), queda el dorado
+   sólido en vez de texto invisible. */
+.wordmark-gold {
+  color: var(--color-gold);
+  background-image: linear-gradient(
+    100deg,
+    var(--color-gold-deep) 0%,
+    var(--color-gold) 30%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 70%,
+    var(--color-gold-deep) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sobre el café oscuro del pie, el oro profundo no tiene contraste. */
+.wordmark-gold-on-dark {
+  color: var(--color-gold-light);
+  background-image: linear-gradient(
+    100deg,
+    var(--color-gold) 0%,
+    var(--color-gold-light) 45%,
+    #F0DDB4 55%,
+    var(--color-gold-light) 65%,
+    var(--color-gold) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Quien prefiere menos efectos visuales recibe el dorado plano. */
+@media (prefers-contrast: more) {
+  .wordmark-gold,
+  .wordmark-gold-on-dark {
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+  }
 }
 
 /* Smooth scroll */

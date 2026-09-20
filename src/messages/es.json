@@ -61,9 +61,9 @@
     }
   },
   "about_preview": {
-    "title": "Conoce a Aluh",
-    "text": "Con pasión por la belleza y un compromiso con el cuidado personalizado, Aluh crea una experiencia donde cada clienta se siente vista, valorada y hermosa. Su atención al detalle y trato cálido son la base de resultados duraderos y conexiones genuinas.",
-    "cta": "Más Sobre Nosotros"
+    "title": "Donde la belleza se convierte en una experiencia",
+    "text": "ALUH no es solo un lugar donde se hacen servicios de belleza. Es un espacio cálido, pensado para que salgas sintiéndote más seguro de ti, más presente y en conexión con tu mejor versión.",
+    "cta": "Conoce mi historia"
   },
   "gallery_preview": {
     "title": "Nuestro Trabajo",
@@ -106,25 +106,20 @@
     },
     "contact_title": "Contacto",
     "rights": "Todos los derechos reservados.",
-    "studio_access": "Entrar al panel"
+    "studio_access": "Entrar al panel",
+    "brand_phrase": "PRESENCE IS POWER"
   },
   "about_page": {
-    "title": "Sobre Aluh",
-    "intro": "Más que un servicio de belleza — una experiencia personalizada construida sobre confianza, cuidado y atención al detalle.",
-    "story_title": "Mi Historia",
-    "story": "La belleza siempre ha sido mi pasión. Desde joven, me atrajo el arte de realzar los rasgos naturales y ayudar a las personas a sentirse seguras en su propia piel. Lo que comenzó como una pasión personal se convirtió en Aluh — un espacio donde cada clienta es tratada como individuo, no como un número.",
-    "philosophy_title": "Mi Filosofía",
-    "philosophy": "Creo que la belleza debe sentirse natural, personal y empoderadora. Cada servicio que ofrezco está guiado por este principio: entender qué hace única a cada clienta y realzarlo con cuidado, habilidad y los mejores productos disponibles.",
-    "difference_title": "Lo Que Nos Diferencia",
-    "difference_items": [
-      "Atención genuina uno a uno en cada cita",
-      "Productos y herramientas premium cuidadosamente seleccionados",
-      "Un ambiente limpio, cómodo y acogedor",
-      "Formación continua para ofrecerte las últimas técnicas",
-      "Un enfoque orientado a resultados adaptado a tus rasgos"
-    ],
-    "commitment_title": "Mi Compromiso",
-    "commitment": "Tu confianza lo es todo. Me comprometo a ofrecer una experiencia que no solo cumpla tus expectativas sino que las supere. Desde el momento en que reservas hasta que te vas, cada detalle importa."
+    "title": "Sobre ALUH",
+    "story_title": "Mi historia",
+    "story": "Mucho antes de que existiera ALUH, la belleza ya hacía parte de mi historia. Crecí rodeada de esta profesión, pero mi conexión con ella siempre fue mucho más allá: el arte, la belleza, la moda y todo lo relacionado con la estética han sido una pasión que siento que nació conmigo.\n\nDesde muy joven comencé a trabajar en este mundo y, con los años, entendí que cuando una persona se siente bien consigo misma, cambia también la manera en la que se presenta al mundo.\n\nAsí nació ALUH, del deseo de convertir esa pasión en un espacio cálido y especial, donde cada persona se sienta bienvenida, comprendida y emocionada por la transformación que está a punto de vivir.\n\nPorque para mí, la belleza no se trata únicamente de cómo te ves. Se trata de cómo te sientes cuando vuelves a reconocerte, conectas con tu esencia y descubres el poder de tu propia presencia.",
+    "philosophy_title": "Mi filosofía",
+    "philosophy": "Creo que la belleza debe sentirse desde adentro. Debe sentirse natural, auténtica y empoderadora. Por eso, en ALUH cada detalle está pensado para que te sientas bienvenid@, cuidad@ y con más confianza al salir de ALUH.",
+    "tagline": "Donde la belleza se convierte en una experiencia.",
+    "experience_title": "La experiencia ALUH",
+    "experience": "En ALUH, cada cita es un momento para ti.\n\nSin prisas. Sin resultados genéricos. Escuchamos, observamos y cuidamos cada detalle para crear un resultado que conecte con tu estilo y tu esencia.\n\nLa intención es simple: que al salir te sientas con más confianza, más presente y en conexión con tu mejor versión.",
+    "experience_closing": "Eso es ALUH.",
+    "logo_alt": "Logo de ALUH"
   },
   "services_page": {
     "title": "Nuestros Servicios",
