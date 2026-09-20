@@ -23,9 +23,16 @@ export function relyingParty(request: Request) {
   const forwarded = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
   const protocol = forwarded ?? url.protocol.replace(":", "");
 
+  const hostname = host.split(":")[0];
+
+  // aluhstudio.com redirige a www.aluhstudio.com, y un passkey solo vale para
+  // el dominio con el que se registró. Anclarlo al dominio raíz (WebAuthn
+  // permite que el rpID sea un sufijo del origen) hace que la misma llave
+  // sirva en los dos, y que siga sirviendo si mañana cambia esa redirección.
+  const rpID = hostname.startsWith("www.") ? hostname.slice(4) : hostname;
+
   return {
-    /** Dominio sin puerto: lo que firma el autenticador. */
-    rpID: host.split(":")[0],
+    rpID,
     /** Origen completo, con puerto. Tiene que calzar exacto con el navegador. */
     origin: `${protocol}://${host}`,
     rpName: OWNER_NAME,
