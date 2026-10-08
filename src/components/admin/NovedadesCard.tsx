@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { ChevronRight, Gift } from "lucide-react";
 import { useNovedades } from "@/lib/novedades";
@@ -11,7 +12,14 @@ import { startTour } from "./Tour";
  * hasta que la abre.
  */
 export function NovedadesCard() {
-  const { items, showCard, dismissCard } = useNovedades();
+  const { release, showCard, dismissCard, logShown } = useNovedades();
+  const items = release.items;
+
+  // Que quede registrado que se mostró (quién y cuándo), una vez.
+  useEffect(() => {
+    if (showCard) logShown();
+  }, [showCard, logShown]);
+
   if (!showCard) return null;
 
   return (
@@ -87,12 +95,17 @@ export function NovedadesCard() {
         })}
       </ul>
 
-      <button
-        onClick={dismissCard}
-        className="mt-4 rounded-xl bg-[#6B4E3D] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer"
-      >
-        Entendido
-      </button>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          onClick={dismissCard}
+          className="rounded-xl bg-[#6B4E3D] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors cursor-pointer"
+        >
+          Entendido
+        </button>
+        <Link href="/studio/novedades" className="text-sm underline" style={{ color: "var(--admin-muted)" }}>
+          Ver todo el historial
+        </Link>
+      </div>
     </section>
   );
 }

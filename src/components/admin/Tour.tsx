@@ -47,9 +47,38 @@ const subscribe = (l: () => void) => {
 const snapshot = () => readStep() ?? memory;
 const serverSnapshot = () => null;
 
+/** El recorrido en curso, para anotar su avance en el historial. */
+const RUN_KEY = "studio-tour-run";
+
+/** Anota en la base hasta dónde llegó este recorrido (para el historial). */
+function reportProgress(step: number, finished = false) {
+  let id: string | null = null;
+  try {
+    id = sessionStorage.getItem(RUN_KEY);
+  } catch {}
+  if (!id) return;
+  fetch(`/api/studio/tour/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ step, finished }),
+  }).catch(() => {});
+}
+
 /** Empieza el tour desde el primer paso. */
 export function startTour() {
   writeStep(0);
+  fetch("/api/studio/tour", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ totalSteps: TOUR_STEPS.length }),
+  })
+    .then((r) => r.json())
+    .then((d: { id?: string }) => {
+      try {
+        if (d.id) sessionStorage.setItem(RUN_KEY, d.id);
+      } catch {}
+    })
+    .catch(() => {});
 }
 
 type Rect = { top: number; left: number; width: number; height: number };
@@ -98,10 +127,18 @@ export function Tour() {
 
   const current = step !== null ? TOUR_STEPS[step] : undefined;
   const close = useCallback(() => writeStep(null), []);
-  const go = useCallback(
-    (to: number) => (to < 0 || to >= TOUR_STEPS.length ? writeStep(null) : writeStep(to)),
-    [],
-  );
+  const go = useCallback((to: number) => {
+    if (to >= TOUR_STEPS.length) {
+      // Tocó "Terminar": el recorrido queda completo.
+      reportProgress(TOUR_STEPS.length, true);
+      writeStep(null);
+    } else if (to < 0) {
+      writeStep(null);
+    } else {
+      reportProgress(to + 1);
+      writeStep(to);
+    }
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 639px)");

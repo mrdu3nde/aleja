@@ -13,6 +13,13 @@
 
 export const SESSION_COOKIE = "admin_session";
 
+/**
+ * Con qué se entró: el nombre del passkey ("iPhone de Ale") o "Contraseña".
+ * No da acceso a nada (eso lo hace la sesión firmada); sólo sirve para que el
+ * historial de Novedades diga en qué dispositivo se vio cada cosa.
+ */
+export const DEVICE_COOKIE = "studio_device";
+
 /** 30 días: ella entra desde su teléfono y no queremos pedirle la cara a diario. */
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
 

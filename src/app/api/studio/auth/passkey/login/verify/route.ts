@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyAuthenticationResponse } from "@simplewebauthn/server";
 import { prisma } from "@/lib/prisma";
-import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
+import { DEVICE_COOKIE, SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
 import {
   CHALLENGE_COOKIE,
   challengeCookieOptions,
@@ -70,6 +70,7 @@ export async function POST(request: NextRequest) {
 
     const response = NextResponse.json({ success: true });
     response.cookies.set(SESSION_COOKIE, await createSessionToken(), sessionCookieOptions());
+    response.cookies.set(DEVICE_COOKIE, encodeURIComponent(stored.deviceName), sessionCookieOptions());
     response.cookies.set(CHALLENGE_COOKIE, "", challengeCookieOptions(0));
     return response;
   } catch (error) {

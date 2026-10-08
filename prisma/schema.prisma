@@ -283,3 +283,30 @@ model AppointmentCall {
 
   @@index([appointmentId, createdAt])
 }
+
+/// Quién vio cada actualización del panel ("Novedades") y cuándo. Es un
+/// registro de eventos, no un estado: así se ve si lo vio ella (su iPhone) o
+/// quien la ayuda, y cuándo tocó "Entendido".
+model UpdateView {
+  id        String   @id @default(uuid())
+  /// El `id` de la actualización en src/lib/novedades.ts.
+  releaseId String
+  /// "visto" (se mostró la tarjeta) | "entendido" (la cerró) | "historial" (abrió la página).
+  event     String
+  /// Nombre del dispositivo con el que entró ("iPhone de Ale"), o "Contraseña".
+  device    String?
+  createdAt DateTime @default(now())
+
+  @@index([releaseId, createdAt])
+}
+
+/// Cada vez que alguien recorre el tour guiado: hasta dónde llegó y si lo terminó.
+model TourRun {
+  id         String    @id @default(uuid())
+  device     String?
+  lastStep   Int       @default(0)
+  totalSteps Int
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  updatedAt  DateTime  @updatedAt
+}

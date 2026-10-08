@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
-import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
+import { DEVICE_COOKIE, SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
 
 /** Comparación en tiempo constante, para no filtrar la contraseña a cronómetro. */
 function equals(a: string, b: string): boolean {
@@ -40,6 +40,7 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({ success: true });
     response.cookies.set(SESSION_COOKIE, await createSessionToken(), sessionCookieOptions());
+    response.cookies.set(DEVICE_COOKIE, encodeURIComponent("Contraseña"), sessionCookieOptions());
     return response;
   } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
