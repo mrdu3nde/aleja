@@ -6,6 +6,7 @@ import { depositConfig, buildReferenceCode } from "@/lib/deposit";
 import { resolveService } from "@/lib/services";
 import { serviceDuration } from "@/lib/availability";
 import { notifyOwner } from "@/lib/push";
+import { ensureClient } from "@/lib/clients";
 
 export async function POST(request: Request) {
   try {
@@ -35,6 +36,13 @@ export async function POST(request: Request) {
         depositStatus: "pending",
       },
     });
+
+    // La reserva web también queda en Clientas, con cómo prefiere que la
+    // contacten (antes se pedía en el formulario y se perdía). Si falla, la
+    // reserva sigue siendo válida: la dueña puede vincularla a mano.
+    await ensureClient(appointment.id, data.contactPreference).catch((err) =>
+      console.error("Could not link client to web booking:", err),
+    );
 
     const referenceCode = buildReferenceCode(appointment.id);
 

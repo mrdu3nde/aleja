@@ -47,6 +47,7 @@ export function BookingForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorKind, setErrorKind] = useState<ErrorKind>("generic");
   const [submittedEmail, setSubmittedEmail] = useState("");
+  const [submittedContact, setSubmittedContact] = useState<{ via: string; phone: string }>({ via: "email", phone: "" });
   const [referenceCode, setReferenceCode] = useState("");
   const [deposit, setDeposit] = useState<DepositInfo>({
     amount: depositConfig.amount,
@@ -88,6 +89,7 @@ export function BookingForm() {
       }
       const json = await res.json();
       setSubmittedEmail(data.email);
+      setSubmittedContact({ via: data.contactPreference, phone: data.phone ?? "" });
       setReferenceCode(json.referenceCode ?? "");
       if (json.deposit) setDeposit(json.deposit);
       setStatus("success");
@@ -209,9 +211,15 @@ export function BookingForm() {
           <div className="flex items-start gap-3 text-left text-sm text-text-light bg-white border border-mushroom/30 rounded-xl p-4">
             <Mail className="h-4 w-4 text-cafe shrink-0 mt-0.5" />
             <span>
-              {t("success_check_email")}
+              {submittedContact.via === "whatsapp" && submittedContact.phone
+                ? t("success_contact_whatsapp")
+                : submittedContact.via === "phone" && submittedContact.phone
+                  ? t("success_contact_phone")
+                  : t("success_check_email")}
               <br />
-              <span className="text-cafe font-medium">{submittedEmail}</span>
+              <span className="text-cafe font-medium">
+                {submittedContact.via !== "email" && submittedContact.phone ? submittedContact.phone : submittedEmail}
+              </span>
             </span>
           </div>
         )}

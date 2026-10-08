@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
 import { prisma } from "@/lib/prisma";
-import { normalizePhone } from "@/lib/phone";
+import { ensureClient } from "@/lib/clients";
 
 /**
  * Prepare an appointment to be shared with the client.
@@ -20,58 +20,6 @@ import { normalizePhone } from "@/lib/phone";
  * therefore conditional (`updateMany ... where clientId: null`), so exactly one
  * caller wins and the losers clean up after themselves.
  */
-async function ensureClient(appointmentId: string): Promise<string> {
-  const apt = await prisma.appointment.findUniqueOrThrow({ where: { id: appointmentId } });
-  if (apt.clientId) return apt.clientId;
-
-  const phoneKey = normalizePhone(apt.clientPhone);
-  const conditions = [];
-  if (apt.clientEmail) conditions.push({ email: apt.clientEmail });
-  if (phoneKey) conditions.push({ phoneNormalized: phoneKey });
-
-  const existing = conditions.length
-    ? await prisma.client.findFirst({ where: { OR: conditions } })
-    : null;
-
-  if (existing) {
-    await prisma.appointment.updateMany({
-      where: { id: appointmentId, clientId: null },
-      data: { clientId: existing.id },
-    });
-    const fresh = await prisma.appointment.findUniqueOrThrow({
-      where: { id: appointmentId },
-      select: { clientId: true },
-    });
-    return fresh.clientId ?? existing.id;
-  }
-
-  const created = await prisma.client.create({
-    data: {
-      name: apt.clientName,
-      email: apt.clientEmail || null,
-      phone: apt.clientPhone || null,
-      phoneNormalized: phoneKey,
-    },
-  });
-
-  // Only attach if nobody linked one in the meantime.
-  const claimed = await prisma.appointment.updateMany({
-    where: { id: appointmentId, clientId: null },
-    data: { clientId: created.id },
-  });
-
-  if (claimed.count === 1) return created.id;
-
-  // Lost the race: another request already linked a client, so drop the
-  // duplicate this call created and use the winner.
-  await prisma.client.delete({ where: { id: created.id } }).catch(() => {});
-  const winner = await prisma.appointment.findUniqueOrThrow({
-    where: { id: appointmentId },
-    select: { clientId: true },
-  });
-  return winner.clientId ?? created.id;
-}
-
 async function ensureToken(appointmentId: string): Promise<void> {
   const token = randomBytes(16).toString("base64url");
   // Same trick: the first caller sets it, later ones are no-ops, so a link

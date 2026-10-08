@@ -306,6 +306,7 @@
         "not_sure": "Not sure yet"
       },
       "date": "Preferred Date",
+      "time": "Time",
       "message": "Additional Message",
       "message_placeholder": "Any details or preferences you'd like to share...",
       "contact_preference": "Preferred Contact Method",
@@ -329,13 +330,15 @@
       "deposit_copied": "Copied!",
       "success_next_steps_title": "What happens next?",
       "success_next_step_1": "Send the {amount} USD deposit via Zelle with the reference code",
-      "success_next_step_2": "As soon as we receive it we'll email you a confirmation",
+      "success_next_step_2": "As soon as we receive it, we'll confirm through your preferred contact method",
       "success_next_step_3": "Your appointment is locked in our schedule",
-      "success_check_email": "We also emailed these details to you in case you need them later:",
+      "success_check_email": "Take a screenshot of this screen to keep the details handy. We'll reach you at:",
       "error_network": "We couldn't reach our servers. Please check your connection and try again.",
       "error_validation": "Some fields need attention. Please review and try again.",
       "error_server": "Something went wrong on our end. Please try again in a moment or contact us directly.",
-      "error_generic": "Something went wrong. Please try again or contact us directly."
+      "error_generic": "Something went wrong. Please try again or contact us directly.",
+      "success_contact_whatsapp": "Take a screenshot of this screen to keep the details handy. We'll message you on WhatsApp at:",
+      "success_contact_phone": "Take a screenshot of this screen to keep the details handy. We'll call you at:"
     },
     "time": "Preferred time"
   },

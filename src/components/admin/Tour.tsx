@@ -90,6 +90,11 @@ export function Tour() {
   const [ready, setReady] = useState(false);
   const [aptPath, setAptPath] = useState<string | null>(null);
   const [isPhone, setIsPhone] = useState(false);
+  const [cardH, setCardH] = useState(0);
+  // Mide la tarjeta al montarse o cambiar de paso, para ubicarla sin taparse.
+  const cardRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) setCardH(el.getBoundingClientRect().height);
+  }, []);
 
   const current = step !== null ? TOUR_STEPS[step] : undefined;
   const close = useCallback(() => writeStep(null), []);
@@ -207,12 +212,24 @@ export function Tour() {
     // El elemento ocupa media pantalla o más: la tarjeta va a un lado, abajo.
     cardStyle = { right: 24, bottom: 24, width: CARD_W };
   } else if (spot) {
+    // La altura real de la tarjeta (cambia con el texto de cada paso).
+    const h = cardH || 240;
     const below = spot.top + spot.height + 12;
-    const fitsBelow = below + 230 < window.innerHeight;
     const left = Math.min(Math.max(12, spot.left), window.innerWidth - CARD_W - 12);
-    cardStyle = fitsBelow
-      ? { top: below, left, width: CARD_W }
-      : { top: Math.max(12, spot.top - 242), left, width: CARD_W };
+    const roomRight = window.innerWidth - (spot.left + spot.width) - 24;
+    if (below + h < window.innerHeight - 12) {
+      cardStyle = { top: below, left, width: CARD_W };
+    } else if (spot.top - h - 12 >= 12) {
+      cardStyle = { top: spot.top - h - 12, left, width: CARD_W };
+    } else if (roomRight >= CARD_W) {
+      // Ni arriba ni abajo (pantalla baja): al costado del elemento.
+      cardStyle = { top: Math.max(12, Math.min(spot.top, window.innerHeight - h - 12)), left: spot.left + spot.width + 24, width: CARD_W };
+    } else if (spot.left - 24 >= CARD_W + 12) {
+      cardStyle = { top: Math.max(12, Math.min(spot.top, window.innerHeight - h - 12)), left: spot.left - CARD_W - 24, width: CARD_W };
+    } else {
+      // Último recurso: abajo a la derecha, tapando lo menos posible.
+      cardStyle = { right: 24, bottom: 24, width: CARD_W };
+    }
   } else {
     cardStyle = { top: "50%", left: "50%", width: CARD_W, transform: "translate(-50%, -50%)" };
   }
@@ -239,6 +256,8 @@ export function Tour() {
       )}
 
       <div
+        key={step}
+        ref={cardRef}
         style={{
           position: "fixed",
           ...cardStyle,

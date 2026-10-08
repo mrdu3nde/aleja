@@ -306,6 +306,7 @@
         "not_sure": "No estoy segura"
       },
       "date": "Fecha Preferida",
+      "time": "Hora",
       "message": "Mensaje Adicional",
       "message_placeholder": "Cualquier detalle o preferencia que quieras compartir...",
       "contact_preference": "Método de Contacto Preferido",
@@ -329,13 +330,15 @@
       "deposit_copied": "¡Copiado!",
       "success_next_steps_title": "¿Qué sigue?",
       "success_next_step_1": "Envía el depósito de {amount} USD por Zelle con el código de referencia",
-      "success_next_step_2": "Apenas lo recibamos te enviaremos un correo de confirmación",
+      "success_next_step_2": "Apenas lo recibamos te confirmamos por tu medio de contacto preferido",
       "success_next_step_3": "Tu cita queda confirmada en nuestra agenda",
-      "success_check_email": "También enviamos los datos a tu correo por si los necesitas más tarde:",
+      "success_check_email": "Toma una captura de esta pantalla para tener los datos a mano. Te escribiremos a:",
       "error_network": "No pudimos conectar con el servidor. Verifica tu conexión e inténtalo de nuevo.",
       "error_validation": "Algunos campos necesitan atención. Por favor revísalos e inténtalo de nuevo.",
       "error_server": "Hubo un problema de nuestro lado. Inténtalo en un momento o contáctanos directamente.",
-      "error_generic": "Algo salió mal. Inténtalo de nuevo o contáctanos directamente."
+      "error_generic": "Algo salió mal. Inténtalo de nuevo o contáctanos directamente.",
+      "success_contact_whatsapp": "Toma una captura de esta pantalla para tener los datos a mano. Te escribiremos por WhatsApp al:",
+      "success_contact_phone": "Toma una captura de esta pantalla para tener los datos a mano. Te llamaremos al:"
     },
     "time": "Hora preferida"
   },

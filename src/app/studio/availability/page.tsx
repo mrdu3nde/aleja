@@ -124,6 +124,7 @@ export default function AvailabilityPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
         {/* Weekly hours */}
         <div
+          data-tour="horario"
           className="rounded-2xl p-5"
           style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}
         >

@@ -33,6 +33,11 @@ export const NOVEDADES: { id: string; items: Novedad[] } = {
       text: "Te mostramos paso a paso el circuito: crear la cita, enviarle el enlace, ella confirma y tú marcas el depósito. Tócalo para empezar.",
     },
     {
+      href: "/studio",
+      title: "Tu enlace para reservar",
+      text: "En Inicio tienes tu enlace de reservas: compártelo por WhatsApp o ponlo en tu Instagram y tu clienta se registra sola, eligiendo día y hora entre tus horarios libres.",
+    },
+    {
       href: "/studio/appointments",
       title: "Enviar por WhatsApp en un toque",
       text: "Al compartir una cita, el botón verde abre WhatsApp en el chat de tu clienta con el mensaje ya escrito.",
