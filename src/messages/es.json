@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Aluh — Servicios de Belleza Personalizados",
-    "description": "Servicios de belleza personalizados diseñados para que te sientas cuidada, segura y radiante. Cabello, uñas, cejas, pestañas y más."
+    "description": "Belleza personalizada en ALUH: color, balayage, cortes, tratamientos y blowouts."
   },
   "nav": {
     "home": "Inicio",
@@ -13,21 +13,20 @@
     "policies": "Políticas"
   },
   "hero": {
-    "headline": "Revela Tu Mejor Versión con Confianza",
-    "subheadline": "Servicios de belleza personalizados diseñados para que te sientas cuidada, segura y radiante.",
+    "headline": "BEAUTY, ELEVATED.",
+    "subheadline": "Belleza personalizada, pensada con cuidado para ti.",
     "cta_primary": "Reserva Tu Cita",
     "cta_secondary": "Explorar Servicios"
   },
   "trust": {
-    "title": "¿Por Qué Elegir Aluh?",
-    "personalized": "Atención Personalizada",
-    "personalized_desc": "Cada servicio está adaptado a tu estilo y necesidades únicas.",
-    "quality": "Servicio de Calidad",
-    "quality_desc": "Productos y técnicas premium para resultados hermosos y duraderos.",
-    "results": "Resultados Hermosos",
-    "results_desc": "Atención al detalle que asegura que te vayas sintiéndote increíble.",
-    "experience": "Experiencia Cómoda",
-    "experience_desc": "Un espacio cálido y acogedor donde puedes relajarte y disfrutar."
+    "title": "THE ALUH EXPERIENCE",
+    "subtitle": "Personalized. Refined. Intentional.",
+    "personalized": "Personalizada",
+    "personalized_desc": "Te escuchamos y observamos para crear un resultado que conecte con tu estilo y tu esencia.",
+    "refined": "Refinada",
+    "refined_desc": "Cuidamos cada detalle, sin prisas y sin resultados genéricos.",
+    "intentional": "Con intención",
+    "intentional_desc": "Que al salir te sientas con más confianza, más presente y en conexión con tu mejor versión."
   },
   "services_section": {
     "title": "Nuestros Servicios",
@@ -37,11 +36,7 @@
     "starting_at": "Desde",
     "hair": {
       "title": "Cabello",
-      "description": "Color, cortes, peinados y tratamientos para transformar y mantener tu cabello."
-    },
-    "nails": {
-      "title": "Uñas",
-      "description": "Manicura, pedicura, gel, acrílico y nail art para cada ocasión."
+      "description": "Balayage, highlights, cortes, tratamientos nutritivos y blowouts."
     },
     "brows": {
       "title": "Cejas",
@@ -79,11 +74,6 @@
         "text": "Aluh entendió exactamente lo que quería. Mi cabello nunca se había visto tan bien. ¡Me siento como nueva!"
       },
       {
-        "name": "Sofía R.",
-        "service": "Nail Art",
-        "text": "La atención al detalle es increíble. Cada visita se siente como un regalo, y siempre me voy con uñas que me encanta mostrar."
-      },
-      {
         "name": "Ana P.",
         "service": "Laminado de Cejas",
         "text": "Por fin encontré a alguien que hace mis cejas perfectas. Los resultados son naturales, limpios y exactamente lo que buscaba."
@@ -117,7 +107,7 @@
     "philosophy": "Creo que la belleza debe sentirse desde adentro. Debe sentirse natural, auténtica y empoderadora. Por eso, en ALUH cada detalle está pensado para que te sientas bienvenid@, cuidad@ y con más confianza al salir de ALUH.",
     "tagline": "Donde la belleza se convierte en una experiencia.",
     "experience_title": "La experiencia ALUH",
-    "experience": "En ALUH, cada cita es un momento para ti.\n\nSin prisas. Sin resultados genéricos. Escuchamos, observamos y cuidamos cada detalle para crear un resultado que conecte con tu estilo y tu esencia.\n\nLa intención es simple: que al salir te sientas con más confianza, más presente y en conexión con tu mejor versión.",
+    "experience": "En ALUH, cada cita es un momento para ti.\n\nSin prisas. Sin resultados genéricos. Escuchamos, observamos y cuidamos cada detalle para crear un resultado que conecte con tu estilo y tu esencia.\n\nLa intención es siempre: que al salir te sientas con más confianza, más presente y en conexión con tu mejor versión.",
     "experience_closing": "Eso es ALUH.",
     "logo_alt": "Logo de ALUH"
   },
@@ -129,54 +119,71 @@
     "consult_cta": "Contáctanos",
     "categories": {
       "hair": {
-        "title": "Servicios de Cabello",
-        "items": [
+        "title": "Cabello",
+        "groups": [
           {
-            "name": "Renovación de Color",
-            "description": "Revive el brillo, tono y dimensión con un servicio de color completo o parcial.",
-            "ideal_for": "Clientas que buscan un look fresco y vibrante",
-            "duration": "2–3 horas",
-            "price": "$85"
+            "title": "Color",
+            "items": [
+              {
+                "name": "Balayage, highlights",
+                "price": "Desde $350"
+              }
+            ],
+            "note": "Incluye peinado liso o en ondas. El tiempo de procesamiento es de 5 a 6 horas.\n\nAntes de iniciar se hace una prueba de mechón para conocer la salud de tu cabello y saber si podemos continuar con el proceso."
           },
           {
-            "name": "Corte y Peinado",
-            "description": "Un corte de precisión adaptado a tu forma de rostro y estilo de vida.",
-            "ideal_for": "Cualquiera que quiera un look limpio y actualizado",
-            "duration": "1–1.5 horas",
-            "price": "$45"
+            "title": "Corte",
+            "items": [
+              {
+                "name": "Despunte (ends refresh)",
+                "price": "$35"
+              },
+              {
+                "name": "Corte de dama",
+                "price": "$65"
+              },
+              {
+                "name": "Corte de caballero",
+                "price": "$40"
+              }
+            ]
           },
           {
-            "name": "Tratamiento de Hidratación Profunda",
-            "description": "Restaura la humedad, fuerza y suavidad del cabello seco o dañado.",
-            "ideal_for": "Cabello dañado o deshidratado",
-            "duration": "45 min",
-            "price": "$35"
-          }
-        ]
-      },
-      "nails": {
-        "title": "Servicios de Uñas",
-        "items": [
-          {
-            "name": "Manicura en Gel",
-            "description": "Esmalte en gel de larga duración con un acabado impecable.",
-            "ideal_for": "Clientas que quieren uñas sin descascarillado por 2+ semanas",
-            "duration": "1 hora",
-            "price": "$40"
+            "title": "Tratamiento nutritivo",
+            "items": [
+              {
+                "name": "Tratamiento nutritivo",
+                "price": "$45"
+              },
+              {
+                "name": "Con blowout, cabello corto",
+                "price": "$65"
+              },
+              {
+                "name": "Con blowout, cabello largo",
+                "price": "$75"
+              }
+            ]
           },
           {
-            "name": "Set Completo de Acrílico",
-            "description": "Extensiones de acrílico esculpidas con la forma y acabado de tu elección.",
-            "ideal_for": "Clientas que buscan longitud y durabilidad",
-            "duration": "1.5 horas",
-            "price": "$55"
-          },
-          {
-            "name": "Nail Art",
-            "description": "Diseños personalizados desde minimal hasta detallado — expresa tu estilo.",
-            "ideal_for": "Cualquiera que busque un toque único y creativo",
-            "duration": "Variable",
-            "price": "$10+"
+            "title": "Blowout",
+            "items": [
+              {
+                "name": "Cabello corto",
+                "price": "$45",
+                "description": "Cabello hasta aproximadamente los hombros."
+              },
+              {
+                "name": "Cabello largo",
+                "price": "$55",
+                "description": "Cabello debajo de los hombros."
+              },
+              {
+                "name": "Cabello largo o grueso",
+                "price": "$65 – $75",
+                "description": "Para cabello que por su largo, densidad o textura requiere más tiempo de secado y estilizado."
+              }
+            ]
           }
         ]
       },
@@ -256,7 +263,7 @@
         "items": [
           {
             "name": "Paquete de Belleza Nupcial",
-            "description": "Preparación de belleza completa para tu día especial — cabello, uñas, pestañas y maquillaje.",
+            "description": "Preparación de belleza completa para tu día especial — cabello, pestañas y maquillaje.",
             "ideal_for": "Novias y cortejo nupcial",
             "duration": "Personalizado",
             "price": "Desde $250"
@@ -274,12 +281,9 @@
   },
   "gallery_page": {
     "title": "Galería",
-    "subtitle": "Explora nuestro trabajo y comprueba los resultados por ti misma.",
-    "filter_all": "Todo",
-    "filter_hair": "Cabello",
-    "filter_nails": "Uñas",
-    "filter_brows": "Cejas",
-    "filter_lashes": "Pestañas"
+    "subtitle": "Una selección de nuestro trabajo.",
+    "empty_title": "Muy pronto",
+    "empty_text": "Estamos preparando una selección de nuestros trabajos favoritos."
   },
   "book_page": {
     "title": "Reserva Tu Cita",
@@ -295,7 +299,6 @@
       "service_placeholder": "Selecciona un servicio",
       "service_options": {
         "hair": "Servicios de Cabello",
-        "nails": "Servicios de Uñas",
         "brows": "Servicios de Cejas",
         "lashes": "Servicios de Pestañas",
         "facial": "Tratamientos Faciales",

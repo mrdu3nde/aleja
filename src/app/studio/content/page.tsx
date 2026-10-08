@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Save, CheckCircle, Globe } from "lucide-react";
 import { ServicesEditor, type Service } from "@/components/admin/ServicesEditor";
+import en from "@/messages/en.json";
+import es from "@/messages/es.json";
 
 type SectionDef = { key: string; label: string; keys: string[] };
 
@@ -14,17 +16,16 @@ const sections: SectionDef[] = [
   },
   {
     key: "trust",
-    label: "Pilares de confianza",
+    label: "The ALUH Experience",
     keys: [
       "trust.title",
+      "trust.subtitle",
       "trust.personalized",
       "trust.personalized_desc",
-      "trust.quality",
-      "trust.quality_desc",
-      "trust.results",
-      "trust.results_desc",
-      "trust.experience",
-      "trust.experience_desc",
+      "trust.refined",
+      "trust.refined_desc",
+      "trust.intentional",
+      "trust.intentional_desc",
     ],
   },
   {
@@ -35,8 +36,6 @@ const sections: SectionDef[] = [
       "services_section.subtitle",
       "services_section.hair.title",
       "services_section.hair.description",
-      "services_section.nails.title",
-      "services_section.nails.description",
       "services_section.brows.title",
       "services_section.brows.description",
       "services_section.lashes.title",
@@ -95,80 +94,22 @@ function keyToLabel(key: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-// Default values from the message files
+// Lo que se ve cuando no hay nada guardado: los mismos textos del sitio. Se
+// leen de los archivos de mensajes para que nunca se desfasen de lo publicado.
+function fromMessages(messages: unknown): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const key of sections.flatMap((s) => s.keys)) {
+    const value = key
+      .split(".")
+      .reduce<unknown>((node, part) => (node as Record<string, unknown> | undefined)?.[part], messages);
+    if (typeof value === "string") out[key] = value;
+  }
+  return out;
+}
+
 const defaults: Record<string, Record<string, string>> = {
-  en: {
-    "hero.headline": "Reveal Your Best Look with Confidence",
-    "hero.subheadline": "Personalized beauty services designed to make you feel cared for, confident, and radiant.",
-    "trust.title": "Why Choose Aluh",
-    "trust.personalized": "Personalized Attention",
-    "trust.personalized_desc": "Every service is tailored to your unique style and needs.",
-    "trust.quality": "Quality Service",
-    "trust.quality_desc": "Premium products and techniques for beautiful, lasting results.",
-    "trust.results": "Beautiful Results",
-    "trust.results_desc": "Attention to detail that ensures you leave feeling your best.",
-    "trust.experience": "Comfortable Experience",
-    "trust.experience_desc": "A warm, welcoming space where you can relax and enjoy.",
-    "services_section.title": "Our Services",
-    "services_section.subtitle": "Each service is thoughtfully designed to highlight your natural beauty.",
-    "services_section.hair.title": "Hair",
-    "services_section.hair.description": "Color, cuts, styling, and treatments to transform and maintain your hair.",
-    "services_section.nails.title": "Nails",
-    "services_section.nails.description": "Manicures, pedicures, gel, acrylic, and nail art for every occasion.",
-    "services_section.brows.title": "Brows",
-    "services_section.brows.description": "Shaping, tinting, lamination, and microblading for perfectly defined brows.",
-    "services_section.lashes.title": "Lashes",
-    "services_section.lashes.description": "Extensions, lifts, and tinting for effortlessly stunning lashes.",
-    "services_section.facial.title": "Facial Treatments",
-    "services_section.facial.description": "Cleansing, hydration, and rejuvenation for healthy, glowing skin.",
-    "services_section.special.title": "Special Services",
-    "services_section.special.description": "Bridal packages, event prep, and signature beauty experiences.",
-    "about_preview.title": "Where beauty becomes an experience",
-    "about_preview.text": "ALUH is not just a place where beauty services happen. It is a warm space, designed so that you leave feeling more confident, more present, and connected to your best self.",
-    "about_page.title": "About ALUH",
-    "about_page.tagline": "Where beauty becomes an experience.",
-    "about_page.philosophy": "I believe beauty should be felt from within. It should feel natural, authentic and empowering. That is why every detail at ALUH is designed so that you feel welcome, cared for, and walk out with more confidence.",
-    "about_page.story": "Long before ALUH existed, beauty was already part of my story. I grew up surrounded by this profession, but my connection to it always went further: art, beauty, fashion and everything around aesthetics have been a passion I feel was born with me.\n\nI started working in this world very young, and over the years I understood that when a person feels good about herself, the way she carries herself into the world changes too.\n\nThat is how ALUH was born — from the wish to turn that passion into a warm, special place where every person feels welcome, understood, and excited about the transformation she is about to live.\n\nBecause to me, beauty is not only about how you look. It is about how you feel when you recognise yourself again, connect with your essence, and discover the power of your own presence.",
-    "about_page.experience": "At ALUH, every appointment is a moment for you.\n\nNo rush. No generic results. We listen, we observe, and we care for every detail to create a result that connects with your style and your essence.\n\nThe intention is simple: that you leave with more confidence, more present, and connected to your best self.",
-    "booking_cta.title": "Ready to Book Your Next Beauty Appointment?",
-    "booking_cta.subtitle": "Let's create something beautiful together. Book your session today.",
-  },
-  es: {
-    "hero.headline": "Revela Tu Mejor Versi\u00f3n con Confianza",
-    "hero.subheadline": "Servicios de belleza personalizados dise\u00f1ados para que te sientas cuidada, segura y radiante.",
-    "trust.title": "\u00bfPor Qu\u00e9 Elegir Aluh?",
-    "trust.personalized": "Atenci\u00f3n Personalizada",
-    "trust.personalized_desc": "Cada servicio est\u00e1 adaptado a tu estilo y necesidades \u00fanicas.",
-    "trust.quality": "Servicio de Calidad",
-    "trust.quality_desc": "Productos y t\u00e9cnicas premium para resultados hermosos y duraderos.",
-    "trust.results": "Resultados Hermosos",
-    "trust.results_desc": "Atenci\u00f3n al detalle que asegura que te vayas sinti\u00e9ndote incre\u00edble.",
-    "trust.experience": "Experiencia C\u00f3moda",
-    "trust.experience_desc": "Un espacio c\u00e1lido y acogedor donde puedes relajarte y disfrutar.",
-    "services_section.title": "Nuestros Servicios",
-    "services_section.subtitle": "Cada servicio est\u00e1 cuidadosamente dise\u00f1ado para resaltar tu belleza natural.",
-    "services_section.hair.title": "Cabello",
-    "services_section.hair.description": "Color, cortes, peinados y tratamientos para transformar y mantener tu cabello.",
-    "services_section.nails.title": "U\u00f1as",
-    "services_section.nails.description": "Manicura, pedicura, gel, acr\u00edlico y nail art para cada ocasi\u00f3n.",
-    "services_section.brows.title": "Cejas",
-    "services_section.brows.description": "Dise\u00f1o, tinte, laminado y microblading para cejas perfectamente definidas.",
-    "services_section.lashes.title": "Pesta\u00f1as",
-    "services_section.lashes.description": "Extensiones, lifting y tinte para pesta\u00f1as deslumbrantes sin esfuerzo.",
-    "services_section.facial.title": "Tratamientos Faciales",
-    "services_section.facial.description": "Limpieza, hidrataci\u00f3n y rejuvenecimiento para una piel sana y luminosa.",
-    "services_section.special.title": "Servicios Especiales",
-    "services_section.special.description": "Paquetes nupciales, preparaci\u00f3n para eventos y experiencias de belleza exclusivas.",
-    "about_preview.title": "Donde la belleza se convierte en una experiencia",
-    "about_preview.text": "ALUH no es solo un lugar donde se hacen servicios de belleza. Es un espacio cálido, pensado para que salgas sintiéndote más seguro de ti, más presente y en conexión con tu mejor versión.",
-    "about_page.title": "Sobre ALUH",
-    "about_page.tagline": "Donde la belleza se convierte en una experiencia.",
-    "about_page.philosophy": "Creo que la belleza debe sentirse desde adentro. Debe sentirse natural, auténtica y empoderadora. Por eso, en ALUH cada detalle está pensado para que te sientas bienvenid@, cuidad@ y con más confianza al salir de ALUH.",
-    "about_page.story": "Mucho antes de que existiera ALUH, la belleza ya hacía parte de mi historia. Crecí rodeada de esta profesión, pero mi conexión con ella siempre fue mucho más allá: el arte, la belleza, la moda y todo lo relacionado con la estética han sido una pasión que siento que nació conmigo.\n\nDesde muy joven comencé a trabajar en este mundo y, con los años, entendí que cuando una persona se siente bien consigo misma, cambia también la manera en la que se presenta al mundo.\n\nAsí nació ALUH, del deseo de convertir esa pasión en un espacio cálido y especial, donde cada persona se sienta bienvenida, comprendida y emocionada por la transformación que está a punto de vivir.\n\nPorque para mí, la belleza no se trata únicamente de cómo te ves. Se trata de cómo te sientes cuando vuelves a reconocerte, conectas con tu esencia y descubres el poder de tu propia presencia.",
-    "about_page.experience": "En ALUH, cada cita es un momento para ti.\n\nSin prisas. Sin resultados genéricos. Escuchamos, observamos y cuidamos cada detalle para crear un resultado que conecte con tu estilo y tu esencia.\n\nLa intención es simple: que al salir te sientas con más confianza, más presente y en conexión con tu mejor versión.",
-    "booking_cta.title": "\u00bfLista para Tu Pr\u00f3xima Cita de Belleza?",
-    "booking_cta.subtitle": "Creemos algo hermoso juntas. Reserva tu sesi\u00f3n hoy.",
-  },
+  en: fromMessages(en),
+  es: fromMessages(es),
 };
 
 const contentInputStyle: React.CSSProperties = {

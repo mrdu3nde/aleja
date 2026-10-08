@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { upload } from "@vercel/blob/client";
+import { uploadImage, UploadNotConfiguredError } from "@/lib/upload-image";
 import {
   ChevronRight,
   Plus,
@@ -175,15 +175,11 @@ function ServiceRow({
     setUploadError(null);
     try {
       // Straight from the browser to Blob — the file never goes through us.
-      const blob = await upload(`services/${service.slug}-${file.name}`, file, {
-        access: "public",
-        handleUploadUrl: "/api/studio/upload",
-      });
-      onPatch({ imageUrl: blob.url });
+      const url = await uploadImage(`services/${service.slug}-${file.name}`, file);
+      onPatch({ imageUrl: url });
     } catch (err) {
-      const message = (err as Error).message ?? "";
       setUploadError(
-        message.includes("501") || message.toLowerCase().includes("not set up")
+        err instanceof UploadNotConfiguredError
           ? "El almacenamiento de fotos aún no está conectado."
           : "No se pudo subir la foto. Prueba con una imagen más pequeña.",
       );

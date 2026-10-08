@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { del } from "@vercel/blob";
+import { deleteImage } from "@/lib/delete-image";
 import { prisma } from "@/lib/prisma";
 
 const updateSchema = z.object({
@@ -27,9 +27,7 @@ export async function PUT(
       current.imageUrl &&
       current.imageUrl !== data.imageUrl
     ) {
-      del(current.imageUrl).catch((err) =>
-        console.error("Could not delete replaced blob:", err),
-      );
+      void deleteImage(current.imageUrl);
     }
 
     const service = await prisma.service.update({
@@ -62,9 +60,7 @@ export async function DELETE(
     // Past appointments keep the service name as plain text, so removing the
     // service never rewrites history.
     if (service.imageUrl) {
-      del(service.imageUrl).catch((err) =>
-        console.error("Could not delete blob:", err),
-      );
+      void deleteImage(service.imageUrl);
     }
 
     await prisma.service.delete({ where: { id } });

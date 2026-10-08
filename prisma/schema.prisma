@@ -19,9 +19,13 @@ model Client {
   phoneNormalized   String?
   contactPreference String?
   notes             String?
+  /// Lo que la clienta se ha hecho antes de venir (otro salón, en casa):
+  /// tintes, alisados, decoloraciones. Se lee antes de cualquier química.
+  priorHistory      String?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   appointments      Appointment[]
+  records           ServiceRecord[]
 
   @@index([phoneNormalized])
 }
@@ -216,4 +220,42 @@ model Credential {
   backedUp     Boolean   @default(false)
   createdAt    DateTime  @default(now())
   lastUsedAt   DateTime?
+}
+
+/// Ficha técnica de un servicio hecho a una clienta: lo que se le hizo, para
+/// saber qué hacer en la próxima cita. Ella lo pidió así: fórmula, corte o
+/// peinado, mapping de mechas, y una foto de antes y otra de después.
+model ServiceRecord {
+  id        String   @id @default(uuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Día en que se hizo el servicio (puede ser anterior a cuando se anota).
+  date      DateTime
+  service   String?
+  /// Fórmula de color: marcas, tonos, volumen del revelador, tiempos.
+  formula   String?
+  /// Tipo de corte o peinado.
+  cut       String?
+  /// Mapping de mechas / flashes: dónde y cómo se pusieron.
+  mapping   String?
+  notes     String?
+  beforeUrl String?
+  afterUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientId, date])
+}
+
+/// Fotos de la galería pública. Las sube ella desde el panel: sus mejores
+/// trabajos, en el orden que elija.
+model GalleryPhoto {
+  id        String   @id @default(uuid())
+  url       String
+  /// Texto alternativo, para lectores de pantalla y buscadores.
+  alt       String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([sortOrder])
 }

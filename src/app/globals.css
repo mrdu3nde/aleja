@@ -15,13 +15,13 @@
   --color-text-light: #8A7B6E;
   --color-text-muted: #B0A396;
 
-  /* Dorado de la marca. Es un oro viejo, no un amarillo: se eligió a partir de
-     la paleta existente (champagne y café) para que se lea como metal
-     refinado y no como un destello. El claro es para fondos oscuros, donde el
-     tono profundo desaparecería. */
-  --color-gold: #A8823C;
-  --color-gold-light: #D9BE86;
-  --color-gold-deep: #8C6A2B;
+  /* Dorado de la marca: dorado champagne, como lo pidió ella. Más claro y
+     rosado que un oro viejo, para que se lea como metal suave y no como
+     amarillo. El profundo da el contraste sobre fondo claro; el claro es para
+     el café del pie, donde el profundo desaparecería. */
+  --color-gold: #C2A26B;
+  --color-gold-light: #E6D3AC;
+  --color-gold-deep: #A3844F;
 
   /* Typography */
   --font-heading: "Julius Sans One", Georgia, serif;

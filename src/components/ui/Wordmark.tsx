@@ -12,14 +12,17 @@
 type Props = {
   /** El pie es café oscuro y necesita el oro claro para tener contraste. */
   onDark?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
 };
 
+// Ella pidió el logo más grande: el de la cabecera ("md") era de 20 px y se
+// perdía. "xl" es para el inicio, donde el logo ocupa el lugar de la foto.
 const sizes = {
-  sm: "text-lg",
-  md: "text-xl",
+  sm: "text-xl",
+  md: "text-2xl md:text-3xl",
   lg: "text-3xl md:text-4xl",
+  xl: "text-7xl sm:text-8xl lg:text-9xl",
 };
 
 export function Wordmark({ onDark = false, size = "md", className = "" }: Props) {

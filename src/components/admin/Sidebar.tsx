@@ -9,13 +9,15 @@ import {
   CalendarClock,
   Sparkles,
   FileText,
+  Images,
   ShieldCheck,
   ExternalLink,
   LogOut,
   Menu,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNovedades } from "@/lib/novedades";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
@@ -25,6 +27,7 @@ const navItems = [
   { href: "/studio/appointments", label: "Citas", icon: Calendar },
   { href: "/studio/availability", label: "Disponibilidad", icon: CalendarClock },
   { href: "/studio/content", label: "Contenido", icon: FileText },
+  { href: "/studio/gallery", label: "Galería", icon: Images },
   { href: "/studio/security", label: "Seguridad", icon: ShieldCheck },
 ] as const;
 
@@ -32,6 +35,13 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isNew, markVisited } = useNovedades();
+
+  // Abrir la sección es haberla visto: la etiqueta "Nuevo" se va.
+  useEffect(() => {
+    const item = navItems.find((i) => i.href !== "/studio" && pathname.startsWith(i.href));
+    if (item) markVisited(item.href);
+  }, [pathname, markVisited]);
 
   // El login vive dentro de este layout, pero enseñar el menú del panel a
   // quien todavía no ha entrado no tiene sentido.
@@ -72,6 +82,21 @@ export function Sidebar() {
         }}
       >
         {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        {!mobileOpen && navItems.some((i) => isNew(i.href)) && (
+          <span
+            aria-label="Hay algo nuevo"
+            style={{
+              position: "absolute",
+              top: -3,
+              right: -3,
+              width: 12,
+              height: 12,
+              borderRadius: "50%",
+              backgroundColor: "#E6D3AC",
+              border: "2px solid #6B4E3D",
+            }}
+          />
+        )}
       </button>
 
       {mobileOpen && (
@@ -124,9 +149,9 @@ export function Sidebar() {
               A
             </div>
             <div>
-              <h1 style={{ fontSize: 18, fontWeight: 700, color: "#fff", lineHeight: 1 }}>Aluh</h1>
-              <p style={{ fontSize: 11, color: "rgba(245,230,211,0.5)", marginTop: 2 }}>
-                Beauty Studio
+              <h1 style={{ fontSize: 18, fontWeight: 700, color: "#E6D3AC", lineHeight: 1, letterSpacing: "0.18em" }}>ALUH</h1>
+              <p style={{ fontSize: 10, color: "rgba(245,230,211,0.5)", marginTop: 3, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+                Presence is Power
               </p>
             </div>
           </div>
@@ -181,7 +206,24 @@ export function Sidebar() {
               >
                 <item.icon size={18} />
                 {item.label}
-                {active && (
+                {isNew(item.href) && (
+                  <span
+                    style={{
+                      marginLeft: "auto",
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      padding: "2px 7px",
+                      borderRadius: 999,
+                      color: "#3A2E26",
+                      backgroundColor: "#E6D3AC",
+                    }}
+                  >
+                    Nuevo
+                  </span>
+                )}
+                {active && !isNew(item.href) && (
                   <div
                     style={{
                       marginLeft: "auto",

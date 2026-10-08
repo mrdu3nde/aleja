@@ -13,9 +13,32 @@ export const clientSchema = z.object({
     .optional()
     .or(z.literal("")),
   notes: z.string().optional(),
+  priorHistory: z.string().optional(),
 });
 
 export const clientUpdateSchema = clientSchema.partial();
+
+/** Una foto subida: URL de Blob, o `/uploads/...` en desarrollo. */
+const photoUrl = z
+  .string()
+  .max(1000)
+  .refine((u) => u.startsWith("https://") || u.startsWith("/uploads/"))
+  .nullable()
+  .optional();
+
+const text = z.string().max(5000).nullable().optional();
+
+/** Ficha técnica de un servicio hecho. Todo es opcional salvo la fecha. */
+export const serviceRecordSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  service: z.string().max(200).nullable().optional(),
+  formula: text,
+  cut: text,
+  mapping: text,
+  notes: text,
+  beforeUrl: photoUrl,
+  afterUrl: photoUrl,
+});
 
 export const appointmentSchema = z.object({
   clientId: z.string().uuid().nullable().optional(),

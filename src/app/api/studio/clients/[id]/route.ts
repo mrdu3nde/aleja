@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { clientUpdateSchema } from "@/lib/admin-validators";
 import { normalizePhone } from "@/lib/phone";
+import { deleteImage } from "@/lib/delete-image";
 
 export async function GET(
   _request: Request,
@@ -17,6 +18,7 @@ export async function GET(
           orderBy: { createdAt: "desc" },
           include: { payments: true },
         },
+        records: { orderBy: [{ date: "desc" }, { createdAt: "desc" }] },
       },
     });
 
@@ -50,6 +52,7 @@ export async function PUT(
           contactPreference: data.contactPreference,
         }),
         ...(data.notes !== undefined && { notes: data.notes }),
+        ...(data.priorHistory !== undefined && { priorHistory: data.priorHistory }),
       },
     });
 
@@ -66,7 +69,14 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+    // Las fichas se borran en cascada con la clienta; sus fotos hay que
+    // quitarlas a mano o quedarían ocupando espacio en Blob.
+    const records = await prisma.serviceRecord.findMany({ where: { clientId: id } });
     await prisma.client.delete({ where: { id } });
+    for (const r of records) {
+      void deleteImage(r.beforeUrl);
+      void deleteImage(r.afterUrl);
+    }
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete client error:", error);

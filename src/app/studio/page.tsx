@@ -20,6 +20,7 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { WeeklyChart } from "@/components/admin/WeeklyChart";
 import { StatusDonut } from "@/components/admin/StatusDonut";
 import { WelcomeScreen } from "@/components/admin/WelcomeScreen";
+import { NovedadesCard } from "@/components/admin/NovedadesCard";
 
 /** Recuerda el día en que ya se mostró la bienvenida. */
 const WELCOME_KEY = "studio-bienvenida";
@@ -388,6 +389,8 @@ export default function AdminDashboard() {
           ¿Cómo dejo una nota?
         </button>
       </div>
+
+      <NovedadesCard />
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

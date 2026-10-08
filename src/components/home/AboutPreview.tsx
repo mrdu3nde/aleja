@@ -18,7 +18,9 @@ export function AboutPreview({
   const locale = useLocale();
 
   return (
-    <Section bg="white">
+    // overflow-hidden: el texto entra deslizándose desde la derecha y, antes
+    // de verse, sobresalía unos píxeles y dejaba mover la página de lado.
+    <Section bg="white" className="overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -20 }}

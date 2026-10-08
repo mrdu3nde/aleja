@@ -10,11 +10,13 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { computeBalance } from "@/lib/balance";
+import { ServiceRecords, type ServiceRecord } from "@/components/admin/ServiceRecords";
 
 type ClientWithAppointments = ClientData & {
   id: string;
   created_at: string;
   appointments: Array<Record<string, unknown>>;
+  records: ServiceRecord[];
 };
 
 const money = (n: number) => `$${n.toFixed(2)}`;
@@ -43,6 +45,7 @@ export default function ClientDetailPage() {
           phone: data.phone ?? "",
           contactPreference: data.contactPreference ?? undefined,
           notes: data.notes ?? "",
+          priorHistory: data.priorHistory ?? "",
         });
       })
       .catch(console.error);
@@ -138,6 +141,15 @@ export default function ClientDetailPage() {
           </FormField>
           <FormField label="Notas">
             <textarea {...register("notes")} rows={3} className={inputClass} style={inputStyle} />
+          </FormField>
+          <FormField label="Antes de ALUH">
+            <textarea
+              {...register("priorHistory")}
+              rows={3}
+              placeholder="Lo que se ha hecho antes en otro lugar: tintes, decoloraciones, alisados, keratina…"
+              className={inputClass}
+              style={inputStyle}
+            />
           </FormField>
           {isDirty && (
             <button
@@ -246,6 +258,8 @@ export default function ClientDetailPage() {
       )}
       </div>
       </div>
+
+      <ServiceRecords clientId={client.id} initial={client.records ?? []} />
 
       <ConfirmDialog
         open={showDelete}

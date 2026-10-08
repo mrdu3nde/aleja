@@ -32,7 +32,6 @@ type DepositInfo = {
 
 const serviceKeys = [
   "hair",
-  "nails",
   "brows",
   "lashes",
   "facial",

@@ -8,6 +8,18 @@ import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
  * short-lived token, so a photo from a phone never passes through the function
  * and is not capped by the request body limit.
  */
+/**
+ * Lo pregunta el navegador antes de subir: si Blob no está conectado, en
+ * desarrollo se usa la carpeta local (`/api/studio/upload/local`) y en
+ * producción se avisa que el almacenamiento falta.
+ */
+export async function GET() {
+  return NextResponse.json({
+    blob: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    local: process.env.NODE_ENV !== "production",
+  });
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return NextResponse.json(

@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 export function Testimonials() {
   const t = useTranslations("testimonials");
-  const items = [0, 1, 2];
+  const items = (t.raw("items") as unknown[]).map((_, i) => i);
 
   return (
     <Section bg="white">
@@ -17,7 +17,7 @@ export function Testimonials() {
         {t("title")}
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {items.map((i) => (
           <motion.div
             key={i}

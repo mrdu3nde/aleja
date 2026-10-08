@@ -50,3 +50,6 @@ gmail.txt
 
 # Respaldo temporal con datos personales — no debe ir al repositorio
 prisma/leads-backup.json
+
+# Fotos subidas en desarrollo cuando Blob no está conectado
+/public/uploads/

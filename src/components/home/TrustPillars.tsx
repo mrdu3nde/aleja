@@ -2,14 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import { Section } from "@/components/ui/Section";
-import { Heart, Star, Sparkles, Smile } from "lucide-react";
+import { GoldRule } from "@/components/ui/GoldRule";
+import { Heart, Gem, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
+// Las tres palabras de su lema: Personalized. Refined. Intentional.
 const pillars = [
   { key: "personalized", icon: Heart },
-  { key: "quality", icon: Star },
-  { key: "results", icon: Sparkles },
-  { key: "experience", icon: Smile },
+  { key: "refined", icon: Gem },
+  { key: "intentional", icon: Sparkles },
 ] as const;
 
 export function TrustPillars({ content }: { content: Record<string, string> }) {
@@ -17,10 +18,16 @@ export function TrustPillars({ content }: { content: Record<string, string> }) {
 
   return (
     <Section bg="white">
-      <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-bold text-cafe text-center mb-12">
-        {content["trust.title"] || t("title")}
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="text-center mb-12">
+        <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-bold text-cafe tracking-wide">
+          {content["trust.title"] || t("title")}
+        </h2>
+        <GoldRule className="mx-auto my-5" />
+        <p className="font-[family-name:var(--font-heading)] text-sm md:text-base tracking-[0.25em] text-cafe-light">
+          {content["trust.subtitle"] || t("subtitle")}
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
         {pillars.map((pillar, i) => (
           <motion.div
             key={pillar.key}
@@ -31,7 +38,7 @@ export function TrustPillars({ content }: { content: Record<string, string> }) {
             className="text-center"
           >
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-champagne">
-              <pillar.icon className="h-6 w-6 text-cafe" />
+              <pillar.icon className="h-6 w-6 text-gold-deep" />
             </div>
             <h3 className="text-lg font-semibold text-text-dark mb-2">
               {content[`trust.${pillar.key}`] || t(pillar.key)}

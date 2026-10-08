@@ -39,7 +39,7 @@ export function BrandFrame({
       {/* Un filo dorado muy tenue: marca el borde sin competir con el logo. */}
       <div
         className="absolute inset-0 rounded-2xl pointer-events-none"
-        style={{ boxShadow: "inset 0 0 0 1px rgba(168, 130, 60, 0.18)" }}
+        style={{ boxShadow: "inset 0 0 0 1px rgba(194, 162, 107, 0.25)" }}
       />
 
       {src ? (

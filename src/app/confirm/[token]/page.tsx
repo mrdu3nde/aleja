@@ -322,8 +322,8 @@ function Shell({ children, lang }: { children: React.ReactNode; lang: Lang }) {
     <div className="min-h-screen bg-[#FEFCFA] px-4 py-10" lang={lang}>
       <div className="max-w-md mx-auto">
         <div className="text-center mb-6">
-          <p className="text-2xl font-bold tracking-widest text-[#6B4E3D]">ALUH</p>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[#8A7B6E]">Beauty Studio</p>
+          <p className="font-[family-name:var(--font-heading)] text-3xl font-bold tracking-[0.18em] wordmark-gold">ALUH</p>
+          <p className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#8A7B6E]">Presence is Power</p>
         </div>
         <div className="bg-white rounded-3xl border border-[#e5ddd4] p-6 sm:p-8">{children}</div>
       </div>

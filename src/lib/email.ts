@@ -28,8 +28,8 @@ function layout(title: string, body: string) {
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
         <!-- Header -->
         <tr><td style="padding:24px 32px;text-align:center;background:${brand.cafe};border-radius:16px 16px 0 0;">
-          <h1 style="margin:0;color:#fff;font-size:24px;font-weight:700;letter-spacing:1px;">Aluh</h1>
-          <p style="margin:4px 0 0;color:${brand.champagne};font-size:12px;letter-spacing:2px;text-transform:uppercase;">Beauty Studio</p>
+          <h1 style="margin:0;color:#E6D3AC;font-size:26px;font-weight:700;letter-spacing:6px;">ALUH</h1>
+          <p style="margin:4px 0 0;color:${brand.champagne};font-size:12px;letter-spacing:2px;text-transform:uppercase;">Presence is Power</p>
         </td></tr>
         <!-- Body -->
         <tr><td style="padding:32px;background:${brand.card};border:1px solid ${brand.border};border-top:none;">
@@ -38,7 +38,7 @@ function layout(title: string, body: string) {
         </td></tr>
         <!-- Footer -->
         <tr><td style="padding:20px 32px;text-align:center;background:${brand.champagne};border-radius:0 0 16px 16px;">
-          <p style="margin:0;font-size:12px;color:${brand.muted};">Aluh Beauty Studio &middot; <a href="${SITE_URL}" style="color:${brand.cafe};text-decoration:none;">aluhstudio.com</a></p>
+          <p style="margin:0;font-size:12px;color:${brand.muted};">ALUH &middot; <a href="${SITE_URL}" style="color:${brand.cafe};text-decoration:none;">aluhstudio.com</a></p>
         </td></tr>
       </table>
     </td></tr>
@@ -185,7 +185,7 @@ export async function sendAppointmentStatusUpdate(data: {
   const messages: Record<string, string> = {
     confirmed: `Great news, <strong>${data.clientName}</strong>! Your appointment at Aluh has been confirmed. We look forward to seeing you!`,
     cancelled: `Hi <strong>${data.clientName}</strong>, unfortunately your appointment has been cancelled. Please feel free to book a new one at your convenience.`,
-    completed: `Hi <strong>${data.clientName}</strong>, thank you for visiting Aluh Beauty Studio! We hope you loved your experience. We'd love to see you again soon!`,
+    completed: `Hi <strong>${data.clientName}</strong>, thank you for visiting ALUH! We hope you loved your experience. We'd love to see you again soon!`,
   };
 
   const subject = subjects[data.status];
@@ -255,7 +255,7 @@ export async function sendClientWelcome(data: {
     to: data.email,
     subject: "Welcome to Aluh Studio!",
     html: layout("Welcome to the Aluh family!", `
-      <p style="color:${brand.muted};line-height:1.6;">Hi <strong>${data.name}</strong>, you're now part of the Aluh Beauty Studio family! We're excited to have you with us.</p>
+      <p style="color:${brand.muted};line-height:1.6;">Hi <strong>${data.name}</strong>, you're now part of the ALUH family! We're excited to have you with us.</p>
       <p style="color:${brand.muted};line-height:1.6;">You can book your next appointment anytime through our website.</p>
       ${button("Book an Appointment", `${SITE_URL}/en/book`)}
     `),
