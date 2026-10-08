@@ -15,7 +15,9 @@ import {
   LogOut,
   Menu,
   X,
+  Compass,
 } from "lucide-react";
+import { startTour } from "./Tour";
 import { useEffect, useState } from "react";
 import { useNovedades } from "@/lib/novedades";
 import { ThemeToggle } from "./ThemeToggle";
@@ -67,6 +69,7 @@ export function Sidebar() {
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="admin-mobile-btn"
+        data-tour="menu"
         style={{
           position: "fixed",
           top: 16,
@@ -237,6 +240,32 @@ export function Sidebar() {
               </Link>
             );
           })}
+          {/* El tour guiado: cómo funciona el panel, paso a paso. */}
+          <button
+            data-tour="tour-boton"
+            onClick={() => {
+              setMobileOpen(false);
+              startTour();
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "10px 12px",
+              marginTop: 6,
+              borderRadius: 10,
+              fontSize: 14,
+              color: "#E6D3AC",
+              background: "rgba(230,211,172,0.08)",
+              border: "1px solid rgba(230,211,172,0.25)",
+              width: "100%",
+              cursor: "pointer",
+              textAlign: "left",
+            }}
+          >
+            <Compass size={18} />
+            Tour: ¿cómo funciona?
+          </button>
         </nav>
 
         {/* Bottom */}

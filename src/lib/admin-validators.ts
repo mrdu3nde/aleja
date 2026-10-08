@@ -1,7 +1,11 @@
 import { z } from "zod";
 
+// El panel es en español: sin esto los errores de los formularios salían en
+// inglés ("Too small: expected string to have >=2 characters").
+z.config(z.locales.es());
+
 export const clientSchema = z.object({
-  name: z.string().min(2),
+  name: z.string().min(2, "Escribe el nombre de la clienta"),
   // optional: the owner often only has a phone number
   email: z.string().email().optional().or(z.literal("")),
   phone: z.string().optional(),
@@ -42,12 +46,12 @@ export const serviceRecordSchema = z.object({
 
 export const appointmentSchema = z.object({
   clientId: z.string().uuid().nullable().optional(),
-  clientName: z.string().min(2),
+  clientName: z.string().min(2, "Escribe el nombre de la clienta"),
   // may be empty when the owner books someone she only has a phone for —
   // the share flow asks the client for it later
   clientEmail: z.string().email().or(z.literal("")),
   clientPhone: z.string().optional(),
-  service: z.string().min(1),
+  service: z.string().min(1, "Elige un servicio"),
   preferredDate: z.string().optional(),
   preferredTime: z.string().optional(),
   message: z.string().optional(),

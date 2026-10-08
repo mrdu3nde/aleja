@@ -1,5 +1,20 @@
 import { Resend } from "resend";
 
+/**
+ * "2026-10-09" -> "Friday, October 9, 2026". Se arma al mediodía UTC y se
+ * formatea en UTC: con `new Date("2026-10-09")` a secas, en cualquier zona al
+ * oeste de Greenwich salía el día anterior.
+ */
+function longDate(date: string): string {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = process.env.RESEND_FROM_EMAIL || "Aluh Studio <noreply@aluhstudio.com>";
@@ -88,7 +103,7 @@ export async function sendBookingConfirmation(data: {
   zellePhone: string;
 }) {
   const date = data.preferredDate
-    ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    ? longDate(data.preferredDate)
     : "To be confirmed";
 
   await send({
@@ -123,7 +138,7 @@ export async function sendDepositConfirmation(data: {
   depositAmount: number;
 }) {
   const date = data.preferredDate
-    ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    ? longDate(data.preferredDate)
     : "To be confirmed";
 
   await send({
@@ -193,7 +208,7 @@ export async function sendAppointmentStatusUpdate(data: {
   if (!subject || !message) return;
 
   const date = data.preferredDate
-    ? new Date(data.preferredDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    ? longDate(data.preferredDate)
     : "—";
 
   const cta = data.status === "completed"

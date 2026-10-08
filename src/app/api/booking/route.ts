@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { bookingSchema } from "@/lib/validators";
 import { prisma } from "@/lib/prisma";
 import { sendBookingConfirmation, sendBookingAdminNotification } from "@/lib/email";
 import { depositConfig, buildReferenceCode } from "@/lib/deposit";
 import { resolveService } from "@/lib/services";
 import { serviceDuration } from "@/lib/availability";
+import { notifyOwner } from "@/lib/push";
 
 export async function POST(request: Request) {
   try {
@@ -37,27 +38,41 @@ export async function POST(request: Request) {
 
     const referenceCode = buildReferenceCode(appointment.id);
 
-    // Send emails in background — don't block the response
-    Promise.allSettled([
-      sendBookingConfirmation({
-        clientName: data.name,
-        clientEmail: data.email,
-        service: data.service,
-        preferredDate: data.preferredDate,
-        referenceCode,
-        depositAmount: depositConfig.amount,
-        zelleName: depositConfig.zelleName,
-        zellePhone: depositConfig.zellePhone,
-      }),
-      sendBookingAdminNotification({
-        clientName: data.name,
-        clientEmail: data.email,
-        clientPhone: data.phone,
-        service: data.service,
-        preferredDate: data.preferredDate,
-        message: data.message,
-      }),
-    ]).catch(console.error);
+    const serviceName = resolved?.name ?? data.service;
+
+    // Después de responder, pero con `after`: en Vercel la función se congela
+    // al responder y un envío suelto podía no salir nunca.
+    after(async () => {
+      const results = await Promise.allSettled([
+        sendBookingConfirmation({
+          clientName: data.name,
+          clientEmail: data.email,
+          service: serviceName,
+          preferredDate: data.preferredDate,
+          referenceCode,
+          depositAmount: depositConfig.amount,
+          zelleName: depositConfig.zelleName,
+          zellePhone: depositConfig.zellePhone,
+        }),
+        sendBookingAdminNotification({
+          clientName: data.name,
+          clientEmail: data.email,
+          clientPhone: data.phone,
+          service: serviceName,
+          preferredDate: data.preferredDate,
+          message: data.message,
+        }),
+      ]);
+      for (const r of results) {
+        if (r.status === "rejected") console.error("Booking email failed:", r.reason);
+      }
+      // Ella se entera al momento aunque el correo falle.
+      await notifyOwner({
+        title: `Nueva reserva: ${data.name}`,
+        body: `${serviceName}${data.preferredDate ? ` · ${data.preferredDate}` : ""}${data.preferredTime ? ` ${data.preferredTime}` : ""}`,
+        url: `/studio/appointments/${appointment.id}`,
+      }).catch(console.error);
+    });
 
     return NextResponse.json({
       success: true,

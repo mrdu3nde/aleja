@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { appointmentUpdateSchema } from "@/lib/admin-validators";
 import { sendAppointmentStatusUpdate } from "@/lib/email";
@@ -15,6 +15,7 @@ export async function GET(
       include: {
         client: { include: { _count: { select: { appointments: true } } } },
         payments: { orderBy: { createdAt: "asc" } },
+        calls: { orderBy: { createdAt: "desc" }, take: 5 },
       },
     });
     // Opening the appointment is the acknowledgement — clear the "new
@@ -93,13 +94,17 @@ export async function PUT(
       ["confirmed", "cancelled", "completed"].includes(data.status) &&
       appointment.clientEmail
     ) {
-      sendAppointmentStatusUpdate({
-        clientName: appointment.clientName,
-        clientEmail: appointment.clientEmail,
-        service: appointment.service,
-        preferredDate: appointment.preferredDate,
-        status: data.status,
-      }).catch(console.error);
+      const email = appointment.clientEmail;
+      const status = data.status;
+      after(() =>
+        sendAppointmentStatusUpdate({
+          clientName: appointment.clientName,
+          clientEmail: email,
+          service: appointment.service,
+          preferredDate: appointment.preferredDate,
+          status,
+        }).catch(console.error),
+      );
     }
 
     return NextResponse.json(appointment);

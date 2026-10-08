@@ -87,6 +87,7 @@ export default function StudioGalleryPage() {
           </p>
         </div>
         <button
+          data-tour="galeria-subir"
           onClick={() => input.current?.click()}
           disabled={uploading > 0}
           className="flex items-center gap-2 rounded-xl bg-[#6B4E3D] text-white px-4 py-2.5 text-sm font-medium hover:bg-[#553D2F] transition-colors disabled:opacity-50 cursor-pointer"

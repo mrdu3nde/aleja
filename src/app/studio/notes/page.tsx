@@ -147,7 +147,9 @@ export default function NotesPage() {
             Pasando tu voz a texto...
           </div>
         ) : (
-          <VoiceRecorder variant="big" label="Toca y cuéntame" onRecorded={saveRecording} />
+          <div data-tour="mejoras-grabar">
+            <VoiceRecorder variant="big" label="Toca y cuéntame" onRecorded={saveRecording} />
+          </div>
         )}
 
         <div className="flex justify-center mt-3">

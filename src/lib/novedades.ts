@@ -15,6 +15,8 @@ import { useSyncExternalStore } from "react";
 export type Novedad = {
   /** Se abre al tocarla. Una ruta del panel, o el sitio público. */
   href: string;
+  /** En vez de abrir `href`, hace algo: "tour" empieza el tour guiado. */
+  action?: "tour";
   /** Si la sección del menú debe llevar "Nuevo" hasta que la visite. */
   menu?: boolean;
   title: string;
@@ -22,8 +24,24 @@ export type Novedad = {
 };
 
 export const NOVEDADES: { id: string; items: Novedad[] } = {
-  id: "2026-10-rediseno",
+  id: "2026-10-tour",
   items: [
+    {
+      href: "/studio",
+      action: "tour",
+      title: "Tour: cómo funciona tu panel",
+      text: "Te mostramos paso a paso el circuito: crear la cita, enviarle el enlace, ella confirma y tú marcas el depósito. Tócalo para empezar.",
+    },
+    {
+      href: "/studio/appointments",
+      title: "Enviar por WhatsApp en un toque",
+      text: "Al compartir una cita, el botón verde abre WhatsApp en el chat de tu clienta con el mensaje ya escrito.",
+    },
+    {
+      href: "/studio/appointments",
+      title: "Llamada de confirmación (demo)",
+      text: "En cada cita puedes escuchar cómo sería una llamada automática que le pide a tu clienta marcar 1 para confirmar o 2 si no puede venir.",
+    },
     {
       href: "/es",
       title: "Tu sitio con la nueva imagen",

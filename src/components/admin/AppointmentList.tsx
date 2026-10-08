@@ -160,7 +160,9 @@ export function AppointmentList({
               const id = apt.id as string;
               const status = (apt.status as string) ?? "pending";
               const needsDeposit =
-                apt.depositRequired !== false && apt.depositStatus !== "received";
+                apt.depositRequired !== false &&
+                apt.depositStatus !== "received" &&
+                apt.status !== "cancelled";
               const relative = apt.preferredDate
                 ? relativeDay(apt.preferredDate as string)
                 : null;

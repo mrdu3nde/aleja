@@ -48,6 +48,7 @@ function AppointmentsPageInner() {
   const [reloadKey, setReloadKey] = useState(0);
   const [depositTarget, setDepositTarget] = useState<Appointment | null>(null);
   const [markingId, setMarkingId] = useState<string | null>(null);
+  const [actionError, setActionError] = useState("");
   const [hours, setHours] = useState<OpeningHours | null>(null);
   const router = useRouter();
 
@@ -165,14 +166,16 @@ function AppointmentsPageInner() {
     const id = depositTarget.id as string;
     setMarkingId(id);
     try {
-      await fetch(`/api/studio/appointments/${id}/deposit`, {
+      const res = await fetch(`/api/studio/appointments/${id}/deposit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "received" }),
       });
+      setActionError(res.ok ? "" : "No se pudo marcar el depósito. Revisa la cita e inténtalo de nuevo.");
       setReloadKey((k) => k + 1);
     } catch (err) {
       console.error(err);
+      setActionError("No se pudo marcar el depósito. Revisa tu conexión e inténtalo de nuevo.");
     } finally {
       setMarkingId(null);
       setDepositTarget(null);
@@ -187,7 +190,7 @@ function AppointmentsPageInner() {
   return (
     <div>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5">
+      <div data-tour="citas-lista" className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "var(--admin-text)" }}>
             Citas
@@ -254,6 +257,16 @@ function AppointmentsPageInner() {
           </button>
         </div>
       </div>
+
+      {actionError && (
+        <div
+          role="alert"
+          className="flex items-center gap-2 p-3 rounded-xl mb-4 text-sm"
+          style={{ backgroundColor: "#fee2e2", color: "#991b1b" }}
+        >
+          {actionError}
+        </div>
+      )}
 
       {newConfirmations > 0 && (
         <div

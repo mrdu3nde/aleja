@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { X, Copy, Check, AlertCircle } from "lucide-react";
+import { X, Copy, Check, AlertCircle, MessageCircle } from "lucide-react";
 import { copyText } from "@/lib/clipboard";
+import { normalizePhone } from "@/lib/phone";
 
 type Props = {
   open: boolean;
@@ -11,6 +12,8 @@ type Props = {
   service: string;
   preferredDate?: string | null;
   preferredTime?: string | null;
+  /** Para abrir WhatsApp directo en el chat de la clienta. */
+  clientPhone?: string | null;
   onClose: () => void;
   onShared: () => void;
 };
@@ -49,6 +52,7 @@ function buildMessage(
   date: string | null,
   time: string | null,
   url: string,
+  deposit = false,
 ) {
   const first = name.split(" ")[0];
 
@@ -57,11 +61,13 @@ function buildMessage(
   // correct if a price changes.
   if (lang === "es") {
     const when = date ? ` para el ${date}${time ? ` a las ${time}` : ""}` : "";
-    return `¡Listo ${first}! Hemos creado tu cita de ${service}${when}. Solo completa un par de datos para confirmarla:\n\n${url}`;
+    const extra = deposit ? " Ahí también verás cómo apartarla con el depósito." : "";
+    return `¡Listo ${first}! Hemos creado tu cita de ${service}${when}. Solo completa un par de datos para confirmarla:${extra}\n\n${url}`;
   }
 
   const when = date ? ` for ${date}${time ? ` at ${time}` : ""}` : "";
-  return `All set, ${first}! We've created your ${service} appointment${when}. Just fill in a couple of details to confirm it:\n\n${url}`;
+  const extra = deposit ? " You'll also see how to hold it with the deposit." : "";
+  return `All set, ${first}! We've created your ${service} appointment${when}. Just fill in a couple of details to confirm it:${extra}\n\n${url}`;
 }
 
 export function ShareAppointmentModal({
@@ -71,6 +77,7 @@ export function ShareAppointmentModal({
   service,
   preferredDate,
   preferredTime,
+  clientPhone,
   onClose,
   onShared,
 }: Props) {
@@ -171,7 +178,17 @@ export function ShareAppointmentModal({
         formatDate(preferredDate, lang),
         formatTime(preferredTime),
         url,
+        shared.depositRequired,
       )
+    : "";
+
+  // WhatsApp con el mensaje ya escrito. Con teléfono abre su chat directo
+  // (números de EE. UU.: 1 + 10 dígitos); sin teléfono, WhatsApp deja elegir
+  // el contacto.
+  const first = clientName.split(" ")[0];
+  const digits = normalizePhone(clientPhone);
+  const whatsapp = message
+    ? `https://wa.me/${digits && digits.length === 10 ? `1${digits}` : ""}?text=${encodeURIComponent(message)}`
     : "";
 
   return (
@@ -272,10 +289,22 @@ No se pudo crear el enlace. Cierra esto e inténtalo de nuevo.
                 </div>
               )}
 
+              {/* Lo principal: un toque y está en WhatsApp con el mensaje listo. */}
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white"
+                style={{ backgroundColor: "#1f8f4e", minHeight: 48 }}
+              >
+                <MessageCircle className="h-4 w-4" />
+                {digits ? `Enviar por WhatsApp a ${first}` : "Enviar por WhatsApp"}
+              </a>
+
               <button
                 onClick={() => copy(message, "message")}
-                className="w-full flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white cursor-pointer transition-colors"
-                style={{ backgroundColor: "#6B4E3D", minHeight: 44 }}
+                className="w-full flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold cursor-pointer transition-colors"
+                style={{ backgroundColor: "var(--admin-filter-bg)", color: "var(--admin-text)", minHeight: 44 }}
               >
                 {copied === "message" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                 {copied === "message" ? "Copiado" : "Copiar mensaje"}

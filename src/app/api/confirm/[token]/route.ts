@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { normalizePhone } from "@/lib/phone";
 import { depositConfig, buildReferenceCode } from "@/lib/deposit";
@@ -32,7 +32,9 @@ function publicView(apt: {
     preferredTime: apt.preferredTime,
     alreadyConfirmed: apt.clientConfirmedAt !== null,
     // lets the page say "confirmed" vs "we'll confirm once the deposit lands"
-    confirmed: apt.status === "confirmed",
+    // Completada también cuenta: el enlace es lo que ella guarda, y no debe
+    // volver a pedirle el depósito después de su visita.
+    confirmed: apt.status === "confirmed" || apt.status === "completed",
     // which fields the page needs to ask for
     missing: {
       phone: !apt.clientPhone,
@@ -81,6 +83,12 @@ export async function POST(
     const apt = await prisma.appointment.findUnique({ where: { shareToken: token } });
     if (!apt || apt.status === "cancelled") {
       return NextResponse.json({ error: "not_found" }, { status: 404 });
+    }
+
+    // Ya confirmó antes (volvió a abrir el enlace y tocó otra vez): no se
+    // repiten el aviso ni el correo, ni se reescribe la fecha de confirmación.
+    if (apt.clientConfirmedAt) {
+      return NextResponse.json(publicView(apt));
     }
 
     // Only fill gaps — the client cannot overwrite what the owner already set,
@@ -138,22 +146,25 @@ export async function POST(
       }
     }
 
-    // Fire-and-forget: the client should never wait on our notifications
-    notifyOwner({
-      title: `${updated.clientName} confirmed`,
-      body: `${updated.service}${updated.preferredDate ? ` · ${updated.preferredDate}` : ""}${updated.preferredTime ? ` ${updated.preferredTime}` : ""}`,
-      url: `/studio/appointments/${updated.id}`,
-    }).catch(console.error);
+    // Después de responder: la clienta no espera por los avisos, y `after`
+    // asegura que en Vercel sí terminen de salir.
+    after(async () => {
+      await notifyOwner({
+        title: `${updated.clientName} confirmó su cita`,
+        body: `${updated.service}${updated.preferredDate ? ` · ${updated.preferredDate}` : ""}${updated.preferredTime ? ` ${updated.preferredTime}` : ""}`,
+        url: `/studio/appointments/${updated.id}`,
+      }).catch(console.error);
 
-    sendClientConfirmedNotification({
-      clientName: updated.clientName,
-      clientEmail: updated.clientEmail,
-      clientPhone: updated.clientPhone,
-      service: updated.service,
-      preferredDate: updated.preferredDate,
-      preferredTime: updated.preferredTime,
-      appointmentId: updated.id,
-    }).catch(console.error);
+      await sendClientConfirmedNotification({
+        clientName: updated.clientName,
+        clientEmail: updated.clientEmail,
+        clientPhone: updated.clientPhone,
+        service: updated.service,
+        preferredDate: updated.preferredDate,
+        preferredTime: updated.preferredTime,
+        appointmentId: updated.id,
+      }).catch(console.error);
+    });
 
     return NextResponse.json(publicView(updated));
   } catch (error) {

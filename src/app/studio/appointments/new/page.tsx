@@ -21,6 +21,7 @@ export default function NewAppointmentPage() {
   // "none" | "custom" | a preset amount as string
   const [depositChoice, setDepositChoice] = useState<string>(String(depositConfig.amount));
   const [customDeposit, setCustomDeposit] = useState("");
+  const [submitError, setSubmitError] = useState("");
   const [servicePrice, setServicePrice] = useState("");
   const [service, setService] = useState("");
   const [date, setDate] = useState("");
@@ -89,12 +90,18 @@ export default function NewAppointmentPage() {
         : {}),
     };
 
+    setSubmitError("");
     const res = await fetch("/api/studio/appointments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
-    });
-    if (res.ok) {
+    }).catch(() => null);
+    if (!res?.ok) {
+      // Antes no pasaba nada y parecía que el botón no servía.
+      setSubmitError("No se pudo crear la cita. Revisa los datos y tu conexión, e inténtalo de nuevo.");
+      return;
+    }
+    {
       const apt = await res.json();
       // land on the detail with the share sheet already open — creating a
       // booking by hand almost always means sending it to the client next
@@ -116,7 +123,7 @@ export default function NewAppointmentPage() {
       </h1>
 
       <div className="max-w-xl rounded-2xl p-6" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form data-tour="nueva-cita-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <FormField label="Clienta existente">
             <ClientPicker selected={client} onSelect={pickClient} onClear={clearClient} />
           </FormField>
@@ -257,6 +264,11 @@ export default function NewAppointmentPage() {
             <textarea {...register("message")} rows={3} className={inputClass} style={inputStyle} placeholder="Notas..." />
           </FormField>
 
+          {submitError && (
+            <p role="alert" className="rounded-xl p-3 text-sm" style={{ backgroundColor: "#fee2e2", color: "#991b1b" }}>
+              {submitError}
+            </p>
+          )}
           <button
             type="submit"
             disabled={isSubmitting}

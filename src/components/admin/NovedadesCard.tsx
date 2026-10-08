@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronRight, Gift } from "lucide-react";
 import { useNovedades } from "@/lib/novedades";
+import { startTour } from "./Tour";
 
 /**
  * La tarjeta "Lo nuevo" del inicio del panel. Sale hasta que ella toca
@@ -45,8 +46,33 @@ export function NovedadesCard() {
       <ul className="space-y-2">
         {items.map((item) => {
           const external = !item.href.startsWith("/studio");
+          const body = (
+            <>
+              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: "#C2A26B" }} />
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold">{item.title}</span>
+                <span className="block text-sm" style={{ color: "var(--admin-muted)" }}>
+                  {item.text}
+                </span>
+              </span>
+              <ChevronRight size={18} className="mt-1 shrink-0" style={{ color: "var(--admin-muted)" }} />
+            </>
+          );
+          if (item.action === "tour") {
+            return (
+              <li key={item.title}>
+                <button
+                  onClick={startTour}
+                  className="w-full text-left flex items-start gap-3 rounded-xl p-3 cursor-pointer"
+                  style={{ backgroundColor: "rgba(194,162,107,0.16)", color: "var(--admin-text)", border: "1px solid rgba(194,162,107,0.5)" }}
+                >
+                  {body}
+                </button>
+              </li>
+            );
+          }
           return (
-            <li key={item.href}>
+            <li key={item.title}>
               <Link
                 href={item.href}
                 target={external ? "_blank" : undefined}
@@ -54,14 +80,7 @@ export function NovedadesCard() {
                 className="flex items-start gap-3 rounded-xl p-3 transition-colors"
                 style={{ backgroundColor: "var(--admin-hover)", color: "var(--admin-text)" }}
               >
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: "#C2A26B" }} />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold">{item.title}</span>
-                  <span className="block text-sm" style={{ color: "var(--admin-muted)" }}>
-                    {item.text}
-                  </span>
-                </span>
-                <ChevronRight size={18} className="mt-1 shrink-0" style={{ color: "var(--admin-muted)" }} />
+                {body}
               </Link>
             </li>
           );

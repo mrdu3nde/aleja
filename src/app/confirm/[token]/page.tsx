@@ -285,7 +285,7 @@ function ConfirmPageInner() {
 
             {/* Payment details come before the button on purpose: she reads how
                 to pay, then confirms. */}
-            {data.deposit && <div className="pt-2">{depositBlock(false)}</div>}
+            {data.deposit && !data.confirmed && <div className="pt-2">{depositBlock(false)}</div>}
 
             <button
               type="submit"
@@ -304,13 +304,14 @@ function ConfirmPageInner() {
             </div>
             <h1 className="text-2xl font-bold text-[#3A2E26] mb-1">{t.thanks(first)}</h1>
             <p className="text-[#8A7B6E]">
-              {data.deposit ? t.registeredPending : t.registeredConfirmed}
+              {data.deposit && !data.confirmed ? t.registeredPending : t.registeredConfirmed}
             </p>
           </div>
 
           {summary}
 
-          {depositBlock(true)}
+          {/* Ya confirmada (depósito recibido): nada más que pagar. */}
+          {data.deposit && !data.confirmed && depositBlock(true)}
         </>
       )}
     </Shell>

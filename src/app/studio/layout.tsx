@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "../globals.css";
 import { Sidebar } from "@/components/admin/Sidebar";
 import { ThemeProvider } from "@/components/admin/ThemeProvider";
+import { Tour } from "@/components/admin/Tour";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       >
         <ThemeProvider>
           <Sidebar />
+          <Tour />
           <main className="lg:ml-64 min-h-screen">
             <div className="p-6 pt-16 lg:pt-6 max-w-7xl mx-auto">
               {children}

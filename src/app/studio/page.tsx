@@ -245,13 +245,17 @@ function QuickAction({
   icon: Icon,
   label,
   onClick,
+  tour,
 }: {
   icon: React.ComponentType<{ size?: number }>;
   label: string;
   onClick: () => void;
+  /** Marca para el tour guiado. */
+  tour?: string;
 }) {
   return (
     <button
+      data-tour={tour}
       onClick={onClick}
       style={{
         display: "flex",
@@ -639,6 +643,7 @@ Aún no hay actividad — las reservas nuevas aparecerán aquí
             <QuickAction
               icon={CalendarPlus}
               label="Nueva cita"
+              tour="nueva-cita"
               onClick={() => router.push("/studio/appointments/new")}
             />
             <QuickAction

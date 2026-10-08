@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendDepositConfirmation } from "@/lib/email";
 
@@ -43,7 +43,10 @@ export async function POST(
       data: {
         depositStatus: "received",
         depositReceivedAt: new Date(),
-        status: "confirmed",
+        // Sólo una cita pendiente pasa a confirmada. Una ya completada no
+        // vuelve atrás (ni le escribe a la clienta "tu cita está confirmada"
+        // después de su visita).
+        status: current.status === "pending" ? "confirmed" : current.status,
       },
       include: {
           client: { include: { _count: { select: { appointments: true } } } },
@@ -51,14 +54,17 @@ export async function POST(
         },
     });
 
-    if (current.depositStatus !== "received" && appointment.clientEmail) {
-      sendDepositConfirmation({
-        clientName: appointment.clientName,
-        clientEmail: appointment.clientEmail,
-        service: appointment.service,
-        preferredDate: appointment.preferredDate,
-        depositAmount: Number(appointment.depositAmount ?? 20),
-      }).catch(console.error);
+    if (current.depositStatus !== "received" && current.status === "pending" && appointment.clientEmail) {
+      const email = appointment.clientEmail;
+      after(() =>
+        sendDepositConfirmation({
+          clientName: appointment.clientName,
+          clientEmail: email,
+          service: appointment.service,
+          preferredDate: appointment.preferredDate,
+          depositAmount: Number(appointment.depositAmount ?? 20),
+        }).catch(console.error),
+      );
     }
 
     return NextResponse.json(appointment);

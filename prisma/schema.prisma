@@ -64,6 +64,7 @@ model Appointment {
   sharedAt          DateTime?
   clientConfirmedAt DateTime?
   confirmationSeen  Boolean   @default(false)
+  calls             AppointmentCall[]
 
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -258,4 +259,27 @@ model GalleryPhoto {
   createdAt DateTime @default(now())
 
   @@index([sortOrder])
+}
+
+/// Una llamada automática para confirmar una cita (el mismo modelo que
+/// `call_attempts` en conasupo: voz que lee un guion y la clienta marca 1 o 2).
+/// Hoy sólo existe el modo "demo": se escucha en el navegador y no se llama a
+/// nadie. "live" queda para cuando haya un número de Twilio.
+model AppointmentCall {
+  id            String      @id @default(uuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  /// "demo" | "live"
+  mode          String
+  /// "started" | "completed" | "no_answer" | "failed"
+  status        String      @default("started")
+  /// "confirmed" (marcó 1) | "declined" (marcó 2) | "opt_out" (marcó 9) | null
+  result        String?
+  digits        String?
+  /// Id de la llamada en Twilio, en modo live.
+  providerSid   String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([appointmentId, createdAt])
 }

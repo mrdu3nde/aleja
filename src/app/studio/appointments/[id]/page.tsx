@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { ClientLinkModal } from "@/components/admin/ClientLinkModal";
 import { ShareAppointmentModal } from "@/components/admin/ShareAppointmentModal";
+import { ConfirmCallCard, type AppointmentCall } from "@/components/admin/ConfirmCallCard";
 import { PaymentsSection } from "@/components/admin/PaymentsSection";
 import { ArrowLeft, DollarSign, Check, X, Trash2, User, UserPlus, Unlink, Send } from "lucide-react";
 import { buildReferenceCode, DEPOSIT_PRESETS, depositConfig } from "@/lib/deposit";
@@ -38,6 +39,7 @@ type Appointment = {
     note?: string | null;
     createdAt: string;
   }>;
+  calls?: AppointmentCall[];
   clientId?: string | null;
   client?: {
     id: string;
@@ -285,7 +287,7 @@ function AppointmentDetailPageInner() {
 
       {/* Share to confirm — the owner pre-books after talking to the client,
           then sends her a link to fill in what is missing. */}
-      <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
+      <div data-tour="compartir" className="rounded-2xl p-5" style={{ backgroundColor: "var(--admin-card)", border: "1px solid var(--admin-border)" }}>
         <h2 className="text-base font-semibold mb-2 flex items-center gap-2" style={{ color: "var(--admin-text)" }}>
           <Send className="h-5 w-5" />
           Compartir con la clienta
@@ -324,10 +326,19 @@ function AppointmentDetailPageInner() {
         )}
       </div>
 
+      <ConfirmCallCard
+        appointmentId={String(id)}
+        clientName={apt.clientName ?? ""}
+        disabled={isCancelled}
+        calls={apt.calls ?? []}
+        onChanged={() => setReloadKey((k) => k + 1)}
+      />
+
         </div>
 
         <div className="space-y-5">
       {/* What the service costs and what has actually been collected. */}
+      <div data-tour="pagos">
       <PaymentsSection
         appointmentId={String(id)}
         servicePrice={apt.servicePrice}
@@ -338,6 +349,7 @@ function AppointmentDetailPageInner() {
         cancelled={isCancelled}
         onChanged={() => setReloadKey((k) => k + 1)}
       />
+      </div>
 
       {/* No deposit on this booking — still offer a way back, otherwise a wrong
           pick at creation time could never be undone. */}
@@ -489,6 +501,7 @@ function AppointmentDetailPageInner() {
         service={apt.service ?? ""}
         preferredDate={apt.preferredDate}
         preferredTime={apt.preferredTime}
+        clientPhone={apt.clientPhone}
         onClose={() => setShowShare(false)}
         onShared={() => setReloadKey((k) => k + 1)}
       />
