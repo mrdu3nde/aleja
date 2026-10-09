@@ -135,7 +135,7 @@ function AppointmentDetailPageInner() {
   const depositReceived = apt.depositStatus === "received";
   const depositRequired = apt.depositRequired !== false;
   const referenceCode = apt.id ? buildReferenceCode(apt.id) : "";
-  const depositAmount = apt.depositAmount ?? "20.00";
+  const depositAmount = apt.depositAmount ?? "25.00";
 
   return (
     <div>

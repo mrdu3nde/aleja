@@ -10,7 +10,8 @@
     "gallery": "Gallery",
     "book": "Book",
     "faq": "FAQ",
-    "policies": "Policies"
+    "policies": "Policies",
+    "reviews": "Tell us about your experience!"
   },
   "hero": {
     "headline": "BEAUTY, ELEVATED.",
@@ -40,11 +41,11 @@
     },
     "brows": {
       "title": "Brows",
-      "description": "Shaping, tinting, lamination, and microblading for perfectly defined brows."
+      "description": "Lamination and waxing for defined, natural-looking brows."
     },
     "lashes": {
       "title": "Lashes",
-      "description": "Extensions, lifts, and tinting for effortlessly stunning lashes."
+      "description": "Lash lifts, tints and extension sets: classic, hybrid, wispy, anime and volume."
     },
     "facial": {
       "title": "Facial Treatments",
@@ -67,18 +68,8 @@
   },
   "testimonials": {
     "title": "What Our Clients Say",
-    "items": [
-      {
-        "name": "Maria L.",
-        "service": "Hair Color",
-        "text": "Aluh understood exactly what I wanted. My hair has never looked this good. I feel like a new person!"
-      },
-      {
-        "name": "Ana P.",
-        "service": "Brow Lamination",
-        "text": "Finally found someone who gets my brows right. The results are natural, clean, and exactly what I wanted."
-      }
-    ]
+    "empty": "No reviews yet. Have you visited us? Be the first to tell us how it went.",
+    "cta": "Share your experience"
   },
   "booking_cta": {
     "title": "Ready to Book Your Next Beauty Appointment?",
@@ -90,8 +81,8 @@
     "quick_links": "Quick Links",
     "hours_title": "Hours",
     "hours": {
-      "mon_fri": "Mon – Fri: 9:00 AM – 7:00 PM",
-      "saturday": "Saturday: 9:00 AM – 5:00 PM",
+      "mon_fri": "Mon – Fri: 10:00 AM – 5:00 PM",
+      "saturday": "Saturday: 10:00 AM – 2:00 PM",
       "sunday": "Sunday: Closed"
     },
     "contact_title": "Contact",
@@ -112,172 +103,12 @@
     "logo_alt": "ALUH logo"
   },
   "services_page": {
-    "title": "Our Services",
-    "subtitle": "Every service is thoughtfully designed to highlight your natural beauty and leave you feeling your absolute best.",
-    "consult_title": "Not Sure Which Service Is Right for You?",
-    "consult_text": "Contact us before booking — we're happy to help you choose the perfect service.",
-    "consult_cta": "Contact Us",
-    "categories": {
-      "hair": {
-        "title": "Hair",
-        "groups": [
-          {
-            "title": "Hair color",
-            "items": [
-              {
-                "name": "Balayage, highlights",
-                "price": "From $350"
-              }
-            ],
-            "note": "Includes a sleek or wavy finish. Processing time is 5 to 6 hours.\n\nBefore we begin, we do a strand test to check the health of your hair and make sure we can go ahead with the process."
-          },
-          {
-            "title": "Hair cut",
-            "items": [
-              {
-                "name": "Ends refresh",
-                "price": "$35"
-              },
-              {
-                "name": "Women’s cut",
-                "price": "$65"
-              },
-              {
-                "name": "Men’s cut",
-                "price": "$40"
-              }
-            ]
-          },
-          {
-            "title": "Nourishing hair treatment",
-            "items": [
-              {
-                "name": "Nourishing hair treatment",
-                "price": "$45"
-              },
-              {
-                "name": "With blowout, short hair",
-                "price": "$65"
-              },
-              {
-                "name": "With blowout, long hair",
-                "price": "$75"
-              }
-            ]
-          },
-          {
-            "title": "Blowout",
-            "items": [
-              {
-                "name": "Short hair",
-                "price": "$45",
-                "description": "Hair up to about shoulder length."
-              },
-              {
-                "name": "Long hair",
-                "price": "$55",
-                "description": "Hair below the shoulders."
-              },
-              {
-                "name": "Long / thick hair",
-                "price": "$65 – $75",
-                "description": "For hair that, because of its length, density or texture, needs more drying and styling time."
-              }
-            ]
-          }
-        ]
-      },
-      "brows": {
-        "title": "Brow Services",
-        "items": [
-          {
-            "name": "Brow Shaping",
-            "description": "Clean, defined brows tailored to your natural arch and face structure.",
-            "ideal_for": "Regular maintenance or a fresh shape",
-            "duration": "30 min",
-            "price": "$20"
-          },
-          {
-            "name": "Brow Lamination",
-            "description": "Smoothed, lifted brows for a full, fluffy look that lasts weeks.",
-            "ideal_for": "Clients wanting volume and definition",
-            "duration": "45 min",
-            "price": "$50"
-          },
-          {
-            "name": "Brow Tinting",
-            "description": "Semi-permanent color to add depth and definition without daily makeup.",
-            "ideal_for": "Light or sparse brows",
-            "duration": "20 min",
-            "price": "$25"
-          }
-        ]
-      },
-      "lashes": {
-        "title": "Lash Services",
-        "items": [
-          {
-            "name": "Classic Lash Extensions",
-            "description": "Natural-looking extensions applied one-by-one for subtle enhancement.",
-            "ideal_for": "A natural, everyday look",
-            "duration": "1.5–2 hours",
-            "price": "$120"
-          },
-          {
-            "name": "Volume Lash Extensions",
-            "description": "Fuller, more dramatic lash fans for a bolder look.",
-            "ideal_for": "Clients wanting more density and drama",
-            "duration": "2–2.5 hours",
-            "price": "$160"
-          },
-          {
-            "name": "Lash Lift & Tint",
-            "description": "Curl and color your natural lashes for a low-maintenance look.",
-            "ideal_for": "Anyone wanting lifted lashes without extensions",
-            "duration": "1 hour",
-            "price": "$65"
-          }
-        ]
-      },
-      "facial": {
-        "title": "Facial Treatments",
-        "items": [
-          {
-            "name": "Signature Facial",
-            "description": "A customized facial including cleansing, exfoliation, mask, and hydration.",
-            "ideal_for": "All skin types seeking a refresh",
-            "duration": "1 hour",
-            "price": "$70"
-          },
-          {
-            "name": "Hydrating Glow Treatment",
-            "description": "Intensive moisture boost for dry or dull skin.",
-            "ideal_for": "Dehydrated or tired-looking skin",
-            "duration": "45 min",
-            "price": "$55"
-          }
-        ]
-      },
-      "special": {
-        "title": "Special Services",
-        "items": [
-          {
-            "name": "Bridal Beauty Package",
-            "description": "Complete beauty prep for your special day — hair, lashes, and makeup.",
-            "ideal_for": "Brides and bridal parties",
-            "duration": "Custom",
-            "price": "From $250"
-          },
-          {
-            "name": "Event Glam Session",
-            "description": "Full glam styling for parties, photoshoots, or special occasions.",
-            "ideal_for": "Anyone preparing for an event",
-            "duration": "2–3 hours",
-            "price": "From $120"
-          }
-        ]
-      }
-    }
+    "consult_title": "Not Sure Which Service to Choose?",
+    "consult_text": "Call us or message us on Instagram and we'll help you choose the perfect service for you.",
+    "consult_cta": "Book an appointment",
+    "call": "Call",
+    "book": "Book",
+    "by_phone": "Booked by phone"
   },
   "gallery_page": {
     "title": "Gallery",
@@ -287,7 +118,7 @@
   },
   "book_page": {
     "title": "Book Your Appointment",
-    "subtitle": "Fill out the form below and we'll get back to you to confirm your appointment.",
+    "subtitle": "Choose your service, date and time. Your appointment is confirmed with the deposit.",
     "form": {
       "name": "Full Name",
       "name_placeholder": "Your full name",
@@ -315,10 +146,10 @@
         "phone": "Phone",
         "whatsapp": "WhatsApp"
       },
-      "submit": "Request Appointment",
+      "submit": "Book and pay deposit",
       "submitting": "Sending...",
       "deposit_notice_title": "Deposit required to confirm",
-      "deposit_notice_text": "A {amount} USD deposit via Zelle is required to confirm your appointment. After submitting this form we'll show you the payment details and a unique reference code.",
+      "deposit_notice_text": "Once you submit, we'll show you how to pay the {amount} USD deposit via Zelle and your reference code. Your appointment is confirmed once we receive it.",
       "success_title": "Booking received!",
       "success_message": "Your appointment is reserved — only your deposit is needed to confirm it.",
       "deposit_box_title": "Send your deposit via Zelle",
@@ -338,7 +169,28 @@
       "error_server": "Something went wrong on our end. Please try again in a moment or contact us directly.",
       "error_generic": "Something went wrong. Please try again or contact us directly.",
       "success_contact_whatsapp": "Take a screenshot of this screen to keep the details handy. We'll message you on WhatsApp at:",
-      "success_contact_phone": "Take a screenshot of this screen to keep the details handy. We'll call you at:"
+      "success_contact_phone": "Take a screenshot of this screen to keep the details handy. We'll call you at:",
+      "step_category": "Choose a category",
+      "step_service": "Choose your service",
+      "step_when": "Choose the date and time",
+      "step_details": "Your details",
+      "step_deposit": "Deposit to confirm",
+      "call_to_book": "For now, this service is booked directly with us:",
+      "call": "Call",
+      "not_sure": "Not sure which one to choose? Call us and we'll help:",
+      "duration": "Duration",
+      "summary_total": "Total price",
+      "summary_deposit": "Booking deposit",
+      "summary_balance": "Balance on the day of your appointment",
+      "policy_title": "Booking Deposit",
+      "policy_text": "To confirm your appointment, a $25 deposit is required, which will be deducted from your total at the time of your service. The deposit is non-refundable if you miss your appointment or cancel with less than 24 hours’ notice.",
+      "error_slot_taken": "That time was just taken. Please choose another one.",
+      "error_not_bookable": "This service can't be booked online yet. Call us and we'll help.",
+      "field_required": "This field is required.",
+      "invalid_email": "Please enter a valid email.",
+      "invalid_phone": "Please enter a valid phone number.",
+      "pick_time": "Choose a date and a time.",
+      "service_summary": "Your service"
     },
     "time": "Preferred time"
   },
@@ -348,7 +200,7 @@
     "items": [
       {
         "question": "How do I book an appointment?",
-        "answer": "You can book through our website by visiting the Book page and filling out the request form. We'll confirm your appointment within 24 hours."
+        "answer": "On the Book page you choose your service and the date and time that suit you, then confirm your appointment with the $25 deposit."
       },
       {
         "question": "Do you accept same-day appointments?",
@@ -360,7 +212,7 @@
       },
       {
         "question": "Do you require a deposit?",
-        "answer": "A deposit may be required for certain services such as lash extensions, bridal packages, and event bookings. Details are provided at the time of booking."
+        "answer": "To confirm your appointment, a $25 deposit is required, which will be deducted from your total at the time of your service. The deposit is non-refundable if you miss your appointment or cancel with less than 24 hours’ notice."
       },
       {
         "question": "Which service should I choose if I'm not sure?",
@@ -385,8 +237,8 @@
         "content": "We kindly ask that you provide at least 24 hours notice if you need to cancel your appointment. Late cancellations may be subject to a cancellation fee."
       },
       {
-        "title": "Deposits",
-        "content": "Certain services require a non-refundable deposit at the time of booking. This deposit is applied toward the total cost of your service. Deposit requirements will be communicated clearly before confirmation."
+        "title": "Booking Deposit",
+        "content": "To confirm your appointment, a $25 deposit is required, which will be deducted from your total at the time of your service. The deposit is non-refundable if you miss your appointment or cancel with less than 24 hours’ notice."
       },
       {
         "title": "Late Arrivals",
@@ -405,5 +257,25 @@
         "content": "Some services, including color corrections, bridal packages, and certain skin treatments, may require a consultation before booking. This helps us understand your needs and deliver the best results."
       }
     ]
+  },
+  "reviews_page": {
+    "title": "Tell us about your experience!",
+    "intro": "We'd love to hear how your visit to ALUH went. Share your experience and tell us how you felt about the service and the care you received.",
+    "name": "Name to display",
+    "name_placeholder": "e.g. Maria L.",
+    "rating": "Rating",
+    "star": "{count, plural, one {# star} other {# stars}}",
+    "comment": "Your experience",
+    "comment_placeholder": "Tell us how you felt about the service and the care you received...",
+    "submit": "Submit review",
+    "submitting": "Sending...",
+    "success_title": "Thank you for sharing your experience!",
+    "success_text": "Your review will appear on the page as soon as we've read it.",
+    "error": "We couldn't send your review. Please try again in a moment.",
+    "error_name": "Please enter the name you'd like to display.",
+    "error_rating": "Choose 1 to 5 stars.",
+    "error_comment": "Tell us a little more (at least 10 letters).",
+    "list_title": "What Our Clients Say",
+    "empty": "No reviews yet. Be the first to share your experience!"
   }
 }

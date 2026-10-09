@@ -310,3 +310,23 @@ model TourRun {
   finishedAt DateTime?
   updatedAt  DateTime  @updatedAt
 }
+
+/// Una reseña que deja una clienta desde "¡Cuéntanos tu experiencia!". No se
+/// publica sola: ella la aprueba desde el panel, para que nadie llene la página
+/// de spam ni de algo que no es de una clienta real.
+model Review {
+  id        String   @id @default(uuid())
+  /// El nombre que la clienta quiere mostrar.
+  name      String
+  /// 1 a 5 estrellas.
+  rating    Int
+  comment   String
+  /// En qué idioma la escribió ("es" | "en").
+  locale    String   @default("es")
+  /// "pending" | "approved" | "hidden"
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+}

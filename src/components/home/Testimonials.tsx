@@ -1,15 +1,18 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Section } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Quote } from "lucide-react";
-import { motion } from "framer-motion";
+import { Button } from "@/components/ui/Button";
+import { ReviewList } from "@/components/reviews/ReviewList";
+import type { PublicReview } from "@/lib/reviews";
 
-export function Testimonials() {
+/**
+ * Reseñas reales, las que ella aprobó. Sin ninguna, una invitación a dejar la
+ * primera: antes había dos testimonios inventados y ella pidió no tener ficticias.
+ */
+export function Testimonials({ reviews }: { reviews: PublicReview[] }) {
   const t = useTranslations("testimonials");
-  const items = (t.raw("items") as unknown[]).map((_, i) => i);
+  const locale = useLocale();
 
   return (
     <Section bg="white">
@@ -17,29 +20,16 @@ export function Testimonials() {
         {t("title")}
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {items.map((i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-          >
-            <Card className="h-full flex flex-col">
-              <Quote className="h-8 w-8 text-champagne mb-4" />
-              <p className="text-text-dark leading-relaxed flex-1 italic">
-                &ldquo;{t(`items.${i}.text`)}&rdquo;
-              </p>
-              <div className="mt-6 flex items-center justify-between">
-                <span className="font-semibold text-text-dark">
-                  {t(`items.${i}.name`)}
-                </span>
-                <Badge>{t(`items.${i}.service`)}</Badge>
-              </div>
-            </Card>
-          </motion.div>
-        ))}
+      {reviews.length > 0 ? (
+        <ReviewList reviews={reviews} />
+      ) : (
+        <p className="text-center text-text-light max-w-md mx-auto">{t("empty")}</p>
+      )}
+
+      <div className="mt-10 text-center">
+        <Button href={`/${locale}/reviews`} variant="outline">
+          {t("cta")}
+        </Button>
       </div>
     </Section>
   );

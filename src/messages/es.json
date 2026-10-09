@@ -10,7 +10,8 @@
     "gallery": "Galería",
     "book": "Reservar",
     "faq": "Preguntas",
-    "policies": "Políticas"
+    "policies": "Políticas",
+    "reviews": "¡Cuéntanos tu experiencia!"
   },
   "hero": {
     "headline": "BEAUTY, ELEVATED.",
@@ -40,11 +41,11 @@
     },
     "brows": {
       "title": "Cejas",
-      "description": "Diseño, tinte, laminado y microblading para cejas perfectamente definidas."
+      "description": "Laminado y depilación con cera para cejas definidas y naturales."
     },
     "lashes": {
       "title": "Pestañas",
-      "description": "Extensiones, lifting y tinte para pestañas deslumbrantes sin esfuerzo."
+      "description": "Lifting, tinte y sets de extensiones: clásico, híbrido, wispy, anime y volumen."
     },
     "facial": {
       "title": "Tratamientos Faciales",
@@ -66,19 +67,9 @@
     "cta": "Ver Galería Completa"
   },
   "testimonials": {
-    "title": "Lo Que Dicen Nuestras Clientas",
-    "items": [
-      {
-        "name": "María L.",
-        "service": "Color de Cabello",
-        "text": "Aluh entendió exactamente lo que quería. Mi cabello nunca se había visto tan bien. ¡Me siento como nueva!"
-      },
-      {
-        "name": "Ana P.",
-        "service": "Laminado de Cejas",
-        "text": "Por fin encontré a alguien que hace mis cejas perfectas. Los resultados son naturales, limpios y exactamente lo que buscaba."
-      }
-    ]
+    "title": "Lo que dicen nuestras clientas",
+    "empty": "Aún no hay reseñas. ¿Ya nos visitaste? Sé la primera en contarnos cómo te fue.",
+    "cta": "Cuéntanos tu experiencia"
   },
   "booking_cta": {
     "title": "¿Lista para Tu Próxima Cita de Belleza?",
@@ -90,8 +81,8 @@
     "quick_links": "Enlaces Rápidos",
     "hours_title": "Horario",
     "hours": {
-      "mon_fri": "Lun – Vie: 9:00 AM – 7:00 PM",
-      "saturday": "Sábado: 9:00 AM – 5:00 PM",
+      "mon_fri": "Lun – Vie: 10:00 a. m. – 5:00 p. m.",
+      "saturday": "Sábado: 10:00 a. m. – 2:00 p. m.",
       "sunday": "Domingo: Cerrado"
     },
     "contact_title": "Contacto",
@@ -112,172 +103,12 @@
     "logo_alt": "Logo de ALUH"
   },
   "services_page": {
-    "title": "Nuestros Servicios",
-    "subtitle": "Cada servicio está cuidadosamente diseñado para resaltar tu belleza natural y hacerte sentir increíble.",
-    "consult_title": "¿No Estás Segura de Qué Servicio Elegir?",
-    "consult_text": "Contáctanos antes de reservar — estaremos encantadas de ayudarte a elegir el servicio perfecto.",
-    "consult_cta": "Contáctanos",
-    "categories": {
-      "hair": {
-        "title": "Cabello",
-        "groups": [
-          {
-            "title": "Color",
-            "items": [
-              {
-                "name": "Balayage, highlights",
-                "price": "Desde $350"
-              }
-            ],
-            "note": "Incluye peinado liso o en ondas. El tiempo de procesamiento es de 5 a 6 horas.\n\nAntes de iniciar se hace una prueba de mechón para conocer la salud de tu cabello y saber si podemos continuar con el proceso."
-          },
-          {
-            "title": "Corte",
-            "items": [
-              {
-                "name": "Despunte (ends refresh)",
-                "price": "$35"
-              },
-              {
-                "name": "Corte de dama",
-                "price": "$65"
-              },
-              {
-                "name": "Corte de caballero",
-                "price": "$40"
-              }
-            ]
-          },
-          {
-            "title": "Tratamiento nutritivo",
-            "items": [
-              {
-                "name": "Tratamiento nutritivo",
-                "price": "$45"
-              },
-              {
-                "name": "Con blowout, cabello corto",
-                "price": "$65"
-              },
-              {
-                "name": "Con blowout, cabello largo",
-                "price": "$75"
-              }
-            ]
-          },
-          {
-            "title": "Blowout",
-            "items": [
-              {
-                "name": "Cabello corto",
-                "price": "$45",
-                "description": "Cabello hasta aproximadamente los hombros."
-              },
-              {
-                "name": "Cabello largo",
-                "price": "$55",
-                "description": "Cabello debajo de los hombros."
-              },
-              {
-                "name": "Cabello largo o grueso",
-                "price": "$65 – $75",
-                "description": "Para cabello que por su largo, densidad o textura requiere más tiempo de secado y estilizado."
-              }
-            ]
-          }
-        ]
-      },
-      "brows": {
-        "title": "Servicios de Cejas",
-        "items": [
-          {
-            "name": "Diseño de Cejas",
-            "description": "Cejas limpias y definidas adaptadas a tu arco natural y estructura facial.",
-            "ideal_for": "Mantenimiento regular o un nuevo diseño",
-            "duration": "30 min",
-            "price": "$20"
-          },
-          {
-            "name": "Laminado de Cejas",
-            "description": "Cejas alisadas y levantadas para un look lleno y esponjoso que dura semanas.",
-            "ideal_for": "Clientas que buscan volumen y definición",
-            "duration": "45 min",
-            "price": "$50"
-          },
-          {
-            "name": "Tinte de Cejas",
-            "description": "Color semipermanente para añadir profundidad y definición sin maquillaje diario.",
-            "ideal_for": "Cejas claras o escasas",
-            "duration": "20 min",
-            "price": "$25"
-          }
-        ]
-      },
-      "lashes": {
-        "title": "Servicios de Pestañas",
-        "items": [
-          {
-            "name": "Extensiones Clásicas",
-            "description": "Extensiones de aspecto natural aplicadas una a una para un realce sutil.",
-            "ideal_for": "Un look natural y cotidiano",
-            "duration": "1.5–2 horas",
-            "price": "$120"
-          },
-          {
-            "name": "Extensiones de Volumen",
-            "description": "Abanicos de pestañas más llenos y dramáticos para un look más audaz.",
-            "ideal_for": "Clientas que buscan más densidad y drama",
-            "duration": "2–2.5 horas",
-            "price": "$160"
-          },
-          {
-            "name": "Lifting y Tinte de Pestañas",
-            "description": "Riza y colorea tus pestañas naturales para un look de bajo mantenimiento.",
-            "ideal_for": "Cualquiera que quiera pestañas levantadas sin extensiones",
-            "duration": "1 hora",
-            "price": "$65"
-          }
-        ]
-      },
-      "facial": {
-        "title": "Tratamientos Faciales",
-        "items": [
-          {
-            "name": "Facial Signature",
-            "description": "Un facial personalizado que incluye limpieza, exfoliación, mascarilla e hidratación.",
-            "ideal_for": "Todo tipo de piel que busca renovarse",
-            "duration": "1 hora",
-            "price": "$70"
-          },
-          {
-            "name": "Tratamiento Glow Hidratante",
-            "description": "Hidratación intensiva para piel seca o apagada.",
-            "ideal_for": "Piel deshidratada o con aspecto cansado",
-            "duration": "45 min",
-            "price": "$55"
-          }
-        ]
-      },
-      "special": {
-        "title": "Servicios Especiales",
-        "items": [
-          {
-            "name": "Paquete de Belleza Nupcial",
-            "description": "Preparación de belleza completa para tu día especial — cabello, pestañas y maquillaje.",
-            "ideal_for": "Novias y cortejo nupcial",
-            "duration": "Personalizado",
-            "price": "Desde $250"
-          },
-          {
-            "name": "Sesión Glam para Eventos",
-            "description": "Estilismo completo para fiestas, sesiones de fotos u ocasiones especiales.",
-            "ideal_for": "Cualquiera que se prepare para un evento",
-            "duration": "2–3 horas",
-            "price": "Desde $120"
-          }
-        ]
-      }
-    }
+    "consult_title": "¿No estás segura de qué servicio elegir?",
+    "consult_text": "Llámanos o escríbenos por Instagram y te ayudamos a elegir el servicio perfecto para ti.",
+    "consult_cta": "Reservar cita",
+    "call": "Llamar",
+    "book": "Reservar",
+    "by_phone": "Se reserva por teléfono"
   },
   "gallery_page": {
     "title": "Galería",
@@ -286,8 +117,8 @@
     "empty_text": "Estamos preparando una selección de nuestros trabajos favoritos."
   },
   "book_page": {
-    "title": "Reserva Tu Cita",
-    "subtitle": "Completa el formulario y te contactaremos para confirmar tu cita.",
+    "title": "Reserva tu cita",
+    "subtitle": "Elige tu servicio, la fecha y la hora. Tu cita queda confirmada con el depósito.",
     "form": {
       "name": "Nombre Completo",
       "name_placeholder": "Tu nombre completo",
@@ -315,10 +146,10 @@
         "phone": "Teléfono",
         "whatsapp": "WhatsApp"
       },
-      "submit": "Solicitar Cita",
+      "submit": "Reservar y pagar depósito",
       "submitting": "Enviando...",
       "deposit_notice_title": "Depósito requerido para confirmar",
-      "deposit_notice_text": "Se requiere un depósito de {amount} USD vía Zelle para confirmar tu cita. Al enviar este formulario te mostraremos los datos de pago y un código de referencia único.",
+      "deposit_notice_text": "Al enviar te mostramos los datos para pagar el depósito de {amount} USD por Zelle y tu código de referencia. Tu cita queda confirmada cuando lo recibimos.",
       "success_title": "¡Reserva recibida!",
       "success_message": "Tu cita está reservada — solo falta tu depósito para confirmarla.",
       "deposit_box_title": "Envía tu depósito por Zelle",
@@ -338,7 +169,28 @@
       "error_server": "Hubo un problema de nuestro lado. Inténtalo en un momento o contáctanos directamente.",
       "error_generic": "Algo salió mal. Inténtalo de nuevo o contáctanos directamente.",
       "success_contact_whatsapp": "Toma una captura de esta pantalla para tener los datos a mano. Te escribiremos por WhatsApp al:",
-      "success_contact_phone": "Toma una captura de esta pantalla para tener los datos a mano. Te llamaremos al:"
+      "success_contact_phone": "Toma una captura de esta pantalla para tener los datos a mano. Te llamaremos al:",
+      "step_category": "Elige una categoría",
+      "step_service": "Elige tu servicio",
+      "step_when": "Elige la fecha y la hora",
+      "step_details": "Tus datos",
+      "step_deposit": "Depósito para confirmar",
+      "call_to_book": "Por ahora este servicio se reserva directamente con nosotras:",
+      "call": "Llamar",
+      "not_sure": "¿No sabes cuál elegir? Llámanos y te ayudamos:",
+      "duration": "Duración",
+      "summary_total": "Precio total",
+      "summary_deposit": "Depósito para reservar",
+      "summary_balance": "Saldo el día de tu cita",
+      "policy_title": "Depósito para reservar",
+      "policy_text": "Para confirmar tu cita, se requiere un depósito de $25, que se descontará del total al momento de tu servicio. El depósito no es reembolsable si no asistes a tu cita o si la cancelas con menos de 24 horas de anticipación.",
+      "error_slot_taken": "Esa hora se acaba de ocupar. Elige otra, por favor.",
+      "error_not_bookable": "Este servicio todavía no se reserva en línea. Llámanos y te ayudamos.",
+      "field_required": "Este campo es obligatorio.",
+      "invalid_email": "Escribe un correo válido.",
+      "invalid_phone": "Escribe un teléfono válido.",
+      "pick_time": "Elige una fecha y una hora.",
+      "service_summary": "Tu servicio"
     },
     "time": "Hora preferida"
   },
@@ -348,7 +200,7 @@
     "items": [
       {
         "question": "¿Cómo reservo una cita?",
-        "answer": "Puedes reservar a través de nuestra web visitando la página de Reservas y completando el formulario. Confirmaremos tu cita en un plazo de 24 horas."
+        "answer": "En la página Reservar eliges tu servicio, la fecha y la hora que te quedan bien, y confirmas tu cita con el depósito de $25."
       },
       {
         "question": "¿Aceptan citas el mismo día?",
@@ -360,7 +212,7 @@
       },
       {
         "question": "¿Requieren un depósito?",
-        "answer": "Se puede requerir un depósito para ciertos servicios como extensiones de pestañas, paquetes nupciales y reservas para eventos. Los detalles se proporcionan al momento de la reserva."
+        "answer": "Para confirmar tu cita, se requiere un depósito de $25, que se descontará del total al momento de tu servicio. El depósito no es reembolsable si no asistes a tu cita o si la cancelas con menos de 24 horas de anticipación."
       },
       {
         "question": "¿Qué servicio debería elegir si no estoy segura?",
@@ -385,8 +237,8 @@
         "content": "Te pedimos amablemente que avises con al menos 24 horas de antelación si necesitas cancelar tu cita. Las cancelaciones tardías pueden estar sujetas a un cargo."
       },
       {
-        "title": "Depósitos",
-        "content": "Ciertos servicios requieren un depósito no reembolsable al momento de la reserva. Este depósito se aplica al costo total del servicio. Los requisitos de depósito se comunicarán claramente antes de la confirmación."
+        "title": "Depósito para reservar",
+        "content": "Para confirmar tu cita, se requiere un depósito de $25, que se descontará del total al momento de tu servicio. El depósito no es reembolsable si no asistes a tu cita o si la cancelas con menos de 24 horas de anticipación."
       },
       {
         "title": "Llegadas Tardías",
@@ -405,5 +257,25 @@
         "content": "Algunos servicios, incluyendo correcciones de color, paquetes nupciales y ciertos tratamientos de piel, pueden requerir una consulta previa. Esto nos ayuda a entender tus necesidades y ofrecer los mejores resultados."
       }
     ]
+  },
+  "reviews_page": {
+    "title": "¡Cuéntanos tu experiencia!",
+    "intro": "Nos encantará saber cómo fue tu visita a ALUH. Comparte tu experiencia y cuéntanos cómo te sentiste con el servicio y la atención recibida.",
+    "name": "Nombre que quieres mostrar",
+    "name_placeholder": "Ej.: María L.",
+    "rating": "Calificación",
+    "star": "{count, plural, one {# estrella} other {# estrellas}}",
+    "comment": "Tu experiencia",
+    "comment_placeholder": "Cuéntanos cómo te sentiste con el servicio y la atención recibida...",
+    "submit": "Enviar reseña",
+    "submitting": "Enviando...",
+    "success_title": "¡Gracias por compartir tu experiencia!",
+    "success_text": "Tu reseña aparecerá en la página en cuanto la revisemos.",
+    "error": "No pudimos enviar tu reseña. Inténtalo de nuevo en un momento.",
+    "error_name": "Escribe el nombre que quieres mostrar.",
+    "error_rating": "Elige de 1 a 5 estrellas.",
+    "error_comment": "Cuéntanos un poco más (al menos 10 letras).",
+    "list_title": "Lo que dicen nuestras clientas",
+    "empty": "Aún no hay reseñas. ¡Sé la primera en compartir tu experiencia!"
   }
 }

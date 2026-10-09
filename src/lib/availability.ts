@@ -1,5 +1,6 @@
 import { prisma } from "./prisma";
 import { SLOT_STEP_MINUTES, toMinutes, toHHMM } from "./time";
+import { findItem } from "./catalog";
 
 export type DaySlots = {
   date: string;
@@ -25,6 +26,9 @@ export async function getDaySlots(
   date: string,
   durationMinutes: number,
 ): Promise<DaySlots> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return { date, closed: true, reason: "Invalid date", slots: [] };
+  }
   const duration = Math.max(15, Math.round(durationMinutes || 60));
   const [y, m, d] = date.split("-").map(Number);
   const dayOfWeek = new Date(y, m - 1, d).getDay();
@@ -68,9 +72,14 @@ export async function getDaySlots(
   return { date, closed: false, reason: null, slots };
 }
 
-/** How long a service takes, by name or slug. Falls back to an hour. */
+/**
+ * How long a service takes. The website books items of the catalog ("lash-classic"),
+ * the studio books categories by name or slug ("Hair Services"). Falls back to an hour.
+ */
 export async function serviceDuration(serviceRef: string): Promise<number> {
   if (!serviceRef) return 60;
+  const item = findItem(serviceRef);
+  if (item?.durationMinutes) return item.durationMinutes;
   try {
     const match = await prisma.service.findFirst({
       where: {

@@ -3,6 +3,7 @@ import { getPageContent } from "@/lib/get-page-content";
 import { brandImage } from "@/lib/brand-image";
 import { getPublicServices } from "@/lib/services";
 import { getGalleryPhotos } from "@/lib/gallery";
+import { getApprovedReviews } from "@/lib/reviews";
 import { Hero } from "@/components/home/Hero";
 import { TrustPillars } from "@/components/home/TrustPillars";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
@@ -13,10 +14,11 @@ import { BookingCTA } from "@/components/home/BookingCTA";
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const [content, services, photos] = await Promise.all([
+  const [content, services, photos, reviews] = await Promise.all([
     getPageContent(locale),
     getPublicServices(),
     getGalleryPhotos(),
+    getApprovedReviews(4),
   ]);
 
   const logo = brandImage(content);
@@ -28,7 +30,7 @@ export default async function HomePage() {
       <FeaturedServices content={content} services={services} />
       <AboutPreview content={content} brandLogo={logo} />
       <GalleryPreview photos={photos} />
-      <Testimonials />
+      <Testimonials reviews={reviews} />
       <BookingCTA content={content} />
     </>
   );

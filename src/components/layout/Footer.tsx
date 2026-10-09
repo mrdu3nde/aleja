@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { AtSign, Lock, Mail, Phone } from "lucide-react";
 import { Wordmark } from "@/components/ui/Wordmark";
+import { CONTACT } from "@/lib/contact";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -16,6 +17,7 @@ export function Footer() {
     { key: "services", href: "/services" },
     { key: "gallery", href: "/gallery" },
     { key: "book", href: "/book" },
+    { key: "reviews", href: "/reviews" },
     { key: "faq", href: "/faq" },
     { key: "policies", href: "/policies" },
   ] as const;
@@ -34,14 +36,16 @@ export function Footer() {
             </p>
             <div className="flex gap-3 mt-4">
               <a
-                href="#"
+                href={CONTACT.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-champagne/70 hover:text-white transition-colors"
-                aria-label="Instagram"
+                aria-label={`Instagram ${CONTACT.instagramHandle}`}
               >
                 <AtSign className="h-5 w-5" />
               </a>
               <a
-                href="mailto:contact.aluh@gmail.com"
+                href={`mailto:${CONTACT.email}`}
                 className="text-champagne/70 hover:text-white transition-colors"
                 aria-label="Email"
               >
@@ -89,20 +93,31 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <a
-                  href="mailto:contact.aluh@gmail.com"
+                  href={CONTACT.phoneHref}
                   className="flex items-center gap-2 text-champagne/70 hover:text-white transition-colors"
                 >
-                  <Mail className="h-4 w-4" />
-                  contact.aluh@gmail.com
+                  <Phone className="h-4 w-4" />
+                  {CONTACT.phone}
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:+15550000000"
+                  href={CONTACT.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-2 text-champagne/70 hover:text-white transition-colors"
                 >
-                  <Phone className="h-4 w-4" />
-                  +1 (555) 000-0000
+                  <AtSign className="h-4 w-4" />
+                  {CONTACT.instagramHandle}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  className="flex items-center gap-2 text-champagne/70 hover:text-white transition-colors"
+                >
+                  <Mail className="h-4 w-4" />
+                  {CONTACT.email}
                 </a>
               </li>
             </ul>

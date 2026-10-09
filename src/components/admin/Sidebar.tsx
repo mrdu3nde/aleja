@@ -17,6 +17,7 @@ import {
   X,
   Compass,
   Gift,
+  MessageSquareHeart,
 } from "lucide-react";
 import { startTour } from "./Tour";
 import { useEffect, useState } from "react";
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/studio/availability", label: "Disponibilidad", icon: CalendarClock },
   { href: "/studio/content", label: "Contenido", icon: FileText },
   { href: "/studio/gallery", label: "Galería", icon: Images },
+  { href: "/studio/reviews", label: "Reseñas", icon: MessageSquareHeart },
   { href: "/studio/novedades", label: "Novedades", icon: Gift },
   { href: "/studio/security", label: "Seguridad", icon: ShieldCheck },
 ] as const;

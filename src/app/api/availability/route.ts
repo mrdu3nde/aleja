@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDaySlots, getOpenDates, serviceDuration } from "@/lib/availability";
+import { findItem, isBookable } from "@/lib/catalog";
 
 /**
  * Public: which times are free.
@@ -15,6 +16,16 @@ export async function GET(request: NextRequest) {
     const date = searchParams.get("date");
     const from = searchParams.get("from");
     const to = searchParams.get("to");
+
+    // Un servicio de la carta sin duración todavía no se reserva en línea.
+    const item = findItem(service);
+    if (item && !isBookable(item)) {
+      return NextResponse.json(
+        date
+          ? { date, closed: true, reason: "Not bookable online", slots: [], durationMinutes: null }
+          : { dates: [], durationMinutes: null },
+      );
+    }
 
     const duration = await serviceDuration(service);
 

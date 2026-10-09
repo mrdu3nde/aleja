@@ -1,15 +1,23 @@
+/**
+ * El depósito para reservar en la web: $25, que se descuenta del total. Fijo en
+ * el código y no en una variable de entorno porque es parte de la política que
+ * ella escribió ("se requiere un depósito de $25"), y el texto y el monto no
+ * pueden quedar distintos.
+ */
+export const DEPOSIT_AMOUNT = 25;
+
 export const depositConfig = {
-  amount: Number(process.env.NEXT_PUBLIC_DEPOSIT_AMOUNT ?? "20"),
+  amount: DEPOSIT_AMOUNT,
   zelleName: process.env.NEXT_PUBLIC_ZELLE_NAME ?? "Alejandra",
   zellePhone: process.env.NEXT_PUBLIC_ZELLE_PHONE ?? "+1 (747) 250-0852",
 };
 
 /**
  * Amounts offered when booking by hand, so the deposit can match the service.
- * Website bookings keep the standard NEXT_PUBLIC_DEPOSIT_AMOUNT instead.
+ * Website bookings always ask for DEPOSIT_AMOUNT.
  * Edit this list to change what the dropdown offers.
  */
-export const DEPOSIT_PRESETS = [20, 30, 40, 50, 75, 100, 150] as const;
+export const DEPOSIT_PRESETS = [20, 25, 30, 40, 50, 75, 100, 150] as const;
 
 /**
  * Single source of truth for "does this booking need a deposit".

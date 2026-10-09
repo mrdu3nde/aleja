@@ -11,6 +11,7 @@ const navItems = [
   { key: "about", href: "/about" },
   { key: "services", href: "/services" },
   { key: "gallery", href: "/gallery" },
+  { key: "reviews", href: "/reviews" },
 ] as const;
 
 export function Header() {
@@ -27,7 +28,7 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8 whitespace-nowrap">
             {navItems.map((item) => (
               <Link
                 key={item.key}
@@ -40,7 +41,7 @@ export function Header() {
           </nav>
 
           {/* Desktop actions */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher />
             <Button href={`/${locale}/book`} size="sm">
               {t("book")}

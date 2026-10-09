@@ -23,6 +23,10 @@ export const routing = defineRouting({
       es: "/reservar",
     },
     "/faq": "/faq",
+    "/reviews": {
+      en: "/reviews",
+      es: "/resenas",
+    },
     "/policies": {
       en: "/policies",
       es: "/politicas",

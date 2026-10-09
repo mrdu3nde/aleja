@@ -6,6 +6,13 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Scissors, Palette, Eye, Sparkles, Droplets, Crown, type LucideIcon } from "lucide-react";
 import type { PublicService } from "@/lib/services";
+import { CATALOG } from "@/lib/catalog";
+
+/** "Desde $X": lo más barato de esa categoría en la carta, que es la misma de /services. */
+function fromPrice(slug: string, fallback: number | null): number | null {
+  const prices = CATALOG.filter((i) => i.category === slug && i.price).map((i) => i.price!.min);
+  return prices.length ? Math.min(...prices) : fallback;
+}
 import { motion } from "framer-motion";
 
 /** Icons the studio can pick from; used when a service has no photo yet. */
@@ -37,10 +44,15 @@ export function FeaturedServices({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, i) => {
           const Icon = (service.icon && ICONS[service.icon]) || Sparkles;
+          // Lo editado en el panel manda; si no, el texto traducido del
+          // sitio. El nombre de la base ("Hair Services") sólo como último
+          // recurso, porque está en inglés y se colaba en la versión española.
+          const key = `${service.slug}.title`;
           const title =
-            content[`services_section.${service.slug}.title`] || service.name;
+            content[`services_section.${key}`] || (t.has(key) ? t(key) : service.name);
+          const descKey = `${service.slug}.description`;
           const description =
-            content[`services_section.${service.slug}.description`] ?? "";
+            content[`services_section.${descKey}`] ?? (t.has(descKey) ? t(descKey) : "");
           return (
           <motion.div
             key={service.id}
@@ -67,9 +79,12 @@ export function FeaturedServices({
               <h3 className="text-xl font-semibold text-text-dark mb-2">
                 {title}
               </h3>
-              {service.price != null && service.price > 0 && (
-                <p className="text-cafe font-semibold mb-2">${service.price}</p>
-              )}
+              {(() => {
+                const from = fromPrice(service.slug, service.price);
+                return from != null && from > 0 ? (
+                  <p className="text-cafe font-semibold mb-2">{t("starting_at")} ${from}</p>
+                ) : null;
+              })()}
               <p className="text-text-light text-sm leading-relaxed flex-1">
                 {description}
               </p>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
+import { CONTACT } from "@/lib/contact";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -12,6 +13,7 @@ const navItems = [
   { key: "services", href: "/services" },
   { key: "gallery", href: "/gallery" },
   { key: "book", href: "/book" },
+  { key: "reviews", href: "/reviews" },
 ] as const;
 
 export function MobileMenu() {
@@ -20,7 +22,7 @@ export function MobileMenu() {
   const locale = useLocale();
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         onClick={() => setOpen(!open)}
         className="p-2 text-cafe cursor-pointer"
@@ -42,8 +44,12 @@ export function MobileMenu() {
                 {t(item.key)}
               </Link>
             ))}
-            <div className="mt-2 px-4 pt-3 border-t border-mushroom/20">
+            <div className="mt-2 px-4 pt-3 border-t border-mushroom/20 flex items-center justify-between gap-3">
               <LanguageSwitcher />
+              <a href={CONTACT.phoneHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-cafe">
+                <Phone className="h-4 w-4" />
+                {CONTACT.phone}
+              </a>
             </div>
           </nav>
         </div>

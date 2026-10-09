@@ -38,6 +38,39 @@ export type Release = {
 /** La más reciente primero. */
 export const RELEASES: Release[] = [
   {
+    id: "2026-10-reservas-resenas",
+    date: "2026-10-09",
+    title: "Tus servicios en la web, horario nuevo y reseñas",
+    items: [
+      {
+        href: "/es/book",
+        title: "Reservar paso a paso",
+        text: "Tu clienta elige la categoría, el servicio con su precio, el día y la hora libres, deja sus datos y ve el total, el depósito de $25 y lo que le queda por pagar, con tu política antes de enviar.",
+      },
+      {
+        href: "/es/services",
+        title: "Pestañas y cejas nuevas",
+        text: "Pusimos tus servicios de pestañas y cejas con sus precios y textos, y quitamos el encabezado \"Nuestros Servicios\". Los que todavía no tienen duración se ven con su precio, pero se reservan llamándote.",
+      },
+      {
+        href: "/studio/availability",
+        title: "Tu horario",
+        text: "Lunes a viernes de 10 a 5, sábados de 10 a 2 y domingos cerrado. Cada cita tiene que terminar dentro de tu horario y nunca se cruza con otra.",
+      },
+      {
+        href: "/studio/reviews",
+        menu: true,
+        title: "Reseñas",
+        text: "En la web hay una pestaña \"¡Cuéntanos tu experiencia!\". Cuando una clienta deja su reseña te llega un aviso, y sólo sale en la página cuando tú tocas \"Publicar\".",
+      },
+      {
+        href: "/es",
+        title: "Tu teléfono e Instagram",
+        text: "En todo el sitio está tu número +1 (747) 786-4169 (al tocarlo, llama) y tu Instagram @aluhstudio.",
+      },
+    ],
+  },
+  {
     id: "2026-10-tour",
     date: "2026-10-08",
     title: "Tour guiado, enlace para reservar y llamada de prueba",
