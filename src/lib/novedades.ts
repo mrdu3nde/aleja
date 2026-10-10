@@ -38,6 +38,95 @@ export type Release = {
 /** La más reciente primero. */
 export const RELEASES: Release[] = [
   {
+    id: "2026-10-todo-lo-que-pediste",
+    date: "2026-10-10",
+    title: "Todo lo que pediste, punto por punto",
+    items: [
+      {
+        href: "/es",
+        title: "1. Logo ALUH",
+        text: "Solo ALUH, en mayúsculas, más grande y en dorado champagne, sin \"Beauty Studio\". Abajo dice PRESENCE IS POWER, y el sitio tiene toques de dorado.",
+      },
+      {
+        href: "/es",
+        title: "2. Portada",
+        text: "Dice BEAUTY, ELEVATED. y \"Belleza personalizada, pensada con cuidado para ti\". Donde decía \"Por qué elegir ALUH\" ahora dice THE ALUH EXPERIENCE: Personalized. Refined. Intentional.",
+      },
+      {
+        href: "/es",
+        title: "3. Sin \"Nuestros Servicios\"",
+        text: "Quitamos el título \"Nuestros Servicios\" y su frase, en la portada y en la página de servicios, en español y en inglés. Ahora salen directamente las categorías.",
+      },
+      {
+        href: "/es/servicios",
+        title: "4. Cabello",
+        text: "Balayage y highlights desde $350 (5 a 6 horas, con prueba de mechón), cortes, tratamiento nutritivo y blowouts, con tus precios y tus textos.",
+      },
+      {
+        href: "/es/servicios",
+        title: "5. Pestañas y cejas",
+        text: "Lifting $85, Lifting y Tinte $95, Set Clásico $100, Híbrido $115, Wispy $120, Anime $120 y Volumen $120. Cejas: Laminado $85 y Depilación con cera $25. Borramos los servicios viejos de pestañas y cejas.",
+      },
+      {
+        href: "/es/servicios",
+        title: "6. Uñas",
+        text: "Quitamos el servicio de uñas del sitio.",
+      },
+      {
+        href: "/es/reservar",
+        title: "7. Reservar en 5 pasos (ya funciona con todos tus servicios)",
+        text: "Categoría → servicio con su precio → día y hora libres → datos de la clienta → depósito de $25. Ya se pueden reservar en línea las pestañas, cejas, cortes, tratamientos y blowouts. Les pusimos una duración aproximada; abajo te preguntamos la real para ajustarla.",
+      },
+      {
+        href: "/studio/availability",
+        title: "8. Tu horario",
+        text: "Lunes a viernes de 10:00 a. m. a 5:00 p. m., sábados de 10:00 a. m. a 2:00 p. m. y domingos cerrado. También en el pie de página. Ninguna cita termina fuera de tu horario ni se cruza con otra.",
+      },
+      {
+        href: "/es/reservar",
+        title: "9. Depósito de $25",
+        text: "Al reservar, la clienta ve el total, el depósito de $25 y lo que le queda por pagar, con tu política antes de pagar. Lo paga por Zelle al +1 (747) 250-0852; la cita queda confirmada cuando tú confirmas que llegó el pago.",
+      },
+      {
+        href: "/es/resenas",
+        title: "10. ¡Cuéntanos tu experiencia!",
+        text: "Pestaña nueva en el menú con tu texto: nombre, estrellas de 1 a 5, comentario y el botón \"Enviar reseña\". No hay reseñas inventadas. Cada reseña te llega aquí y sale en la web cuando tú tocas \"Publicar\".",
+      },
+      {
+        href: "/es",
+        title: "11. Teléfono e Instagram",
+        text: "En todo el sitio está +1 (747) 786-4169 (al tocarlo, llama) y tu Instagram @aluhstudio.",
+      },
+      {
+        href: "/en",
+        title: "12. Español e inglés",
+        text: "El sitio completo está en los dos idiomas, con el selector arriba. Al cambiar de idioma te quedas en la misma página. Wispy y Anime se llaman igual en los dos.",
+      },
+      {
+        href: "/es/sobre",
+        title: "13. Sobre ALUH",
+        text: "Tu historia completa, LA EXPERIENCIA ALUH, y PRESENCE IS POWER como firma al final de la página.",
+      },
+      {
+        href: "/studio/gallery",
+        menu: true,
+        title: "14. Galería",
+        text: "Quitamos las fotos de ejemplo. Desde aquí subes tus 10 mejores fotos y salen en la web al instante.",
+      },
+      {
+        href: "/studio/clients",
+        title: "15. Ficha técnica de cada clienta",
+        text: "Abre una clienta → \"Ficha técnica\": fórmula, corte o peinado, mapping de mechas, notas, foto del antes y del después, y lo que se hizo antes en otro lugar.",
+      },
+      {
+        href: "/studio/notes",
+        menu: true,
+        title: "Tengo unas preguntas para ti",
+        text: "Las encuentras en Mejoras. Mientras no contestes, todo sigue funcionando como está.",
+      },
+    ],
+  },
+  {
     id: "2026-10-reservas-resenas",
     date: "2026-10-09",
     title: "Tus servicios en la web, horario nuevo y reseñas",

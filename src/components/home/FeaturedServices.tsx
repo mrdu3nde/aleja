@@ -32,15 +32,7 @@ export function FeaturedServices({
 
   return (
     <Section bg="mushroom">
-      <div className="text-center mb-12">
-        <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-bold text-cafe mb-4">
-          {content["services_section.title"] || t("title")}
-        </h2>
-        <p className="text-text-light text-lg max-w-2xl mx-auto">
-          {content["services_section.subtitle"] || t("subtitle")}
-        </p>
-      </div>
-
+      {/* Sin "Nuestros Servicios" ni su frase: ella pidió dejar directamente las categorías. */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, i) => {
           const Icon = (service.icon && ICONS[service.icon]) || Sparkles;

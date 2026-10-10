@@ -8,10 +8,9 @@
  *
  * Sin Prisma a propósito: lo importan componentes de cliente.
  *
- * `durationMinutes: null` = todavía no sabemos cuánto dura. El servicio se ve
- * con su precio, pero no se reserva en línea (la clienta llama o escribe):
- * ella pidió que se le preguntara la duración antes de habilitarlo, y una
- * duración inventada pondría citas encima de otras.
+ * `durationMinutes: null` = no se reserva en línea (la clienta llama o escribe).
+ * Las marcadas "estimado" se pusieron para que ella viera todo reservable desde
+ * ya, en vez de esperar su respuesta; se le preguntó cuánto dura cada una.
  */
 
 export type Locale = "es" | "en";
@@ -95,7 +94,7 @@ export const CATALOG: CatalogItem[] = [
     group: "cut",
     name: { es: "Despunte", en: "Ends refresh" },
     price: { min: 35 },
-    durationMinutes: null,
+    durationMinutes: 30, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-womens-cut",
@@ -103,7 +102,7 @@ export const CATALOG: CatalogItem[] = [
     group: "cut",
     name: { es: "Corte de dama", en: "Women's cut" },
     price: { min: 65 },
-    durationMinutes: null,
+    durationMinutes: 60, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-mens-cut",
@@ -111,7 +110,7 @@ export const CATALOG: CatalogItem[] = [
     group: "cut",
     name: { es: "Corte de caballero", en: "Men's cut" },
     price: { min: 40 },
-    durationMinutes: null,
+    durationMinutes: 30, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-treatment",
@@ -119,7 +118,7 @@ export const CATALOG: CatalogItem[] = [
     group: "treatment",
     name: { es: "Tratamiento nutritivo", en: "Nourishing hair treatment" },
     price: { min: 45 },
-    durationMinutes: null,
+    durationMinutes: 45, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-treatment-blowout-short",
@@ -127,7 +126,7 @@ export const CATALOG: CatalogItem[] = [
     group: "treatment",
     name: { es: "Tratamiento con blowout, cabello corto", en: "Treatment with blowout, short hair" },
     price: { min: 65 },
-    durationMinutes: null,
+    durationMinutes: 75, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-treatment-blowout-long",
@@ -135,7 +134,7 @@ export const CATALOG: CatalogItem[] = [
     group: "treatment",
     name: { es: "Tratamiento con blowout, cabello largo", en: "Treatment with blowout, long hair" },
     price: { min: 75 },
-    durationMinutes: null,
+    durationMinutes: 90, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-blowout-short",
@@ -147,7 +146,7 @@ export const CATALOG: CatalogItem[] = [
       en: "Hair up to about shoulder length.",
     },
     price: { min: 45 },
-    durationMinutes: null,
+    durationMinutes: 45, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-blowout-long",
@@ -156,7 +155,7 @@ export const CATALOG: CatalogItem[] = [
     name: { es: "Blowout, cabello largo", en: "Blowout, long hair" },
     description: { es: "Cabello debajo de los hombros.", en: "Hair below the shoulders." },
     price: { min: 55 },
-    durationMinutes: null,
+    durationMinutes: 60, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "hair-blowout-thick",
@@ -168,7 +167,7 @@ export const CATALOG: CatalogItem[] = [
       en: "For hair that, because of its length, density or texture, needs more drying and styling time.",
     },
     price: { min: 65, max: 75 },
-    durationMinutes: null,
+    durationMinutes: 90, // estimado: se le preguntó, se corrige cuando conteste
   },
 
   // ── Pestañas ── (los nombres Wispy y Anime se quedan igual en los dos idiomas)
@@ -181,7 +180,7 @@ export const CATALOG: CatalogItem[] = [
       en: "A treatment that lifts and curls your natural lashes to enhance your look without extensions, with an elegant, natural finish.",
     },
     price: { min: 85 },
-    durationMinutes: null,
+    durationMinutes: 60, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "lash-lift-tint",
@@ -192,7 +191,7 @@ export const CATALOG: CatalogItem[] = [
       en: "A treatment that lifts, curls and defines your natural lashes without extensions. Includes a tint for extra intensity and an elegant, natural finish.",
     },
     price: { min: 95 },
-    durationMinutes: null,
+    durationMinutes: 75, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "lash-classic",
@@ -203,7 +202,7 @@ export const CATALOG: CatalogItem[] = [
       en: "One-to-one extensions for a natural, delicate and elegant result. Perfect for enhancing your eyes while keeping them natural.",
     },
     price: { min: 100 },
-    durationMinutes: null,
+    durationMinutes: 120, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "lash-hybrid",
@@ -214,7 +213,7 @@ export const CATALOG: CatalogItem[] = [
       en: "A blend of classic and volume techniques for a look with more texture, definition and density.",
     },
     price: { min: 115 },
-    durationMinutes: null,
+    durationMinutes: 150, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "lash-wispy",
@@ -225,7 +224,7 @@ export const CATALOG: CatalogItem[] = [
       en: "Extensions in different lengths that create a light, textured and sophisticated effect. Ideal for defined eyes with a delicate, modern finish.",
     },
     price: { min: 120 },
-    durationMinutes: null,
+    durationMinutes: 150, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "lash-anime",
@@ -236,7 +235,7 @@ export const CATALOG: CatalogItem[] = [
       en: "Inspired by manga-style lashes, it combines long, defined spikes with strategic spacing to create an expressive, eye-catching doll-eye look.",
     },
     price: { min: 120 },
-    durationMinutes: null,
+    durationMinutes: 150, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "lash-volume",
@@ -247,7 +246,7 @@ export const CATALOG: CatalogItem[] = [
       en: "Extensions that add density and intensity for a defined, glamorous and more dramatic look.",
     },
     price: { min: 120 },
-    durationMinutes: null,
+    durationMinutes: 180, // estimado: se le preguntó, se corrige cuando conteste
   },
 
   // ── Cejas ──
@@ -260,7 +259,7 @@ export const CATALOG: CatalogItem[] = [
       en: "A treatment that aligns and styles the brow hairs for a more defined, even and fuller effect, while keeping a natural finish.",
     },
     price: { min: 85 },
-    durationMinutes: null,
+    durationMinutes: 60, // estimado: se le preguntó, se corrige cuando conteste
   },
   {
     id: "brow-wax",
@@ -271,7 +270,7 @@ export const CATALOG: CatalogItem[] = [
       en: "Waxing that removes unwanted hair, defining and cleaning up the brow outline. It respects their natural shape for a clean, polished finish.",
     },
     price: { min: 25 },
-    durationMinutes: null,
+    durationMinutes: 30, // estimado: se le preguntó, se corrige cuando conteste
   },
 
   // ── Faciales y especiales: los mismos de antes, con sus precios ──

@@ -32,8 +32,6 @@ const sections: SectionDef[] = [
     key: "services",
     label: "Servicios",
     keys: [
-      "services_section.title",
-      "services_section.subtitle",
       "services_section.hair.title",
       "services_section.hair.description",
       "services_section.brows.title",
